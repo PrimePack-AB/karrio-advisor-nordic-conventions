@@ -1,9 +1,63 @@
 import unittest
 
+import karrio.core.models as models
+import karrio.lib as lib
+
 import karrio.plugins.advisor_nordic_conventions.rules.voec as voec
+import karrio.plugins.advisor_nordic_conventions.sources as sources
 from . import fixture
 
 VOEC_NUMBER = "VOEC2024001"
+DHL_PARCEL_CONNECT = "dhl_freight_sweden_parcel_connect_b2c"
+EXCLUDED_GOODS = "advisor_nordic_conventions_voec_excluded_goods"
+
+T_SHIRT = fixture.COMMODITIES[0]
+
+
+def _commodity(**fields) -> dict:
+    return dict(
+        dict(quantity=1, weight=0.5, weight_unit="KG", value_amount=200.0, value_currency="SEK", origin_country="SE"),
+        **fields,
+    )
+
+
+PROTEIN_POWDER = _commodity(description="Protein powder", hs_code="2106.90")
+WINE = _commodity(description="Wine", hs_code="220421")
+OLIVE_TREE = _commodity(description="Olive tree", hs_code="0602.90")
+VITAMINS_BY_SKU = _commodity(sku="VIT-100", hs_code="3004.90")
+DOG_FOOD = _commodity(description="Dog food", hs_code="2309.10")
+BEESWAX = _commodity(description="Beeswax", hs_code="1521.90")
+UNCODED_CHOCOLATE = _commodity(description="Chocolate")
+
+SVALBARD_SOURCES = [
+    sources.MVAL_VAT_AREA.to_dict(),
+    sources.SKE_VOEC_VAT_AREA.to_dict(),
+    sources.BRING_SVALBARD_JAN_MAYEN_POSTAL_CODES.to_dict(),
+]
+EXCLUDED_GOODS_SOURCES = [
+    sources.SKE_VOEC_EXCLUDED_GOODS.to_dict(),
+    sources.SKE_VOEC_MIXED_CONSIGNMENT.to_dict(),
+    sources.TOLL_VOEC_EXCLUDED_GOODS.to_dict(),
+    sources.MVAL_LOW_VALUE_EXCLUSIONS.to_dict(),
+    sources.MVAL_FOODSTUFFS.to_dict(),
+    sources.MVAF_FOODSTUFFS.to_dict(),
+    sources.SKE_VOEC_RESTRICTED_EXAMPLES.to_dict(),
+    sources.HS_VOEC_EXCLUDED_CLASSES.to_dict(),
+    *SVALBARD_SOURCES,
+]
+
+
+def _advise(advisor, *commodities, recipient="NO", carrier="postnord", service="postnord_parcel", voec_number=VOEC_NUMBER):
+    options = dict(voec_number=voec_number) if voec_number else None
+    customs = lib.to_dict(
+        dict(commodities=list(commodities), content_type="merchandise", commercial_invoice=True, options=options)
+    )
+    request = fixture.shipment("SE", recipient, service, customs=customs)
+    return fixture.messages(advisor, request, fixture.context(carrier))
+
+
+def _codes(messages) -> list:
+    return [message["code"] for message in messages]
 
 
 def _voec_shipment(recipient: str, service: str = "postnord_parcel", voec_number=VOEC_NUMBER):
@@ -44,6 +98,156 @@ class TestNordicConventionsVoecVatArea(unittest.TestCase):
 
     def test_no_voec_lane_without_a_voec_number(self):
         self.assertIsNone(voec.voec_lane(_voec_shipment("NO", voec_number=None), fixture.context("postnord")))
+
+
+
+class TestNordicConventionsVoecHsClassifier(unittest.TestCase):
+    def test_classes_of_listed_chapters_and_headings(self):
+        expected = {
+            "0201": "foodstuffs",
+            "0302": "foodstuffs",
+            "0406": "foodstuffs",
+            "0709": "foodstuffs",
+            "0801": "foodstuffs",
+            "0901": "foodstuffs",
+            "1006": "foodstuffs",
+            "1101": "foodstuffs",
+            "1211": "foodstuffs",
+            "1302": "foodstuffs",
+            "1509": "foodstuffs",
+            "1601": "foodstuffs",
+            "1704": "foodstuffs",
+            "1806": "foodstuffs",
+            "1905": "foodstuffs",
+            "2009": "foodstuffs",
+            "2106": "foodstuffs",
+            "2201": "foodstuffs",
+            "2202": "foodstuffs",
+            "2209": "foodstuffs",
+            "2936": "foodstuffs",
+            "2203": "alcohol",
+            "2204": "alcohol",
+            "2205": "alcohol",
+            "2206": "alcohol",
+            "2207": "alcohol",
+            "2208": "alcohol",
+            "2402": "tobacco",
+            "3004": "pharmaceuticals",
+            "9303": "arms and ammunition",
+            "0101": "restricted",
+            "0602": "restricted",
+            "1209": "restricted",
+        }
+
+        self.assertDictEqual({code: voec.hs_class(code) for code in expected}, expected)
+
+    def test_carved_out_headings_and_unlisted_chapters_are_unclassified(self):
+        self.assertListEqual(
+            [
+                code
+                for code in ("1518", "1520", "1521", "1522", "0511", "1404", "2309", "2210", "2937", "6109")
+                if voec.hs_class(code) is not None
+            ],
+            [],
+        )
+
+    def test_hs_code_is_read_as_its_digits(self):
+        self.assertEqual(voec.hs_class("2106.90"), "foodstuffs")
+        self.assertEqual(voec.hs_class("2204 21"), "alcohol")
+        self.assertEqual(voec.hs_class("22"), None)
+        self.assertEqual(voec.hs_class("24"), "tobacco")
+
+    def test_missing_or_short_hs_code_is_unclassified(self):
+        self.assertListEqual([code for code in (None, "", "2", "..") if voec.hs_class(code) is not None], [])
+
+    def test_item_name_falls_back_from_description_to_title_sku_and_line(self):
+        commodities = lib.to_object(
+            models.Customs,
+            dict(
+                commodities=[
+                    _commodity(description="Protein powder", title="Whey", sku="W-1"),
+                    _commodity(title="Whey", sku="W-1"),
+                    _commodity(sku="W-1"),
+                    _commodity(),
+                ]
+            ),
+        ).commodities
+
+        self.assertListEqual(
+            [voec.item_name(index, commodity) for index, commodity in enumerate(commodities)],
+            ["Protein powder", "Whey", "W-1", "line 3"],
+        )
+
+
+class TestNordicConventionsVoecExcludedGoods(unittest.TestCase):
+    def test_food_supplement_in_a_voec_shipment(self):
+        self.assertListEqual(
+            _advise(voec.voec_excluded_goods, T_SHIRT, PROTEIN_POWDER),
+            [
+                dict(
+                    code=EXCLUDED_GOODS,
+                    level="warning",
+                    message=(
+                        "This VOEC shipment to Norway carries Protein powder (foodstuffs). "
+                        "VOEC does not cover foodstuffs, goods requiring an import permit, or excise goods, "
+                        "so the consignment must be split or the whole shipment declared at the border "
+                        "with VAT collected on import."
+                    ),
+                    details=dict(
+                        plugin="advisor_nordic_conventions",
+                        lane="SE-NO",
+                        sources=EXCLUDED_GOODS_SOURCES,
+                        lines=[1],
+                        classes=["foodstuffs"],
+                    ),
+                )
+            ],
+        )
+
+    def test_wine_in_a_voec_shipment_on_dhl(self):
+        messages = _advise(
+            voec.voec_excluded_goods, WINE, carrier="dhl_freight_sweden", service=DHL_PARCEL_CONNECT
+        )
+
+        self.assertListEqual(_codes(messages), [EXCLUDED_GOODS])
+        self.assertListEqual(messages[0]["details"]["classes"], ["alcohol"])
+
+    def test_live_plant_in_a_voec_shipment(self):
+        messages = _advise(voec.voec_excluded_goods, OLIVE_TREE)
+
+        self.assertListEqual(messages[0]["details"]["classes"], ["restricted"])
+        self.assertIn("Olive tree (restricted)", messages[0]["message"])
+
+    def test_item_named_by_its_sku(self):
+        messages = _advise(voec.voec_excluded_goods, VITAMINS_BY_SKU)
+
+        self.assertListEqual(messages[0]["details"]["classes"], ["pharmaceuticals"])
+        self.assertIn("VIT-100 (pharmaceuticals)", messages[0]["message"])
+
+    def test_several_excluded_items_are_listed_in_order(self):
+        messages = _advise(voec.voec_excluded_goods, WINE, T_SHIRT, PROTEIN_POWDER)
+
+        self.assertIn("carries Wine (alcohol), Protein powder (foodstuffs).", messages[0]["message"])
+        self.assertListEqual(messages[0]["details"]["lines"], [0, 2])
+        self.assertListEqual(messages[0]["details"]["classes"], ["alcohol", "foodstuffs"])
+
+    def test_animal_feed_is_not_a_foodstuff(self):
+        self.assertListEqual(_advise(voec.voec_excluded_goods, DOG_FOOD), [])
+
+    def test_beeswax_is_not_a_foodstuff(self):
+        self.assertListEqual(_advise(voec.voec_excluded_goods, BEESWAX), [])
+
+    def test_commodity_without_an_hs_code(self):
+        self.assertListEqual(_advise(voec.voec_excluded_goods, UNCODED_CHOCOLATE), [])
+
+    def test_no_voec_number(self):
+        self.assertListEqual(_advise(voec.voec_excluded_goods, PROTEIN_POWDER, voec_number=None), [])
+
+    def test_voec_number_to_another_destination(self):
+        self.assertListEqual(_advise(voec.voec_excluded_goods, PROTEIN_POWDER, recipient="CH"), [])
+
+    def test_recipient_in_svalbard(self):
+        self.assertListEqual(_advise(voec.voec_excluded_goods, PROTEIN_POWDER, recipient="NO_SVALBARD"), [])
 
 
 if __name__ == "__main__":

@@ -57,6 +57,7 @@ class TestNordicConventionsProcedures(unittest.TestCase):
         for classification in (
             AdvisoryClassification.dhl_freight_sweden_customs_mode_missing,
             AdvisoryClassification.invoice_type_content_mismatch,
+            AdvisoryClassification.voec_excluded_goods,
         ):
             with self.subTest(classification=classification.name):
                 self.assertSetEqual(

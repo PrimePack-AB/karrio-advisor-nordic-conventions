@@ -11,6 +11,7 @@ import karrio.plugins.advisor_nordic_conventions.rules.dhl_country_requirements 
 import karrio.plugins.advisor_nordic_conventions.rules.dhl_freight_sweden as dhl_freight_sweden
 import karrio.plugins.advisor_nordic_conventions.rules.invoice_type as invoice_type
 import karrio.plugins.advisor_nordic_conventions.rules.postnord as postnord
+import karrio.plugins.advisor_nordic_conventions.rules.voec as voec
 from karrio.plugins.advisor_nordic_conventions.codes import AdvisoryClassification
 from karrio.plugins.advisor_nordic_conventions.rules import PLUGIN_ID
 
@@ -52,6 +53,7 @@ RULES: typing.Tuple[Rule, ...] = (
     dhl_freight_sweden.joint_declaration_destination,
     customs_values.ch_discount_on_invoice,
     customs_values.zero_value_line,
+    voec.voec_excluded_goods,
     dhl_country_requirements.cyprus_documents,
     dhl_country_requirements.greek_tax_ids,
     dhl_country_requirements.sent_information,
@@ -146,6 +148,7 @@ ANSWERING: typing.Dict[AdvisoryClassification, AnsweringSet] = {
     AdvisoryClassification.dhl_freight_sweden_uit_information: _always(),
     AdvisoryClassification.dhl_freight_sweden_ekaer_information: _always(),
     AdvisoryClassification.dhl_freight_sweden_spain_dg_documents: _always(),
+    AdvisoryClassification.voec_excluded_goods: _always(),
 }
 
 
