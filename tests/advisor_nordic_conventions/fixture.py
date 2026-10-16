@@ -9,6 +9,15 @@ ADDRESSES = dict(
     SE_TAXED=dict(country_code="SE", postal_code="11122", city="Stockholm", federal_tax_id="SE556677889901"),
     SE_STATE_TAXED=dict(country_code="SE", postal_code="11122", city="Stockholm", state_tax_id="SE202401987654"),
     NO=dict(country_code="NO", postal_code="0150", city="Oslo"),
+    NO_TAXED=dict(country_code="NO", postal_code="0150", city="Oslo", federal_tax_id="912345678"),
+    NO_STATE_TAXED=dict(country_code="NO", postal_code="0150", city="Oslo", state_tax_id="NO912345678MVA"),
+    NO_NO_POSTAL_CODE=dict(country_code="NO", city="Oslo"),
+    NO_SVALBARD=dict(country_code="NO", postal_code="9171", city="Longyearbyen"),
+    NO_SVALBARD_TAXED=dict(
+        country_code="NO", postal_code="9170", city="Longyearbyen", federal_tax_id="912345678"
+    ),
+    NO_JAN_MAYEN=dict(country_code="NO", postal_code="8099", city="Jan Mayen"),
+    SJ=dict(country_code="SJ", postal_code="9171", city="Longyearbyen"),
     DK=dict(country_code="DK", postal_code="2100", city="København"),
     FI=dict(country_code="FI", postal_code="00100", city="Helsinki"),
     AX=dict(country_code="FI", postal_code="22100", city="Mariehamn"),
