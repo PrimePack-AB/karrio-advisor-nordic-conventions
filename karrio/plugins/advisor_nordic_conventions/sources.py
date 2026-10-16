@@ -43,6 +43,14 @@ DHL_CONNECTOR_DESTINATIONS_URL = "https://github.com/PrimePack-AB/karrio-dhl-fre
 DHL_CONNECTOR_TERRITORY_CHECK = "https://github.com/PrimePack-AB/karrio-dhl-freight-sweden/commit/142b62d (committed 2026-10-08)"
 DHL_CONNECTOR_JOINT_DECLARATION_CHECK = "https://github.com/PrimePack-AB/karrio-dhl-freight-sweden/commit/f86c8ac (committed 2026-10-08)"
 DHL_CONNECTOR_REJECTION_112_GB_URL = "https://github.com/PrimePack-AB/karrio-dhl-freight-sweden/blob/28c1ccb/tests/dhl_freight_sweden/fixtures/sandbox/rejection-22005-112-se-gb.json (captured 2026-10-06)"
+SKE_VOEC_GUIDELINES_URL = "https://www.skatteetaten.no/globalassets/bedrift-og-organisasjon/voec/sell-charge-and-ship-goods-to-norway.pdf (PDF modified 2025-03-28, read 2026-10-16)"
+SKE_VOEC_B2B_URL = "https://www.skatteetaten.no/globalassets/bedrift-og-organisasjon/voec/how-to-treat-b2b-sales-2026.pdf (PDF created 2026-02-04, read 2026-10-16)"
+TOLL_VOEC_PAGE_URL = "https://www.toll.no/no/bedrift/import/voec/om-voec-ordningen (oppdatert 2025-11-27, read 2026-10-16)"
+MVAL_URL = "https://lovdata.no/dokument/NL/lov/2009-06-19-58 (LOV-2009-06-19-58, sist endret LOV-2025-12-22-121 fra 2026-07-01, read 2026-10-16)"
+MVAF_URL = "https://lovdata.no/dokument/SF/forskrift/2009-12-15-1540 (FOR-2009-12-15-1540, sist endret FOR-2026-06-26-1398 fra 2026-07-01, read 2026-10-16)"
+TOLLTARIFF_STRUCTURE_URL = "https://data.toll.no/dataset/6350e783-b989-4c7c-9ec0-de2dcb97363c/resource/68f78255-cbb0-4e75-86b1-3d5928816903/download/tolltariffstruktur.json (version 1.5, last modified 2026-06-23, read 2026-10-16)"
+NORGES_BANK_EXR_URL = "https://data.norges-bank.no/api/data/EXR/B.EUR+SEK+DKK+USD.NOK.SP?format=csv&lastNObservations=1&locale=en (rates for 2026-10-15, read 2026-10-16)"
+BRING_POSTAL_CODE_REGISTER_URL = "https://www.bring.no/postnummerregister-ansi.txt (described at https://www.bring.no/tjenester/adressetjenester/postnummer/postnummertabeller-veiledning, read 2026-10-16; the file carries no date of its own)"
 
 
 @attr.s(auto_attribs=True, frozen=True)
@@ -375,6 +383,97 @@ DHL_CONNECTOR_SANDBOX_112_GB_REJECTED = Source(
     "S",
     _ref("Sandbox rejection 22005", DHL_CONNECTOR_REJECTION_112_GB_URL),
     "DHL Freight Sweden connector sandbox evidence: a Parcel Connect Plus (112) booking from SE to GB without the separate agreement, for which product matches did not offer 112, was rejected with 22005 \"No valid product was found for given productcode and countries\" and 22026 \"Consignee CountryCode is not valid for this product\".",
+)
+
+# VOEC applicability
+
+SKE_VOEC_EXCLUDED_GOODS = Source(
+    "W",
+    _ref("§3 \"VOEC scheme – key features\" p.5", SKE_VOEC_GUIDELINES_URL),
+    "Skatteetaten VOEC guidelines §3: \"The VOEC scheme includes all goods, except: Foodstuffs, which are any goods meant for human consumption, including nutritional and dietary supplements that are not medicinal drugs. Importation of medicinal drugs is restricted / Goods subject to excise duties, including tobacco products and alcoholic beverages. […] / Restricted or illegal goods according to Norwegian law.\"",
+)
+SKE_VOEC_PER_ITEM_THRESHOLD = Source(
+    "W",
+    _ref("§4 \"More on the term 'low value goods'\" p.6", SKE_VOEC_GUIDELINES_URL),
+    "Skatteetaten VOEC guidelines §4: \"The less than NOK 3,000 threshold is applied per item – not per consignment. The value of the item at \"point of sale\" is decisive.\" / \"Additional costs and fees – e.g. shipping and insurance costs – are excluded when determining if the value is within the NOK 3,000 threshold (but to be included when calculating the VAT, […]).\"",
+)
+SKE_VOEC_MIXED_CONSIGNMENT = Source(
+    "W",
+    _ref("§4.1 \"Low value goods – multiple goods in one order – bundling\" p.7", SKE_VOEC_GUIDELINES_URL),
+    "Skatteetaten VOEC guidelines §4.1: \"if a supply of multiple goods consists of one or more goods valued above the NOK 3,000 threshold, or one or more goods that fall outside of the VOEC scheme (e.g. foodstuffs or restricted goods), the consignment must be split into separate consignments in order to avoid ordinary customs declaration of the low value goods.\" / \"the supplier can choose not to charge VAT for the item(s) within the VOEC scheme and make the whole shipment subject to border taxation.\"",
+)
+SKE_VOEC_B2C_ONLY = Source(
+    "W",
+    _ref("§10.1 p.13", SKE_VOEC_GUIDELINES_URL),
+    "Skatteetaten VOEC guidelines §10.1: \"Only supplies to private individuals and non-business customers (B2C) can be calculated and reported via the VOEC scheme. […] For B2B-supplies, the recipient is liable to calculate and pay VAT.\"",
+)
+SKE_VOEC_B2B = Source(
+    "W",
+    _ref("slide 1", SKE_VOEC_B2B_URL),
+    "Skatteetaten guide for sellers in the VOEC scheme – how to treat B2B sales: \"The VOEC scheme is only for sales to consumers (B2C) - you cannot sell to businesses in the VOEC scheme\" / \"If a buyer claims to be a business, they should not be charged with VAT from the seller.\"",
+)
+TOLL_VOEC_EXCLUDED_GOODS = Source(
+    "W",
+    _ref("\"Varer som er omfattet av VOEC-ordningen\"", TOLL_VOEC_PAGE_URL),
+    "Tolletaten, Om VOEC-ordningen: \"Følgende varer er ikke omfattet av VOEC: Næringsmidler (for eksempel mat, drikke, kosttilskudd, vitaminer). Varer med restriksjoner (for eksempel legemidler, våpen, alkohol, tobakk). Varer med særavgifter (for eksempel sukker, drikkevareemballasje smøreoljer, hvitevarer med klimagass).\"",
+)
+TOLL_VOEC_PER_ITEM_THRESHOLD = Source(
+    "W",
+    _ref("\"Varer som er omfattet av VOEC-ordningen\"", TOLL_VOEC_PAGE_URL),
+    "Tolletaten, Om VOEC-ordningen: \"Varer med lav verdi er fysiske varer verdsatt til 2.999 kroner eller mindre. Verdigrensen gjelder per vare, […] så lenge hver vare har en verdi under 3000 kroner.\"",
+)
+MVAL_LOW_VALUE_EXCLUSIONS = Source(
+    "W",
+    _ref("§ 3-1 (2)", MVAL_URL),
+    "Merverdiavgiftsloven § 3-1 (2): \"Det skal også beregnes merverdiavgift ved levering av varer med lav verdi som innføres til andre mottakere enn næringsdrivende og offentlig virksomhet i merverdiavgiftsområdet. Dette gjelder likevel ikke næringsmidler, varer som krever særskilt tillatelse for innførsel eller varer som ilegges særavgifter.\"",
+)
+MVAL_FOODSTUFFS = Source(
+    "W",
+    _ref("§ 5-2 (2) and (3)", MVAL_URL),
+    "Merverdiavgiftsloven § 5-2: \"Som næringsmiddel anses enhver mat- eller drikkevare og enhver annen vare som er bestemt til å konsumeres av mennesker.\" / \"Som næringsmiddel anses ikke legemidler, tobakkvarer, alkoholholdige drikkevarer og vann fra vannverk.\"",
+)
+MVAF_FOODSTUFFS = Source(
+    "W",
+    _ref("§ 5-2-1 (1)", MVAF_URL),
+    "Merverdiavgiftsforskriften § 5-2-1 (1): \"Varer anses som næringsmidler dersom de har en kvalitet som gjør at de er egnet til å konsumeres av mennesker og de omsettes til slikt konsum.\"",
+)
+MVAF_LOW_VALUE_GOODS = Source(
+    "W",
+    _ref("§ 1-3-8 (1)-(3)", MVAF_URL),
+    "Merverdiavgiftsforskriften § 1-3-8: \"Med vare med lav verdi menes vare med verdi under 3000 kroner. Transport- og forsikringskostnader inngår ikke ved fastsettelse av varens verdi.\" / \"Ved omregning av vareverdien til norske kroner skal det benyttes valutakurs som er publisert av a. tolletaten på toll.no, b. Norges Bank eller en utenlandsk sentralbank, c. aktør som offentlig publiserer spotkurser.\" / \"Valutakursen som benyttes, må ha blitt publisert senest 30 dager før betalingen blir akseptert, […]. Valget av valutakurs må være konsekvent.\"",
+)
+NORGES_BANK_RATES = Source(
+    "W",
+    _ref("series B.{SEK,EUR,DKK,USD}.NOK.SP, TIME_PERIOD 2026-10-15", NORGES_BANK_EXR_URL),
+    "Norges Bank exchange rates: SEK 95.31 (per 100), EUR 10.652, DKK 142.5 (per 100), USD 9.5039.",
+)
+SKE_VOEC_RESTRICTED_EXAMPLES = Source(
+    "W",
+    _ref(
+        "Appendix \"Examples of foodstuffs, restricted goods and goods subject to excise duties in Norway\", \"Examples: Restricted goods\" p.18",
+        SKE_VOEC_GUIDELINES_URL,
+    ),
+    "Skatteetaten VOEC guidelines appendix, restricted goods: \"Foodstuffs, plants, seeds, animals\" / \"The list is not comprehensive or complete. Read more at https://www.toll.no/en/goods/goods-with-import-restrictions/\"",
+)
+SKE_VOEC_VAT_AREA = Source(
+    "W",
+    _ref("§2.1 \"Overview – the Norwegian VAT system\" p.4", SKE_VOEC_GUIDELINES_URL),
+    "Skatteetaten VOEC guidelines §2.1: \"Please note that the VAT legislation applies to the Norwegian mainland and all areas within the territorial border, but does not include Svalbard, Jan Mayen or the Norwegian dependencies. Sales to these areas are not subject to Norwegian VAT.\"",
+)
+MVAL_VAT_AREA = Source(
+    "W",
+    _ref("§ 1-2 (2)", MVAL_URL),
+    "Merverdiavgiftsloven § 1-2 (2): \"Med merverdiavgiftsområdet menes det norske fastlandet og alt område innenfor territorialgrensen, men ikke Svalbard, Jan Mayen eller de norske bilandene.\"",
+)
+BRING_SVALBARD_JAN_MAYEN_POSTAL_CODES = Source(
+    "W",
+    _ref("rows 8099 and 9170-9178 (postal code, place, municipality code, municipality, category)", BRING_POSTAL_CODE_REGISTER_URL),
+    "Posten Norge postal code register: \"8099 JAN MAYEN 2211 JAN MAYEN G\" / \"9170 LONGYEARBYEN 2100 SVALBARD G\" / \"9171 LONGYEARBYEN 2100 SVALBARD P\" / \"9173 NY-ÅLESUND 2100 SVALBARD B\" / \"9174 HOPEN 2100 SVALBARD G\" / \"9175 SVEAGRUVA 2100 SVALBARD G\" / \"9176 BJØRNØYA 2100 SVALBARD G\" / \"9178 BARENTSBURG 2100 SVALBARD G\"; no other code in 9170-9179 is assigned.",
+)
+HS_VOEC_EXCLUDED_CLASSES = Source(
+    "I",
+    _ref("chapter and heading beskrivelse fields", TOLLTARIFF_STRUCTURE_URL),
+    "No source maps HS codes to the VOEC exclusions; over Tolltariffen's chapter and heading texts the plugin reads chapters 02-04, 07-13, and 15-21 except headings 1209, 1518, 1520, 1521, and 1522, and headings 2201, 2202, 2209, and 2936 as foodstuffs, headings 2203-2208 as alcohol, chapter 24 as tobacco, chapter 30 as pharmaceuticals, chapter 93 as arms and ammunition, and chapters 01 and 06 and heading 1209 as restricted, and leaves chapters 05, 14, and 23 and headings 1518, 1520, 1521, and 1522 unclassified.",
 )
 
 ALL: typing.Tuple[Source, ...] = tuple(
