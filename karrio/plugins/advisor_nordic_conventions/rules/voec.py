@@ -8,6 +8,7 @@ import karrio.core.models as models
 
 import karrio.plugins.advisor_nordic_conventions.exclusions as exclusions
 import karrio.plugins.advisor_nordic_conventions.lanes as lanes
+import karrio.plugins.advisor_nordic_conventions.rates as rates
 import karrio.plugins.advisor_nordic_conventions.sources as sources
 from karrio.plugins.advisor_nordic_conventions.codes import AdvisoryClassification
 from karrio.plugins.advisor_nordic_conventions.rules import advisory
@@ -162,5 +163,62 @@ def voec_excluded_goods(request, context) -> typing.List[models.Message]:
             ],
             lines=[index for index, _, _ in excluded],
             classes=[classification.value for _, _, classification in excluded],
+        )
+    ]
+
+
+def at_or_above_limit(commodity: typing.Any) -> bool:
+    """Whether a commodity's unit value reaches NOK 3,000, or for a converted currency NOK 3,000 with the margin."""
+    amount = getattr(commodity, "value_amount", None)
+    currency = str(getattr(commodity, "value_currency", None) or "").upper()
+    nok = rates.to_nok(amount, currency) if amount else None
+
+    if nok is None:
+        return False
+
+    limit = rates.VOEC_LIMIT_NOK if currency == "NOK" else rates.VOEC_LIMIT_NOK * rates.MARGIN
+    return nok >= limit
+
+
+def voec_item_over_threshold(request, context) -> typing.List[models.Message]:
+    lane = voec_lane(request, context)
+
+    if lane is None:
+        return []
+
+    over = [
+        (index, commodity)
+        for index, commodity in enumerate(_commodities(request))
+        if at_or_above_limit(commodity)
+    ]
+
+    if not over:
+        return []
+
+    items = ", ".join(item_name(index, commodity) for index, commodity in over)
+
+    return [
+        advisory(
+            AdvisoryClassification.voec_item_over_threshold,
+            "warning",
+            " ".join(
+                [
+                    f"This VOEC shipment to Norway carries {items}, each with a unit value at or above NOK 3,000.",
+                    "VOEC applies per item below NOK 3,000, excluding shipping and insurance,",
+                    "and an item at or above it goes through ordinary import declaration,",
+                    "so the consignment must be split or the whole shipment declared at the border.",
+                ]
+            ),
+            lane,
+            [
+                sources.SKE_VOEC_PER_ITEM_THRESHOLD,
+                sources.SKE_VOEC_MIXED_CONSIGNMENT,
+                sources.TOLL_VOEC_PER_ITEM_THRESHOLD,
+                sources.MVAF_LOW_VALUE_GOODS,
+                sources.NORGES_BANK_RATES,
+                *VAT_AREA_SOURCES,
+            ],
+            lines=[index for index, _ in over],
+            rate_date=rates.RATE_DATE,
         )
     ]

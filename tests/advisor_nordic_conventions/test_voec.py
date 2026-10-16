@@ -28,6 +28,11 @@ VITAMINS_BY_SKU = _commodity(sku="VIT-100", hs_code="3004.90")
 DOG_FOOD = _commodity(description="Dog food", hs_code="2309.10")
 BEESWAX = _commodity(description="Beeswax", hs_code="1521.90")
 UNCODED_CHOCOLATE = _commodity(description="Chocolate")
+ITEM_OVER_THRESHOLD = "advisor_nordic_conventions_voec_item_over_threshold"
+
+
+def _valued(amount, currency, quantity=1, description="Road bike") -> dict:
+    return _commodity(description=description, value_amount=amount, value_currency=currency, quantity=quantity)
 
 SVALBARD_SOURCES = [
     sources.MVAL_VAT_AREA.to_dict(),
@@ -248,6 +253,98 @@ class TestNordicConventionsVoecExcludedGoods(unittest.TestCase):
 
     def test_recipient_in_svalbard(self):
         self.assertListEqual(_advise(voec.voec_excluded_goods, PROTEIN_POWDER, recipient="NO_SVALBARD"), [])
+
+
+
+class TestNordicConventionsVoecItemOverThreshold(unittest.TestCase):
+    def test_item_at_nok_3000(self):
+        self.assertListEqual(
+            _advise(voec.voec_item_over_threshold, _valued(3000, "NOK")),
+            [
+                dict(
+                    code=ITEM_OVER_THRESHOLD,
+                    level="warning",
+                    message=(
+                        "This VOEC shipment to Norway carries Road bike, each with a unit value at or above NOK 3,000. "
+                        "VOEC applies per item below NOK 3,000, excluding shipping and insurance, "
+                        "and an item at or above it goes through ordinary import declaration, "
+                        "so the consignment must be split or the whole shipment declared at the border."
+                    ),
+                    details=dict(
+                        plugin="advisor_nordic_conventions",
+                        lane="SE-NO",
+                        sources=[
+                            sources.SKE_VOEC_PER_ITEM_THRESHOLD.to_dict(),
+                            sources.SKE_VOEC_MIXED_CONSIGNMENT.to_dict(),
+                            sources.TOLL_VOEC_PER_ITEM_THRESHOLD.to_dict(),
+                            sources.MVAF_LOW_VALUE_GOODS.to_dict(),
+                            sources.NORGES_BANK_RATES.to_dict(),
+                            *SVALBARD_SOURCES,
+                        ],
+                        lines=[0],
+                        rate_date="2026-10-15",
+                    ),
+                )
+            ],
+        )
+
+    def test_item_just_below_nok_3000(self):
+        self.assertListEqual(_advise(voec.voec_item_over_threshold, _valued(2999, "NOK")), [])
+
+    def test_item_clearly_over_in_sek_on_dhl(self):
+        messages = _advise(
+            voec.voec_item_over_threshold,
+            _valued(5000, "SEK"),
+            carrier="dhl_freight_sweden",
+            service=DHL_PARCEL_CONNECT,
+        )
+
+        self.assertListEqual(_codes(messages), [ITEM_OVER_THRESHOLD])
+
+    def test_converted_item_inside_the_margin(self):
+        self.assertListEqual(_advise(voec.voec_item_over_threshold, _valued(285, "EUR")), [])
+        self.assertListEqual(_advise(voec.voec_item_over_threshold, _valued(295.71, "EUR")), [])
+
+    def test_converted_item_past_the_margin(self):
+        self.assertListEqual(
+            _codes(_advise(voec.voec_item_over_threshold, _valued(296, "EUR"))), [ITEM_OVER_THRESHOLD]
+        )
+
+    def test_several_units_below_the_limit(self):
+        self.assertListEqual(_advise(voec.voec_item_over_threshold, _valued(2000, "NOK", quantity=3)), [])
+
+    def test_only_items_over_the_limit_are_listed(self):
+        messages = _advise(
+            voec.voec_item_over_threshold,
+            _valued(200, "SEK", description="Bell"),
+            _valued(5000, "DKK", description="Frame"),
+            _commodity(sku="WHEEL-1", value_amount=400, value_currency="USD"),
+        )
+
+        self.assertIn("carries Frame, WHEEL-1, each", messages[0]["message"])
+        self.assertListEqual(messages[0]["details"]["lines"], [1, 2])
+
+    def test_currency_outside_the_table(self):
+        self.assertListEqual(_advise(voec.voec_item_over_threshold, _valued(5000, "GBP")), [])
+
+    def test_item_without_a_value_or_currency(self):
+        self.assertListEqual(
+            _advise(
+                voec.voec_item_over_threshold,
+                _valued(0, "NOK"),
+                _commodity(description="Unvalued", value_amount=None, value_currency="NOK"),
+                _commodity(description="No currency", value_amount=5000, value_currency=None),
+            ),
+            [],
+        )
+
+    def test_recipient_in_jan_mayen(self):
+        self.assertListEqual(
+            _advise(voec.voec_item_over_threshold, _valued(5000, "NOK"), recipient="NO_JAN_MAYEN"), []
+        )
+
+    def test_no_voec_number(self):
+        self.assertListEqual(_advise(voec.voec_item_over_threshold, _valued(5000, "NOK"), voec_number=None), [])
 
 
 if __name__ == "__main__":

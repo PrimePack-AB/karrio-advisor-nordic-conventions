@@ -59,7 +59,7 @@ The full per-carrier reference, with every advisory's level, destinations, trigg
 - [PostNord from Finland](docs/concepts/advisories.md#postnord-from-finland): export invoice.
 - [PostNord from Denmark](docs/concepts/advisories.md#postnord-from-denmark): export documents.
 - [DHL Freight Sweden from Sweden](docs/concepts/advisories.md#dhl-freight-sweden-from-sweden): customs mode, Åland customs service, invoice copy, Parcel Connect documents, VOEC marking, product lanes, territory postal codes, joint declaration, and the country-specific requirements for Cyprus, Greece, Poland, Romania, Hungary, and Spain.
-- [Across carriers](docs/concepts/advisories.md#across-carriers): invoice type mismatch, attestation conflict, discount to Switzerland, zero-value line, VOEC excluded goods.
+- [Across carriers](docs/concepts/advisories.md#across-carriers): invoice type mismatch, attestation conflict, discount to Switzerland, zero-value line, VOEC excluded goods, VOEC item over NOK 3,000.
 
 ## Attestations
 

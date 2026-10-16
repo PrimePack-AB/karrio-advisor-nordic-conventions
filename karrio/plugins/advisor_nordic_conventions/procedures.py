@@ -54,6 +54,7 @@ RULES: typing.Tuple[Rule, ...] = (
     customs_values.ch_discount_on_invoice,
     customs_values.zero_value_line,
     voec.voec_excluded_goods,
+    voec.voec_item_over_threshold,
     dhl_country_requirements.cyprus_documents,
     dhl_country_requirements.greek_tax_ids,
     dhl_country_requirements.sent_information,
@@ -149,6 +150,7 @@ ANSWERING: typing.Dict[AdvisoryClassification, AnsweringSet] = {
     AdvisoryClassification.dhl_freight_sweden_ekaer_information: _always(),
     AdvisoryClassification.dhl_freight_sweden_spain_dg_documents: _always(),
     AdvisoryClassification.voec_excluded_goods: _always(),
+    AdvisoryClassification.voec_item_over_threshold: _always(),
 }
 
 
