@@ -1,8 +1,11 @@
+import decimal
 import unittest
+from unittest import mock
 
 import karrio.core.models as models
 import karrio.lib as lib
 
+import karrio.plugins.advisor_nordic_conventions.rates as rates
 import karrio.plugins.advisor_nordic_conventions.rules.voec as voec
 import karrio.plugins.advisor_nordic_conventions.sources as sources
 from . import fixture
@@ -310,6 +313,16 @@ class TestNordicConventionsVoecItemOverThreshold(unittest.TestCase):
         self.assertListEqual(
             _codes(_advise(voec.voec_item_over_threshold, _valued(296, "EUR"))), [ITEM_OVER_THRESHOLD]
         )
+
+    def test_converted_item_exactly_at_the_margin_limit(self):
+        # No table rate converts a finite decimal amount to exactly NOK 3,150,
+        # so the rate is patched to one that does.
+        with mock.patch.dict(rates.NOK_PER_UNIT, {"SEK": decimal.Decimal("0.9")}):
+            self.assertTrue(voec.at_or_above_limit(models.Commodity(**_valued(3500, "SEK"))))
+            self.assertFalse(voec.at_or_above_limit(models.Commodity(**_valued(3499.99, "SEK"))))
+            self.assertListEqual(
+                _codes(_advise(voec.voec_item_over_threshold, _valued(3500, "SEK"))), [ITEM_OVER_THRESHOLD]
+            )
 
     def test_several_units_below_the_limit(self):
         self.assertListEqual(_advise(voec.voec_item_over_threshold, _valued(2000, "NOK", quantity=3)), [])
