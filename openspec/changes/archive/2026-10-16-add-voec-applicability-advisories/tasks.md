@@ -27,4 +27,4 @@
 ## 4. Verification and archive
 
 - [x] 4.1 Run `.venv/bin/python -m unittest discover -s tests`, including `test_doc_links.py`; verify it passes.
-- [ ] 4.2 Run `openspec validate add-voec-applicability-advisories --strict`; verify it is valid, then archive the change.
+- [x] 4.2 Run `openspec validate add-voec-applicability-advisories --strict`; verify it is valid, then archive the change.
