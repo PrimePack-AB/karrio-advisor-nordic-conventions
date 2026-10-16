@@ -11,14 +11,15 @@ No advisory relays any of these today; the only VOEC advisory, `advisor_nordic_c
 
 ## What Changes
 
-- Adds `advisor_nordic_conventions_voec_excluded_goods` at level `warning`: a shipment to Norway with a VOEC number whose commodities include an item whose HS code falls in a class the plugin reads as excluded from VOEC (foodstuffs, alcohol, tobacco, pharmaceuticals, arms and ammunition).
+- Adds `advisor_nordic_conventions_voec_excluded_goods` at level `warning`: a shipment to Norway with a VOEC number whose commodities include an item whose HS code falls in a class the plugin reads as excluded from VOEC (foodstuffs, alcohol, tobacco, pharmaceuticals, arms and ammunition, and restricted live animals, plants, and seeds for sowing).
 - Adds `advisor_nordic_conventions_voec_item_over_threshold` at level `warning`: a shipment to Norway with a VOEC number whose commodities include an item whose unit value, converted to NOK at a dated Norges Bank rate, is clearly at or above NOK 3,000.
 - Adds `advisor_nordic_conventions_voec_business_recipient` at level `warning`: a shipment to Norway with a VOEC number whose recipient carries a `federal_tax_id` or `state_tax_id`.
+- Keeps all three silent for recipients in Svalbard and Jan Mayen (postal codes 8099 and 9170-9179), which merverdiavgiftsloven § 1-2 (2) places outside the Norwegian VAT area.
 - Maps the three codes to the empty answering set, because their remedy lies in the consignment's content, its split, or the VAT charged to the buyer.
 - Adds a dated exchange rate table for SEK, EUR, DKK, USD, and NOK, and an HS classifier over tariff chapters and headings, both cited.
 - Narrows the documented non-goal "No goods-value thresholds" so VOEC's per-item NOK 3,000 is the stated exception.
 
-Out of scope: description-keyword classification of goods without an HS code, excise goods beyond alcohol and tobacco (sugar, beverage packaging, lubricating oil, gases), restricted goods beyond the listed chapters, the VOEC split prohibition (a recorded non-goal), attestations answering the new advisories, and connector changes.
+Out of scope: description-keyword classification of goods without an HS code, excise goods beyond alcohol and tobacco (sugar, beverage packaging, lubricating oil, gases), restricted goods beyond the listed chapters and heading, the README matrix (the advisories join the Across carriers summary line only), the answering-procedures entries missing for the six country-requirement codes (a separate change), the VOEC split prohibition (a recorded non-goal), attestations answering the new advisories, and connector changes.
 
 ## Capabilities
 
