@@ -1,14 +1,11 @@
-"""Run the VOEC applicability advisories through karrio's own plugin discovery.
+"""Six PostNord parcels from Stockholm to Norway that carry a VOEC number.
 
 The plugin is loaded from its installed ``karrio.plugins`` entry point by
-``karrio.references.import_extensions``, and each SE to NO PostNord shipment
-request is advised by ``karrio.core.advisors.run_advisors``, the runner that
+``karrio.references.import_extensions``, and each shipment request is advised
+by ``karrio.core.advisors.run_advisors``, the runner that
 ``karrio.Shipment.create`` calls once a carrier has returned shipment details.
-
-Run from the repository root with an interpreter that has the plugin and the
-forked karrio SDK installed:
-
-    .venv/bin/python examples/voec_demo.py
+``python -m examples.voec_parcels_to_norway`` prints the advisories for each
+request.
 """
 
 import typing

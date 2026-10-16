@@ -1,31 +1,29 @@
-import importlib.util
-import pathlib
+"""The runnable shipment examples under ``examples/``."""
+
 import unittest
 
 import karrio.references as references
-
-DEMO = pathlib.Path(__file__).resolve().parents[2] / "examples" / "voec_demo.py"
-
-
-def _load_demo():
-    spec = importlib.util.spec_from_file_location("voec_demo", DEMO)
-    module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
-    return module
+from examples import voec_parcels_to_norway
 
 
-class TestVoecDemo(unittest.TestCase):
+class TestExamples(unittest.TestCase):
     def tearDown(self):
         references.import_extensions()
 
-    def test_each_scenario_yields_its_voec_advisories(self):
-        demo = _load_demo()
-        demo.load_plugin()
+    def test_voec_parcels_to_norway_yield_their_voec_advisories(self):
+        voec_parcels_to_norway.load_plugin()
 
         self.assertListEqual(
             [
-                (title, [message.code for message in demo.advise(request) if "_voec_" in message.code])
-                for title, request in demo.SCENARIOS
+                (
+                    title,
+                    [
+                        message.code
+                        for message in voec_parcels_to_norway.advise(request)
+                        if "_voec_" in message.code
+                    ],
+                )
+                for title, request in voec_parcels_to_norway.SCENARIOS
             ],
             [
                 ("(a) food supplement, HS 2106.90", ["advisor_nordic_conventions_voec_excluded_goods"]),

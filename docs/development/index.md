@@ -19,18 +19,8 @@ Tests use `unittest` and run from the repository root with an interpreter that c
 PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -v -f tests
 ```
 
-The suite includes `tests/advisor_nordic_conventions/test_doc_links.py`, which checks that every relative link in the README and the published `docs/` pages resolves.
+The suite includes `tests/advisor_nordic_conventions/test_examples.py`, which runs the shipment requests in `examples/` through the advisors, and `tests/advisor_nordic_conventions/test_doc_links.py`, which checks that every relative link in the README and the published `docs/` pages resolves.
 The connector cross-check tests run when the PostNord and DHL Freight Sweden connectors are importable, as in the karrio fork's `develop` dev shell (`nix develop 'git+file:///home/joaqim/projects/karrio?ref=dev-nix-flake#upstream'`, entered from the karrio checkout), and are skipped otherwise.
-
-## Examples
-
-[`examples/voec_demo.py`](../../examples/voec_demo.py) loads the installed plugin through karrio's entry point discovery and prints the advisories `karrio.core.advisors.run_advisors` returns for six SE to NO PostNord shipments carrying a VOEC number:
-
-```bash
-.venv/bin/python examples/voec_demo.py
-```
-
-`tests/advisor_nordic_conventions/test_voec_demo.py` runs its scenarios, so the demo stays in step with the rules.
 
 ## Known limitations
 
