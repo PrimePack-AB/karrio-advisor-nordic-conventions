@@ -13,22 +13,7 @@ from karrio.plugins.advisor_nordic_conventions.rules import advisory
 PARCEL_CONNECT_SERVICES: typing.FrozenSet[str] = frozenset(
     {"dhl_freight_sweden_parcel_connect_b2c", "109"}
 )
-PARCEL_CONNECT_FAMILY: typing.FrozenSet[str] = frozenset(
-    {
-        "dhl_freight_sweden_parcel_connect_b2c",
-        "109",
-        "dhl_freight_sweden_parcel_connect_plus",
-        "112",
-        "dhl_freight_sweden_parcel_return_connect_c2b",
-        "107",
-    }
-)
-PARCEL_RETURN_CONNECT: typing.FrozenSet[str] = frozenset(
-    {"dhl_freight_sweden_parcel_return_connect_c2b", "107"}
-)
-PARCEL_CONNECT_BY_AGREEMENT: typing.FrozenSet[str] = PARCEL_CONNECT_FAMILY - PARCEL_RETURN_CONNECT
 SWITZERLAND = "CH"
-GREAT_BRITAIN = "GB"
 PARCEL_RETURN_CONNECT_CODE = "107"
 DHL_PRODUCT_NAMES: typing.Dict[str, str] = {
     "102": "Paket",
@@ -359,29 +344,3 @@ def _excluded_postal_code(
         [sources.DHL_MAN_EXCLUDED_AREAS, sources.DHL_CONNECTOR_EXCLUDED_POSTAL_CODES],
     )
 
-
-def parcel_connect_gb_agreement(request, context) -> typing.List[models.Message]:
-    lane = lanes.lane_of(request, context)
-
-    if not (
-        _dhl_freight_sweden(lane)
-        and lane.recipient_country == GREAT_BRITAIN
-        and lane.service in PARCEL_CONNECT_BY_AGREEMENT
-        and _excluded_party(request, lane, lanes.dhl_product_code(lane.service) or "") is None
-    ):
-        return []
-
-    return [
-        advisory(
-            AdvisoryClassification.dhl_freight_sweden_parcel_connect_gb_agreement,
-            "warning",
-            " ".join(
-                [
-                    "DHL Freight Sweden serves Great Britain on Parcel Connect (109) and Parcel Connect Plus (112)",
-                    "only by separate agreement with DHL; book Great Britain on them only under such an agreement.",
-                ]
-            ),
-            lane,
-            [sources.DHL_MAN_PARCEL_CONNECT_COUNTRIES, sources.DHL_CONNECTOR_SANDBOX_112_GB_REJECTED],
-        )
-    ]

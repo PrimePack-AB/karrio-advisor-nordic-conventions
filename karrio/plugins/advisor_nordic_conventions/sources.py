@@ -42,7 +42,6 @@ DHL_CONNECTOR_README_URL = "https://github.com/PrimePack-AB/karrio-dhl-freight-s
 DHL_CONNECTOR_DESTINATIONS_URL = "https://github.com/PrimePack-AB/karrio-dhl-freight-sweden/blob/7a2214d/docs/concepts/destinations.md (read 2026-10-08)"
 DHL_CONNECTOR_TERRITORY_CHECK = "https://github.com/PrimePack-AB/karrio-dhl-freight-sweden/commit/142b62d (committed 2026-10-08)"
 DHL_CONNECTOR_JOINT_DECLARATION_CHECK = "https://github.com/PrimePack-AB/karrio-dhl-freight-sweden/commit/f86c8ac (committed 2026-10-08)"
-DHL_CONNECTOR_REJECTION_112_GB_URL = "https://github.com/PrimePack-AB/karrio-dhl-freight-sweden/blob/28c1ccb/tests/dhl_freight_sweden/fixtures/sandbox/rejection-22005-112-se-gb.json (captured 2026-10-06)"
 SKE_VOEC_GUIDELINES_URL = "https://www.skatteetaten.no/globalassets/bedrift-og-organisasjon/voec/sell-charge-and-ship-goods-to-norway.pdf (PDF modified 2025-03-28, read 2026-10-16)"
 SKE_VOEC_B2B_URL = "https://www.skatteetaten.no/globalassets/bedrift-og-organisasjon/voec/how-to-treat-b2b-sales-2026.pdf (PDF created 2026-02-04, read 2026-10-16)"
 TOLL_VOEC_PAGE_URL = "https://www.toll.no/no/bedrift/import/voec/om-voec-ordningen (oppdatert 2025-11-27, read 2026-10-16)"
@@ -349,11 +348,6 @@ DHL_EXPRESS_NO_ZERO_VALUES = Source(
     _ref("Customs customer guidelines", DHL_EXPRESS_CUSTOMS_URL),
     "DHL Express customs guidelines: \"zero (0) values are not acceptable\" for line values, and invoice values must comply with WTO valuation rules.",
 )
-DHL_MAN_PARCEL_CONNECT_COUNTRIES = Source(
-    "W",
-    _ref("Product manual v5.26", f"{DHL_MAN_URL} §5.3 p.18, §5.14 p.63, §5.15 p.66"),
-    "DHL Freight Sweden product manual v5.26: Parcel Connect (109) serves AT, BE, BG, CZ, DE, DK, EE, ES, FI, FR, GB (by separate agreement only), HR, HU, IE, IT, LT, LU, LV, NL, NO, PL, PT, RO, SI, and SK; Parcel Connect Plus (112) the same, FR only through the print and transportInstruction APIs; Parcel Return Connect (107) the same except GB; 109 and 112 exclude FR 97100-99999; Switzerland is served by Road Freight Standard (202), Road Freight Direct (205), Road Freight Priority (233), SPI, and Home Delivery International (601).",
-)
 DHL_MAN_PRODUCT_LANES = Source(
     "W",
     _ref("Product manual v5.26", f"{DHL_MAN_URL} §5.1 p.13, §5.2 p.15 to §5.19 p.82, §5.15 p.65"),
@@ -378,11 +372,6 @@ DHL_CONNECTOR_JOINT_DECLARATION_DESTINATION = Source(
     "S",
     _ref("JointDeclarationDestinationError", DHL_CONNECTOR_JOINT_DECLARATION_CHECK),
     "Across the EU VAT area border the DHL Freight Sweden connector refuses dhl_freight_sweden_customs_joint_declaration to a recipient country, after the territory mapping, other than NO, the manual's only valid country, and CH, which product matches offer; inside the area it drops customs services with a warning instead.",
-)
-DHL_CONNECTOR_SANDBOX_112_GB_REJECTED = Source(
-    "S",
-    _ref("Sandbox rejection 22005", DHL_CONNECTOR_REJECTION_112_GB_URL),
-    "DHL Freight Sweden connector sandbox evidence: a Parcel Connect Plus (112) booking from SE to GB without the separate agreement, for which product matches did not offer 112, was rejected with 22005 \"No valid product was found for given productcode and countries\" and 22026 \"Consignee CountryCode is not valid for this product\".",
 )
 
 # VOEC applicability
