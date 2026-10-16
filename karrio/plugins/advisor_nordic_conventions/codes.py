@@ -36,3 +36,4 @@ class AdvisoryClassification(str, enum.Enum):
     dhl_freight_sweden_spain_dg_documents = "advisor_nordic_conventions_dhl_freight_sweden_spain_dg_documents"
     voec_excluded_goods = "advisor_nordic_conventions_voec_excluded_goods"
     voec_item_over_threshold = "advisor_nordic_conventions_voec_item_over_threshold"
+    voec_business_recipient = "advisor_nordic_conventions_voec_business_recipient"

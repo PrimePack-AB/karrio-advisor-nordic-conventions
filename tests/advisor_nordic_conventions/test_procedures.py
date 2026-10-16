@@ -59,6 +59,7 @@ class TestNordicConventionsProcedures(unittest.TestCase):
             AdvisoryClassification.invoice_type_content_mismatch,
             AdvisoryClassification.voec_excluded_goods,
             AdvisoryClassification.voec_item_over_threshold,
+            AdvisoryClassification.voec_business_recipient,
         ):
             with self.subTest(classification=classification.name):
                 self.assertSetEqual(
@@ -212,6 +213,32 @@ class TestNordicConventionsExpectedProcedures(unittest.TestCase):
         self.assertSetEqual(
             procedures.expected_procedures(request, fixture.context("postnord")),
             frozenset({CUSTOMS_DECLARATION, ELECTRONIC}),
+        )
+
+    def test_voec_applicability_advisories_expect_no_procedure(self):
+        commodities = [
+            dict(description="Protein powder", quantity=1, value_amount=200.0, value_currency="SEK", hs_code="2106.90"),
+            dict(description="Road bike", quantity=1, value_amount=5000.0, value_currency="NOK"),
+        ]
+        customs = dict(fixture.customs("merchandise", True, voec_number="VOEC2024001"), commodities=commodities)
+        advised = fixture.shipment("SE", "NO_TAXED", "postnord_parcel", customs=customs)
+        plain = fixture.shipment(
+            "SE", "NO", "postnord_parcel", customs=fixture.customs("merchandise", True, voec_number="VOEC2024001")
+        )
+        context = fixture.context("postnord")
+
+        self.assertSetEqual(
+            {message.code for rule in procedures.RULES for message in rule(advised, context)}
+            - {message.code for rule in procedures.RULES for message in rule(plain, context)},
+            {
+                AdvisoryClassification.voec_excluded_goods.value,
+                AdvisoryClassification.voec_item_over_threshold.value,
+                AdvisoryClassification.voec_business_recipient.value,
+            },
+        )
+        self.assertSetEqual(
+            procedures.expected_procedures(advised, context),
+            procedures.expected_procedures(plain, context),
         )
 
     def test_intra_eu_shipment_expects_nothing(self):

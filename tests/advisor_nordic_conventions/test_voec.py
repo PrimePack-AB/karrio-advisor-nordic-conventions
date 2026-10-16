@@ -29,6 +29,7 @@ DOG_FOOD = _commodity(description="Dog food", hs_code="2309.10")
 BEESWAX = _commodity(description="Beeswax", hs_code="1521.90")
 UNCODED_CHOCOLATE = _commodity(description="Chocolate")
 ITEM_OVER_THRESHOLD = "advisor_nordic_conventions_voec_item_over_threshold"
+BUSINESS_RECIPIENT = "advisor_nordic_conventions_voec_business_recipient"
 
 
 def _valued(amount, currency, quantity=1, description="Road bike") -> dict:
@@ -345,6 +346,78 @@ class TestNordicConventionsVoecItemOverThreshold(unittest.TestCase):
 
     def test_no_voec_number(self):
         self.assertListEqual(_advise(voec.voec_item_over_threshold, _valued(5000, "NOK"), voec_number=None), [])
+
+
+
+class TestNordicConventionsVoecBusinessRecipient(unittest.TestCase):
+    def test_recipient_with_an_organisation_number(self):
+        self.assertListEqual(
+            _advise(voec.voec_business_recipient, T_SHIRT, recipient="NO_TAXED"),
+            [
+                dict(
+                    code=BUSINESS_RECIPIENT,
+                    level="warning",
+                    message=(
+                        "This VOEC shipment to Norway goes to a recipient with a tax id. "
+                        "VOEC covers sales to consumers only, and a business buyer self-assesses the VAT, "
+                        "so VOEC VAT must not be charged."
+                    ),
+                    details=dict(
+                        plugin="advisor_nordic_conventions",
+                        lane="SE-NO",
+                        sources=[
+                            sources.SKE_VOEC_B2B.to_dict(),
+                            sources.SKE_VOEC_B2C_ONLY.to_dict(),
+                            sources.MVAL_LOW_VALUE_EXCLUSIONS.to_dict(),
+                            *SVALBARD_SOURCES,
+                        ],
+                    ),
+                )
+            ],
+        )
+
+    def test_recipient_with_a_state_tax_id_on_dhl(self):
+        messages = _advise(
+            voec.voec_business_recipient,
+            T_SHIRT,
+            recipient="NO_STATE_TAXED",
+            carrier="dhl_freight_sweden",
+            service=DHL_PARCEL_CONNECT,
+        )
+
+        self.assertListEqual(_codes(messages), [BUSINESS_RECIPIENT])
+
+    def test_consumer_recipient(self):
+        self.assertListEqual(_advise(voec.voec_business_recipient, T_SHIRT), [])
+
+    def test_blank_tax_ids_read_as_a_consumer(self):
+        request = fixture.shipment(
+            "SE",
+            "NO",
+            "postnord_parcel",
+            customs=fixture.customs("merchandise", True, voec_number=VOEC_NUMBER),
+        )
+        request.recipient.federal_tax_id = " "
+        request.recipient.state_tax_id = ""
+
+        self.assertListEqual(fixture.messages(voec.voec_business_recipient, request, fixture.context("postnord")), [])
+
+    def test_business_recipient_in_svalbard(self):
+        self.assertListEqual(
+            _advise(
+                voec.voec_business_recipient,
+                T_SHIRT,
+                recipient="NO_SVALBARD_TAXED",
+                carrier="dhl_freight_sweden",
+                service=DHL_PARCEL_CONNECT,
+            ),
+            [],
+        )
+
+    def test_business_recipient_without_a_voec_number(self):
+        self.assertListEqual(
+            _advise(voec.voec_business_recipient, T_SHIRT, recipient="NO_TAXED", voec_number=None), []
+        )
 
 
 if __name__ == "__main__":

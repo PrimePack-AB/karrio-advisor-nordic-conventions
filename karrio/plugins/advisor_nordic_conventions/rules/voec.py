@@ -222,3 +222,37 @@ def voec_item_over_threshold(request, context) -> typing.List[models.Message]:
             rate_date=rates.RATE_DATE,
         )
     ]
+
+
+def _has_tax_id(party: typing.Any) -> bool:
+    return any(
+        str(getattr(party, field, None) or "").strip() for field in ("federal_tax_id", "state_tax_id")
+    )
+
+
+def voec_business_recipient(request, context) -> typing.List[models.Message]:
+    lane = voec_lane(request, context)
+
+    if lane is None or not _has_tax_id(getattr(request, "recipient", None)):
+        return []
+
+    return [
+        advisory(
+            AdvisoryClassification.voec_business_recipient,
+            "warning",
+            " ".join(
+                [
+                    "This VOEC shipment to Norway goes to a recipient with a tax id.",
+                    "VOEC covers sales to consumers only, and a business buyer self-assesses the VAT,",
+                    "so VOEC VAT must not be charged.",
+                ]
+            ),
+            lane,
+            [
+                sources.SKE_VOEC_B2B,
+                sources.SKE_VOEC_B2C_ONLY,
+                sources.MVAL_LOW_VALUE_EXCLUSIONS,
+                *VAT_AREA_SOURCES,
+            ],
+        )
+    ]
