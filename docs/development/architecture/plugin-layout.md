@@ -17,7 +17,8 @@ Shipment responses are then unchanged.
 - `karrio/plugins/advisor_nordic_conventions/lanes.py` — the scope gate and the shipment lane shared by every advisory: carrier, shipper country, service, and EU VAT area verdicts.
 - `karrio/plugins/advisor_nordic_conventions/territories.py` — the EU VAT area table for goods movements and the postal-code normalisation.
 - `karrio/plugins/advisor_nordic_conventions/exclusions.py` — the DHL Freight Sweden per-product postal-code exclusions copied from the connector, checked against it by a test.
-- `karrio/plugins/advisor_nordic_conventions/rules/` — the advisory rules: `postnord.py`, `dhl_freight_sweden.py`, `dhl_country_requirements.py`, `invoice_type.py`, and `customs_values.py`, each producing the messages for its requirement.
+- `karrio/plugins/advisor_nordic_conventions/rules/` — the advisory rules: `postnord.py`, `dhl_freight_sweden.py`, `dhl_country_requirements.py`, `invoice_type.py`, `customs_values.py`, and `voec.py`, each producing the messages for its requirement.
+- `karrio/plugins/advisor_nordic_conventions/rates.py` — the NOK exchange rates, their rate date, the VOEC limit, and the margin the VOEC per-item threshold advisory converts commodity values with.
 - `karrio/plugins/advisor_nordic_conventions/sources.py` — the `Source` objects with their `S`, `W`, and `I` evidence tags and the URL constants the documentation footnotes name.
 - `karrio/plugins/advisor_nordic_conventions/procedures.py` — the `Procedure` members and their option keys, the map of answering procedures per advisory, and `expected_procedures`.
 - `karrio/plugins/advisor_nordic_conventions/attestations.py` — attestation parsing, the answering that omits covered advisories, and conflict detection.
