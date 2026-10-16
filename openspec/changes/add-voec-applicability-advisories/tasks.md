@@ -22,6 +22,7 @@
 - [x] 3.3 In `README.md`, add the three short names to the Across carriers summary line; leave the Requirements at a glance matrix unchanged, following `zero_value_line` and `ch_discount_on_invoice`.
 - [x] 3.4 In `docs/concepts/scope.md`, narrow the non-goal "No goods-value thresholds (SEK 2 000, EUR 1 000, DKK 7 500)" so it names VOEC's per-item NOK 3,000, advised only when a VOEC number is set, as the exception, and point the VOEC split sentence at the 2025-03-28 guidelines §4.1.
 - [x] 3.5 Run the four AGENTS.md verification commands from the repository root; verify each prints nothing.
+- [x] 3.6 In `README.md`, name VOEC's per-item NOK 3,000, advised only when a VOEC number is set, as the exception in the matrix legend and the Non-goals line, linking to the threshold advisory's anchor, and check `docs/` outside `docs/notes` for other statements that goods-value thresholds are not checked.
 
 ## 4. Verification and archive
 

@@ -42,7 +42,7 @@ What the carriers ask for goods sent from Sweden, Denmark, or Finland to outside
 
 Both carriers: goods sold need a commercial invoice, not a proforma ([Invoice type mismatch](docs/concepts/advisories.md#advisor_nordic_conventions_invoice_type_content_mismatch)), every line needs a customs value above 0 ([Zero-value line](docs/concepts/advisories.md#advisor_nordic_conventions_zero_value_line)), a discounted or free line to Switzerland shows its discount on the invoice ([Discount to Switzerland](docs/concepts/advisories.md#advisor_nordic_conventions_ch_discount_on_invoice), reminder), and an attested paper invoice on PostNord SE to Norway is flagged ([Attestation conflict](docs/concepts/advisories.md#advisor_nordic_conventions_attestation_conflict)).
 EU destinations, Northern Ireland included, need nothing, except that DHL Freight Sweden from Sweden carries country-specific advisories to [Cyprus](docs/concepts/advisories.md#advisor_nordic_conventions_dhl_freight_sweden_cyprus_documents), [Greece](docs/concepts/advisories.md#advisor_nordic_conventions_dhl_freight_sweden_greek_tax_ids), [Poland](docs/concepts/advisories.md#advisor_nordic_conventions_dhl_freight_sweden_sent_information), [Romania](docs/concepts/advisories.md#advisor_nordic_conventions_dhl_freight_sweden_uit_information), [Hungary](docs/concepts/advisories.md#advisor_nordic_conventions_dhl_freight_sweden_ekaer_information), and [Spain](docs/concepts/advisories.md#advisor_nordic_conventions_dhl_freight_sweden_spain_dg_documents); Great Britain, Åland, the Canary Islands, and the other special territories are non-EU ([specification](openspec/specs/plugins/advisor-nordic-conventions/spec.md)).
-"(reminder)" marks an `info` advisory; — means no advice, not that nothing is required; goods-value thresholds are not checked.
+"(reminder)" marks an `info` advisory; — means no advice, not that nothing is required; goods-value thresholds are not checked, except VOEC's per-item NOK 3,000, which is advised only when a VOEC number is set ([VOEC item over NOK 3,000](docs/concepts/advisories.md#advisor_nordic_conventions_voec_item_over_threshold)).
 
 ## When the plugin advises
 
@@ -79,7 +79,7 @@ The full stance is in [Scope](docs/concepts/scope.md#compliance).
 
 ## Non-goals
 
-No advice at rating time, no per-organisation overrides, no advisories for Norwegian shippers, no goods-value thresholds, no CN22 or CN23 selection guidance, nothing the connectors already enforce, and no network calls.
+No advice at rating time, no per-organisation overrides, no advisories for Norwegian shippers, no goods-value thresholds except VOEC's per-item NOK 3,000 when a VOEC number is set ([VOEC item over NOK 3,000](docs/concepts/advisories.md#advisor_nordic_conventions_voec_item_over_threshold)), no CN22 or CN23 selection guidance, nothing the connectors already enforce, and no network calls.
 The complete list, with the reason for each gap, is in [Scope](docs/concepts/scope.md#non-goals).
 
 ## Development
