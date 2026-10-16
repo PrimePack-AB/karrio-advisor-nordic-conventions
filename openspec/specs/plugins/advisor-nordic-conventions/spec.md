@@ -505,7 +505,7 @@ The answering sets SHALL be lane-aware as follows.
 `advisor_nordic_conventions_dhl_freight_sweden_invoice_copy` is answered by `commercial_invoice_electronic`.
 `advisor_nordic_conventions_dhl_freight_sweden_attached_documents` is answered by `customs_documents_attached_outside`.
 `advisor_nordic_conventions_dhl_freight_sweden_voec_marking` is answered by `voec_marking_printed`.
-`advisor_nordic_conventions_ch_discount_on_invoice`, `advisor_nordic_conventions_zero_value_line`, `advisor_nordic_conventions_dhl_freight_sweden_parcel_connect_not_served`, `advisor_nordic_conventions_dhl_freight_sweden_parcel_connect_gb_agreement`, and `advisor_nordic_conventions_dhl_freight_sweden_territory_postal_code_mismatch` SHALL map to the empty set, because their remedy lies in the invoice content, the declared values, the booked product, or the address.
+`advisor_nordic_conventions_ch_discount_on_invoice`, `advisor_nordic_conventions_zero_value_line`, `advisor_nordic_conventions_dhl_freight_sweden_parcel_connect_not_served`, and `advisor_nordic_conventions_dhl_freight_sweden_territory_postal_code_mismatch` SHALL map to the empty set, because their remedy lies in the invoice content, the declared values, the booked product, or the address.
 `advisor_nordic_conventions_voec_excluded_goods`, `advisor_nordic_conventions_voec_item_over_threshold`, and `advisor_nordic_conventions_voec_business_recipient` SHALL map to the empty set, because their remedy lies in the consignment's content, its split, or the VAT charged to the buyer.
 
 #### Scenario: Mapping is complete
@@ -680,7 +680,7 @@ For a recipient in Switzerland the message SHALL add products that serve it: Hom
 #### Scenario: Parcel Connect to Great Britain is an agreement case
 
 - **WHEN** a DHL Freight Sweden `dhl_freight_sweden_parcel_connect_plus` shipment from Sweden to Great Britain is created
-- **THEN** the plugin does not return code `advisor_nordic_conventions_dhl_freight_sweden_parcel_connect_not_served`
+- **THEN** the plugin does not return code `advisor_nordic_conventions_dhl_freight_sweden_parcel_connect_not_served`, because the manual lists Great Britain, by separate agreement, among 112's valid countries
 
 #### Scenario: Unknown service
 
@@ -706,27 +706,6 @@ For a recipient in Switzerland the message SHALL add products that serve it: Hom
 
 - **WHEN** a DHL Freight Sweden `107` shipment from Sweden to `JE` with postal code JE2 3AB is created
 - **THEN** the plugin returns code `advisor_nordic_conventions_dhl_freight_sweden_parcel_connect_not_served` at level `warning`, and the message states that 107 does not ship from SE to GB
-
-### Requirement: DHL Freight Sweden Parcel Connect serves Great Britain only by separate agreement
-
-For a DHL Freight Sweden shipment from Sweden to Great Britain booked, by unified name or carrier code, as Parcel Connect (`dhl_freight_sweden_parcel_connect_b2c`, `109`) or Parcel Connect Plus (`dhl_freight_sweden_parcel_connect_plus`, `112`), the plugin SHALL return code `advisor_nordic_conventions_dhl_freight_sweden_parcel_connect_gb_agreement` at level `warning`, unless the recipient's postal code is excluded for the product as "DHL Freight Sweden products are not booked on lanes they do not serve" defines it, in which case that requirement's code is returned instead.
-The message SHALL state that these products serve Great Britain only by separate agreement with DHL.
-`details` SHALL cite the DHL Freight Sweden product manual v5.26 (W, §5.3 p.18, §5.14 p.63) and the DHL Freight Sweden connector's committed sandbox evidence that a 112 booking from Sweden to Great Britain without the agreement was rejected with 22005 and 22026 (S, `tests/dhl_freight_sweden/fixtures/sandbox/rejection-22005-112-se-gb.json` at 28c1ccb).
-
-#### Scenario: Parcel Connect to Great Britain
-
-- **WHEN** a DHL Freight Sweden `dhl_freight_sweden_parcel_connect_b2c` shipment from Sweden to Great Britain is created
-- **THEN** the plugin returns code `advisor_nordic_conventions_dhl_freight_sweden_parcel_connect_gb_agreement` at level `warning`, and not code `advisor_nordic_conventions_dhl_freight_sweden_parcel_connect_not_served`
-
-#### Scenario: Parcel Connect to Switzerland is not an agreement case
-
-- **WHEN** a DHL Freight Sweden `dhl_freight_sweden_parcel_connect_b2c` shipment from Sweden to Switzerland is created
-- **THEN** the plugin does not return code `advisor_nordic_conventions_dhl_freight_sweden_parcel_connect_gb_agreement`
-
-#### Scenario: Parcel Connect to a Jersey postcode is not an agreement case
-
-- **WHEN** a DHL Freight Sweden `dhl_freight_sweden_parcel_connect_plus` shipment from Sweden to `GB` or `JE` with postal code JE2 3AB is created
-- **THEN** the plugin does not return code `advisor_nordic_conventions_dhl_freight_sweden_parcel_connect_gb_agreement`
 
 ### Requirement: DHL Freight Sweden customs handling is not selected to Åland
 
@@ -828,8 +807,8 @@ For other carriers the plugin SHALL read the country codes as given.
 
 #### Scenario: Isle of Man reads as Great Britain
 
-- **WHEN** a DHL Freight Sweden `dhl_freight_sweden_parcel_connect_plus` shipment from Sweden to `IM` with postal code IM1 1AA is created
-- **THEN** the plugin returns code `advisor_nordic_conventions_dhl_freight_sweden_parcel_connect_gb_agreement`
+- **WHEN** a DHL Freight Sweden `233` shipment from Sweden to `IM` with postal code IM1 1AA is created
+- **THEN** the plugin returns code `advisor_nordic_conventions_dhl_freight_sweden_invoice_copy` with a reminder fee of 650 kr
 
 #### Scenario: Parcel Return Connect from Jersey reads as from Great Britain
 
