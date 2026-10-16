@@ -22,8 +22,9 @@ An attestation is the consumer's own commitment to perform the procedure; the pl
 ## Non-goals
 
 No advice at rating time, no per-organisation overrides or connection-level attestation defaults, and no advisories for Norwegian shippers.
-No goods-value thresholds (SEK 2 000, EUR 1 000, DKK 7 500), CN22 or CN23 selection guidance, invoice-content checks, or CN22 or CN23 advice for PostNord letters.
-No advisory on splitting goods sold as one unit into separately packed consignments to Norway to stay under the VOEC value limit, which the [Skatteetaten VOEC guidelines](https://www.skatteetaten.no/globalassets/bedrift-og-organisasjon/voec/voec-guidelines-mars-2024.pdf) (March 2024) prohibit: an advisor sees one shipment request, with no record of the sale or of other consignments, so a split cannot be detected reliably.
+No goods-value thresholds (SEK 2 000, EUR 1 000, DKK 7 500), except VOEC's per-item NOK 3,000, which is advised only when a VOEC number is set ([VOEC item over NOK 3,000](advisories.md#advisor_nordic_conventions_voec_item_over_threshold)).
+No CN22 or CN23 selection guidance, invoice-content checks, or CN22 or CN23 advice for PostNord letters.
+No advisory on splitting goods sold as one unit into separately packed consignments to Norway to stay under the VOEC value limit, which the [Skatteetaten VOEC guidelines](https://www.skatteetaten.no/globalassets/bedrift-og-organisasjon/voec/sell-charge-and-ship-goods-to-norway.pdf) (modified 2025-03-28, §4.1 p.7) prohibit: an advisor sees one shipment request, with no record of the sale or of other consignments, so a split cannot be detected reliably.
 Nothing the connectors already enforce, such as field errors for missing customs data or the mapping of `commercial_invoice` to the invoice type.
 The plugin never reads connection credentials and makes no network calls.
 Known, undecided coverage gaps are recorded inside the requirements they border in the [specification](../../openspec/specs/plugins/advisor-nordic-conventions/spec.md).
