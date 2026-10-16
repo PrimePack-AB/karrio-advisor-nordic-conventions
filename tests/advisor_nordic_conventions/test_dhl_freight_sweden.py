@@ -435,6 +435,16 @@ class TestNordicConventionsDHLFreightSwedenInvoiceCopy(unittest.TestCase):
             [self._message("GB", "650 kr")],
         )
 
+    def test_invoice_copy_advisory_to_the_isle_of_man_states_the_great_britain_fee(self):
+        self.assertListEqual(
+            _advise(
+                dhl_freight_sweden.invoice_copy,
+                recipient="IM",
+                service="233",
+            ),
+            [self._message("GB", "650 kr")],
+        )
+
     def test_invoice_copy_advisory_to_great_britain_states_the_higher_fee(self):
         self.assertListEqual(
             _advise(
