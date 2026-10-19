@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+usage() {
+  cat <<'USAGE'
+Usage: scripts/init-connectors [--reference-dir DIR] [--install]
+
+Check out the development-only connector submodules at their recorded
+commits, overriding their update = none setting for this run.
+
+  --reference-dir DIR  borrow objects from DIR/karrio-postnord and
+                       DIR/karrio-dhl-freight-sweden when they exist
+  --install            pip install --no-deps -e both connectors with
+                       ${PYTHON:-python}
+USAGE
+}
+
+reference_dir=""
+install=false
+while (($#)); do
+  case "$1" in
+    --reference-dir)
+      (($# >= 2)) || { usage >&2; exit 2; }
+      reference_dir="$2"
+      shift 2
+      ;;
+    --install)
+      install=true
+      shift
+      ;;
+    -h | --help)
+      usage
+      exit 0
+      ;;
+    *)
+      usage >&2
+      exit 2
+      ;;
+  esac
+done
+
+cd "$(git rev-parse --show-toplevel)"
+
+connectors=(
+  "postnord connectors/postnord karrio-postnord"
+  "dhl-freight-sweden connectors/dhl-freight-sweden karrio-dhl-freight-sweden"
+)
+
+for entry in "${connectors[@]}"; do
+  read -r name path clone <<<"$entry"
+  args=()
+  if [[ -n "$reference_dir" && -d "$reference_dir/$clone/.git" ]]; then
+    args+=(--reference "$reference_dir/$clone")
+  fi
+  git -c "submodule.$name.update=checkout" submodule update --init "${args[@]}" -- "$path"
+done
+
+if [[ "$install" == true ]]; then
+  "${PYTHON:-python}" -m pip install --no-deps -e connectors/postnord -e connectors/dhl-freight-sweden
+fi
