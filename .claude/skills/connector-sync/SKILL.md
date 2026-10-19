@@ -70,6 +70,8 @@ PYTHONDONTWRITEBYTECODE=1 $PY -m pytest -q -rs 2>&1 | tee "$log_dir/connector-sy
 The cross-check tests are `tests/advisor_nordic_conventions/test_lanes.py`, `test_territories.py`, `test_exclusions.py`, `test_dhl_freight_sweden.py`, and `test_dhl_country_requirements.py`.
 A skip of a cross-check test for the connector under audit is a preflight failure, not a pass.
 A failure is a stale mirrored literal; record it as a finding.
+A divergence the cross-check tests already encode as an exact expected difference, such as `KNOWN_MISSING_CONNECTOR_RANGES` in `test_territories.py`, is a tracked finding: it passes, does not block the bump, and is reported as a known finding.
+A new or changed divergence fails the test and blocks the bump like any stale literal.
 Then run the four verification commands in `AGENTS.md`.
 
 ## Claim audit

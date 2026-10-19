@@ -67,6 +67,7 @@ Outcome: stale claims found; gitlink not bumped.
 
 Import at <old-short> and <new-short>: <ok, or the error and missing symbol>.
 Tests: <passed>/<failed>/<skipped>, log at <path>; cross-check failures: <test and subtest, constant, difference>.
+Known findings: <expected differences encoded in the cross-check tests, with their follow-up>.
 AGENTS.md verification: <clean, or the diff>.
 
 ## Stale claims
