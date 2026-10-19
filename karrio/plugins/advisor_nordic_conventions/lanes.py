@@ -22,7 +22,7 @@ INTERNATIONAL_PARCEL = "international_parcel"
 PARCEL = "parcel"
 
 # The PostNord connector's LETTER_SERVICES and INTERNATIONAL_PARCEL_SERVICE
-# (karrio-postnord b03ddd0, units.py:154-168 and 318-334), as unified name and
+# (karrio-postnord 320f3ad, units.py:155-169 and 319-335), as unified name and
 # carrier code pairs.
 POSTNORD_LETTER_SERVICES: typing.Dict[str, str] = {
     "postnord_tracked": "04",
