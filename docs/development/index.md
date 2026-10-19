@@ -9,8 +9,10 @@ Working notes are indexed in [docs/notes](../notes/README.md).
 ## Setup
 
 Create a virtual environment and install the forked SDK and the plugin with `pip install -r requirements-dev.txt -e .`.
-`requirements-dev.txt` installs the SDK editable from a local checkout of the fork's `develop` branch at a7355a5c8 or later, at `../karrio/modules/sdk`.
-The development setup uses `develop` rather than the branch of the upstream pull request because the PostNord connector also needs `karrio.lib.StampSeed`, which `develop` carries alongside the shipment advisors hook.
+`requirements-dev.txt` installs the SDK editable from a local checkout of the fork's `develop` branch at `../karrio/modules/sdk`.
+The checkout must provide `karrio.core.metadata.PluginMetadata.shipment_advisors`, the advisor hook proposed upstream in [karrioapi/karrio#1150](https://github.com/karrioapi/karrio/pull/1150), and `karrio.lib.StampSeed`, which the PostNord connector needs.
+The development setup uses `develop` rather than the branch of the upstream pull request because `develop` carries both, last verified at a7355a5c8 on 2026-10-19.
+`develop` is regenerated, so its commit shas are not durable and the requirement is stated by capability rather than by commit.
 A `git+https` install cannot replace the local checkout, because pip recursively fetches the monorepo's private `karrioapi` submodules that `modules/sdk` does not need.
 
 ## Connector submodules
