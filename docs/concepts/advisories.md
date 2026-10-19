@@ -96,7 +96,7 @@ Non-EU means outside the EU VAT area; which recipients count as outside is decid
 [^pn-fi-page]: postnord.fi customs information, read 2026-09-25: <https://www.postnord.fi/en/sending/online-tools/customs-information/> (`PN_FI_PAGE_URL`).
 [^pn-fi-terms]: PostNord FI special terms for parcels, valid 2026-05-01, Wayback 2026-06-10; no URL is recorded (`PN_FI_TERMS`).
 [^pn-dk-page]: postnord.dk export page, Wayback 2026-03-10: <https://www.postnord.dk/erhverv/eksport/> (`PN_DK_PAGE_URL`).
-[^pn-connector-readme]: PostNord connector README at commit b03ddd0, read 2026-10-19: <https://github.com/PrimePack-AB/karrio-postnord/blob/b03ddd0c037a935f50b38727c8e15c479cda303f/README.md> (`PN_CONNECTOR_README_URL`).
+[^pn-connector-readme]: PostNord connector README at commit 320f3ad, read 2026-10-19: <https://github.com/PrimePack-AB/karrio-postnord/blob/320f3ad4f118f406e7b68ff7d4adeaca35b1d893/README.md> (`PN_CONNECTOR_README_URL`).
 [^dhl-man]: DHL Freight Sweden product manual v5.26, updated 2026-10-01, valid from 2026-11-01, sha256 050660c37ba93d1ae9514c50dfa42c2010bc87763ccaff51a740b2526af11b73, listed at <https://dhlpaket.se/dashboard/specifications/products/> (`DHL_MAN_URL`).
 [^dhl-connector-readme]: DHL Freight Sweden connector README at commit 7a2214d, read 2026-10-08: <https://github.com/PrimePack-AB/karrio-dhl-freight-sweden/blob/7a2214d/README.md> (`DHL_CONNECTOR_README_URL`).
 [^dhl-connector-destinations]: DHL Freight Sweden connector destinations page at commit 7a2214d, read 2026-10-08: <https://github.com/PrimePack-AB/karrio-dhl-freight-sweden/blob/7a2214d/docs/concepts/destinations.md> (`DHL_CONNECTOR_DESTINATIONS_URL`).

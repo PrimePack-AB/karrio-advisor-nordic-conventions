@@ -6,7 +6,7 @@ Each ``Source`` carries the evidence tag of the karrio fork's facts note
 repository code or vendored specification, W is public carrier or authority
 documentation, and I is inference. Connector behaviour is cited from the
 standalone connectors: karrio-postnord's README and code at commit
-b03ddd0c037a935f50b38727c8e15c479cda303f, and karrio-dhl-freight-sweden's
+320f3ad4f118f406e7b68ff7d4adeaca35b1d893, and karrio-dhl-freight-sweden's
 README and docs pages at commit 7a2214d and the commits that introduced its
 refusals.
 """
@@ -40,7 +40,7 @@ DHL_CONNECTOR_DESTINATIONS_URL = "https://github.com/PrimePack-AB/karrio-dhl-fre
 DHL_CONNECTOR_TERRITORY_CHECK = "https://github.com/PrimePack-AB/karrio-dhl-freight-sweden/commit/142b62d5d48a1ba40cbddd8a46be7ec2c0442b0a (committed 2026-10-08)"
 DHL_CONNECTOR_JOINT_DECLARATION_CHECK = "https://github.com/PrimePack-AB/karrio-dhl-freight-sweden/commit/f86c8ac11fd9b017d4eb2a77bbf06fa88a1fa3fb (committed 2026-10-08)"
 DHL_CONNECTOR_COMMERCIAL_INVOICE_CHECK = "https://github.com/PrimePack-AB/karrio-dhl-freight-sweden/commit/ec180e61ca7ae4e763f58d9919ad9be0ae2ab56f (committed 2026-10-06)"
-PN_CONNECTOR_README_URL = "https://github.com/PrimePack-AB/karrio-postnord/blob/b03ddd0c037a935f50b38727c8e15c479cda303f/README.md (read 2026-10-19)"
+PN_CONNECTOR_README_URL = "https://github.com/PrimePack-AB/karrio-postnord/blob/320f3ad4f118f406e7b68ff7d4adeaca35b1d893/README.md (read 2026-10-19)"
 SKE_VOEC_GUIDELINES_URL = "https://www.skatteetaten.no/globalassets/bedrift-og-organisasjon/voec/sell-charge-and-ship-goods-to-norway.pdf (PDF modified 2025-03-28, read 2026-10-16)"
 SKE_VOEC_B2B_URL = "https://www.skatteetaten.no/globalassets/bedrift-og-organisasjon/voec/how-to-treat-b2b-sales-2026.pdf (PDF created 2026-02-04, read 2026-10-16)"
 TOLL_VOEC_PAGE_URL = "https://www.toll.no/no/bedrift/import/voec/om-voec-ordningen (oppdatert 2025-11-27, read 2026-10-16)"
@@ -112,18 +112,18 @@ PN_SE_SV_PAGE_NORWAY_LETTERS = Source(
 PN_CONNECTOR_PARCEL_CUSTOMS_INVOICE = Source(
     "S",
     _ref(
-        "Customs declarations, At booking, L157, L160",
-        f"{PN_CONNECTOR_README_URL}; karrio/providers/postnord/units.py L431-L439 (customs_structure)",
+        "Customs declarations, At booking, L158, L162",
+        f"{PN_CONNECTOR_README_URL}; karrio/providers/postnord/units.py L499-L507 (customs_structure)",
     ),
     "PostNord connector README: \"When a shipment carries `customs` with at least one commodity, the booking embeds one customs structure selected by the service.\" and \"every other service is a parcel product and sends a customs invoice (`customsInvoice`)\".",
 )
 PN_CONNECTOR_INTERNATIONAL_PARCEL_CN23 = Source(
     "S",
     _ref(
-        "Customs declarations, At booking, L160-L162, L209, L212",
-        f"{PN_CONNECTOR_README_URL}; karrio/providers/postnord/units.py L431-L439 (customs_structure), shipment/create.py L29-L32 and L518-L571 (_customs_declaration_cn23)",
+        "Customs declarations, At booking, L162-L164, L208, L212, L219",
+        f"{PN_CONNECTOR_README_URL}; karrio/providers/postnord/units.py L499-L507 (customs_structure), shipment/create.py L29-L38, L123-L148, and L194-L240 (CN23 label check) and L649-L702 (_customs_declaration_cn23)",
     ),
-    "PostNord connector README: \"International Parcel (91) sends a CN23 declaration (`customsDeclarationCN23`)\", \"International Parcel (91) books the CN23 unconditionally\", \"Duties after booking, such as printing the customs documents and attaching the invoice copies to the parcel, are the consumer's.\", \"a phase-2 sandbox capture of a CN23 booking decides whether PostNord composes a CN23 into the label and what its stamping needs, so until then 91 bookings' documents pass through unverified\", and \"For letter services and International Parcel (91), no standalone document is fetched unless the `postnord_standalone_customs_documents` opt-in is set\"; the CN23 carries no invoice number, date, or type.",
+    "PostNord connector README: \"International Parcel (91) sends a CN23 declaration (`customsDeclarationCN23`)\", \"International Parcel (91) books the CN23 unconditionally\", \"Duties after booking, such as printing the customs documents and attaching the invoice copies to the parcel, are the consumer's.\", \"For International Parcel (91), a test-mode sandbox booking carrying the mapper-built CN23 was accepted with `printoutComposition` `{cn23: 1, label: 1}` and one two-page A4 PDF — the parcel label on page 1, the CN23 on page 2\", \"test mode sends no EDI downstream, so production composition may differ\", \"International Parcel (91) labels are verified on PDF against the CN23 page-text markers seeded from that capture\", \"a ZPL label skips the check, no ZPL CN23 printout having been captured\", and \"For letter services and International Parcel (91), no standalone document is fetched unless the `postnord_standalone_customs_documents` opt-in is set\"; the CN23 carries no invoice number, date, or type.",
 )
 PN_SE_POSTPAKET_TERMS = Source(
     "W",
@@ -310,8 +310,8 @@ DHL_CONNECTOR_TRANSPORT_DECLARATION_DEFAULTS = Source(
 PN_CONNECTOR_COMMERCIAL_FLAG = Source(
     "S",
     _ref(
-        "Customs declarations, At booking, L187",
-        f"{PN_CONNECTOR_README_URL}; karrio/providers/postnord/shipment/create.py L706-L710",
+        "Customs declarations, At booking, L190",
+        f"{PN_CONNECTOR_README_URL}; karrio/providers/postnord/shipment/create.py L837-L841",
     ),
     "PostNord connector README, customs invoice mapping: \"`customs.commercial_invoice` | `type`: `COMMERCIAL` when true, `PROFORMA` when false or omitted\".",
 )

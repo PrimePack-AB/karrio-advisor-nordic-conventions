@@ -150,8 +150,9 @@ class TestNordicConventionsPostNordSENoDigitalInvoice(unittest.TestCase):
 
 POSTPAKET_CONNECTOR_NOTE = (
     "The connector currently sends CN23 declaration data and no invoice for International Parcel; "
-    "it returns the CN23 as a separate document only when postnord_standalone_customs_documents is set, "
-    "and whether PostNord prints the CN23 on the label is unverified, "
+    "it returns the CN23 as a separate document only when postnord_standalone_customs_documents is set. "
+    "In a test-mode booking PostNord composed the CN23 onto the label, and the connector checks PDF labels for it; "
+    "production composition and ZPL labels are unverified, "
     "so supply the invoice yourself and check that the printed CN23 travels with the parcel."
 )
 POSTPAKET_SOURCES = [
@@ -204,7 +205,7 @@ class TestNordicConventionsPostNordSEPostpaketCommercialInvoice(unittest.TestCas
         self.assertIn("triplicate", POSTPAKET_SOURCES[1]["statement"])
         self.assertIn("tre exemplar", POSTPAKET_SOURCES[2]["statement"])
         self.assertIn(
-            "karrio-postnord/blob/b03ddd0c037a935f50b38727c8e15c479cda303f/README.md",
+            "karrio-postnord/blob/320f3ad4f118f406e7b68ff7d4adeaca35b1d893/README.md",
             POSTPAKET_CODE_SOURCES[0]["reference"],
         )
         self.assertIn("books the CN23 unconditionally", POSTPAKET_CODE_SOURCES[0]["statement"])

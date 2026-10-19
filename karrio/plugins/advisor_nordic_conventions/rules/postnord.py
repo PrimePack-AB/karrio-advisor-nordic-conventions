@@ -110,8 +110,9 @@ def se_postpaket_commercial_invoice(request, context) -> typing.List[models.Mess
 
     connector_note = (
         "The connector currently sends CN23 declaration data and no invoice for International Parcel; "
-        "it returns the CN23 as a separate document only when postnord_standalone_customs_documents is set, "
-        "and whether PostNord prints the CN23 on the label is unverified, "
+        "it returns the CN23 as a separate document only when postnord_standalone_customs_documents is set. "
+        "In a test-mode booking PostNord composed the CN23 onto the label, and the connector checks PDF labels for it; "
+        "production composition and ZPL labels are unverified, "
         "so supply the invoice yourself and check that the printed CN23 travels with the parcel."
     )
     text = (
