@@ -1,7 +1,7 @@
 """Postal codes the DHL Freight Sweden connector excludes per product.
 
 A copy of the connector's ``POSTAL_CODE_FORMATS``, ``POSTAL_CODE_EXCLUSIONS``,
-and ``POSTAL_CODE_PATTERN_EXCLUSIONS`` (karrio-dhl-freight-sweden 142b62d,
+and ``POSTAL_CODE_PATTERN_EXCLUSIONS`` (karrio-dhl-freight-sweden c878941,
 units.py), with the same fields and product codes as strings, so a test
 compares them with the connector when it is importable. The numeric ranges
 are the "Excluded regions/areas" of product manual v5.26; the patterns are
