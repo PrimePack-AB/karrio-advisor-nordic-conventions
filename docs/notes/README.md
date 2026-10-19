@@ -8,3 +8,4 @@ An active note is maintained against current evidence; an unverified note record
 
 | Note | Purpose | Status | Created | Last changed |
 |------|---------|--------|---------|--------------|
+| [Hand-off: karrio release cycle](handoff/2026-10-19-karrio-release-cycle.md) | Cross-repository hand-off for the release cycle and plan integration | active | 2026-10-19 | 2026-10-19 |
