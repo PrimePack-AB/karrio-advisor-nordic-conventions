@@ -56,7 +56,7 @@ SE_NO_DIGITAL_ONLY_INVOICE = Contradiction(
     sources=(
         sources.PN_SE_SERVICE_POINT_TERMS_NORWAY,
         sources.PN_SE_NORWAY_CHANNELS,
-        sources.PNS_PARCEL_CUSTOMS_INVOICE,
+        sources.PN_CONNECTOR_PARCEL_CUSTOMS_INVOICE,
     ),
 )
 

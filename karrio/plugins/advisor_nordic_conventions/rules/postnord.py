@@ -95,7 +95,7 @@ def se_no_digital_invoice(request, context) -> typing.List[models.Message]:
                 sources.PN_SE_SERVICE_POINT_TERMS_NORWAY,
                 sources.PN_SE_NORWAY_CHANNELS,
                 sources.PN_SE_NORWAY_ONLY_CHANNELS,
-                sources.PNS_PARCEL_CUSTOMS_INVOICE,
+                sources.PN_CONNECTOR_PARCEL_CUSTOMS_INVOICE,
                 *([sources.PN_SE_SV_PAGE_NORWAY_LETTERS] if norway_named_letter else []),
             ],
         )
@@ -144,7 +144,7 @@ def se_postpaket_commercial_invoice(request, context) -> typing.List[models.Mess
                 sources.PN_SE_EN_PAGE_POSTPAKET,
                 sources.PN_SE_SV_PAGE_POSTPAKET,
                 *([sources.PN_SE_NORWAY_CHANNELS] if lane.to_norway else []),
-                sources.PNS_INTERNATIONAL_PARCEL_CN22,
+                sources.PN_CONNECTOR_INTERNATIONAL_PARCEL_CN23,
                 sources.PN_POSTPAKET_CODE_91,
                 sources.PN_POSTPAKET_CODE_95,
             ],

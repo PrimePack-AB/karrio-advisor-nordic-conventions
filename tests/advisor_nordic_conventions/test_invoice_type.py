@@ -15,15 +15,13 @@ COMMERCIAL_FOR_GIFT_OR_SAMPLE = (
     "for which a proforma invoice is the usual document."
 )
 POSTNORD_SOURCES = [
-    sources.PNS_COMMERCIAL_FLAG.to_dict(),
+    sources.PN_CONNECTOR_COMMERCIAL_FLAG.to_dict(),
     sources.PROFORMA_FOR_GOODS_NOT_SOLD.to_dict(),
     sources.PN_POSTPAKET_TERMS_PROFORMA.to_dict(),
-    sources.CONNECTOR_FLAG_MAPPING.to_dict(),
 ]
 DHL_FREIGHT_SWEDEN_SOURCES = [
-    sources.DFS_COMMERCIAL_FLAG.to_dict(),
+    sources.DHL_CONNECTOR_COMMERCIAL_FLAG.to_dict(),
     sources.PROFORMA_FOR_GOODS_NOT_SOLD.to_dict(),
-    sources.CONNECTOR_FLAG_MAPPING.to_dict(),
 ]
 
 

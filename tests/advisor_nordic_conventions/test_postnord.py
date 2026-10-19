@@ -21,7 +21,7 @@ NO_DIGITAL_INVOICE_SOURCES = [
     sources.PN_SE_SERVICE_POINT_TERMS_NORWAY.to_dict(),
     sources.PN_SE_NORWAY_CHANNELS.to_dict(),
     sources.PN_SE_NORWAY_ONLY_CHANNELS.to_dict(),
-    sources.PNS_PARCEL_CUSTOMS_INVOICE.to_dict(),
+    sources.PN_CONNECTOR_PARCEL_CUSTOMS_INVOICE.to_dict(),
 ]
 
 
@@ -158,7 +158,7 @@ POSTPAKET_SOURCES = [
     sources.PN_SE_SV_PAGE_POSTPAKET.to_dict(),
 ]
 POSTPAKET_CODE_SOURCES = [
-    sources.PNS_INTERNATIONAL_PARCEL_CN22.to_dict(),
+    sources.PN_CONNECTOR_INTERNATIONAL_PARCEL_CN23.to_dict(),
     sources.PN_POSTPAKET_CODE_91.to_dict(),
     sources.PN_POSTPAKET_CODE_95.to_dict(),
 ]

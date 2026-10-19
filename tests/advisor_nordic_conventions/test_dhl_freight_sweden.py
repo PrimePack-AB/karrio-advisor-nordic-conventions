@@ -41,7 +41,7 @@ class TestNordicConventionsDHLFreightSwedenCustomsModeMissing(unittest.TestCase)
                         plugin="advisor_nordic_conventions",
                         lane="SE-NO",
                         sources=[
-                            sources.DFS_CUSTOMS_SERVICES_OPT_IN.to_dict(),
+                            sources.DHL_CONNECTOR_CUSTOMS_SERVICES_OPT_IN.to_dict(),
                             sources.DHL_MAN_CUSTOMS_SELECTION.to_dict(),
                             sources.DHL_MAN_JOINT_DECLARATION.to_dict(),
                             sources.DHL_CONNECTOR_JOINT_DECLARATION_DESTINATIONS.to_dict(),
@@ -513,7 +513,7 @@ class TestNordicConventionsDHLFreightSwedenVOECMarking(unittest.TestCase):
                         plugin="advisor_nordic_conventions",
                         lane="SE-NO",
                         sources=[
-                            sources.DFS_VOEC_SERVICE.to_dict(),
+                            sources.DHL_CONNECTOR_VOEC_SERVICE.to_dict(),
                             sources.DHL_MAN_VOEC_MARKING.to_dict(),
                             sources.DHL_MAN_VOEC_PARCEL_CONNECT.to_dict(),
                         ],

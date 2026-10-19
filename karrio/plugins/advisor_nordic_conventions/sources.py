@@ -4,12 +4,11 @@ Each ``Source`` carries the evidence tag of the karrio fork's facts note
 ``docs/notes/customs/nordic-trade-documents-facts.md`` (branch
 ``docs-openspec``, commit baf8eb3dd), cited as FN with line numbers: S is
 repository code or vendored specification, W is public carrier or authority
-documentation, and I is inference. PNS and DFS are the karrio fork's main
-specs ``openspec/specs/postnord/customs-declaration/spec.md`` and
-``openspec/specs/dhl-freight-sweden/customs/spec.md`` on branch
-``docs-openspec`` at commit 60312fe2e. The parcel customs invoice that PNS
-specifies entered the connector on branch ``feat-postnord-customs-invoice``
-(tip face88f37), merged into the fork's develop by 52d21fbfb.
+documentation, and I is inference. Connector behaviour is cited from the
+standalone connectors: karrio-postnord's README and code at commit
+b03ddd0c037a935f50b38727c8e15c479cda303f, and karrio-dhl-freight-sweden's
+README and docs pages at commit 7a2214d and the commits that introduced its
+refusals.
 """
 
 import typing
@@ -19,8 +18,6 @@ import attr
 EVIDENCE_TAGS = ("S", "W", "I")
 
 FACTS_NOTE = "karrio fork docs/notes/customs/nordic-trade-documents-facts.md@baf8eb3dd"
-PNS = "karrio fork openspec/specs/postnord/customs-declaration/spec.md@60312fe2e"
-DFS = "karrio fork openspec/specs/dhl-freight-sweden/customs/spec.md@60312fe2e"
 
 PN_SE_EN_PAGE = "https://web.archive.org/web/20260116090151/https://www.postnord.se/en/business/import-export-customs/customs-documents-and-shipping-documents/"
 PN_SE_SV_PAGE = "https://www.postnord.se/foretag/import-export-tull/tulldokument-och-frakthandlingar-for-foretag/ (Wayback 2026-02-08)"
@@ -42,6 +39,8 @@ DHL_CONNECTOR_README_URL = "https://github.com/PrimePack-AB/karrio-dhl-freight-s
 DHL_CONNECTOR_DESTINATIONS_URL = "https://github.com/PrimePack-AB/karrio-dhl-freight-sweden/blob/7a2214d/docs/concepts/destinations.md (read 2026-10-08)"
 DHL_CONNECTOR_TERRITORY_CHECK = "https://github.com/PrimePack-AB/karrio-dhl-freight-sweden/commit/142b62d5d48a1ba40cbddd8a46be7ec2c0442b0a (committed 2026-10-08)"
 DHL_CONNECTOR_JOINT_DECLARATION_CHECK = "https://github.com/PrimePack-AB/karrio-dhl-freight-sweden/commit/f86c8ac11fd9b017d4eb2a77bbf06fa88a1fa3fb (committed 2026-10-08)"
+DHL_CONNECTOR_COMMERCIAL_INVOICE_CHECK = "https://github.com/PrimePack-AB/karrio-dhl-freight-sweden/commit/ec180e61ca7ae4e763f58d9919ad9be0ae2ab56f (committed 2026-10-06)"
+PN_CONNECTOR_README_URL = "https://github.com/PrimePack-AB/karrio-postnord/blob/b03ddd0c037a935f50b38727c8e15c479cda303f/README.md (read 2026-10-19)"
 SKE_VOEC_GUIDELINES_URL = "https://www.skatteetaten.no/globalassets/bedrift-og-organisasjon/voec/sell-charge-and-ship-goods-to-norway.pdf (PDF modified 2025-03-28, read 2026-10-16)"
 SKE_VOEC_B2B_URL = "https://www.skatteetaten.no/globalassets/bedrift-og-organisasjon/voec/how-to-treat-b2b-sales-2026.pdf (PDF created 2026-02-04, read 2026-10-16)"
 TOLL_VOEC_PAGE_URL = "https://www.toll.no/no/bedrift/import/voec/om-voec-ordningen (oppdatert 2025-11-27, read 2026-10-16)"
@@ -110,18 +109,21 @@ PN_SE_SV_PAGE_NORWAY_LETTERS = Source(
     _ref("FN:99, FN:108", PN_SE_SV_PAGE),
     "Swedish customs documents page, letters: \"OBS! Vid export till Norge behöver Handelsfaktura och VOEC* anges från 0 kr.\"",
 )
-PNS_PARCEL_CUSTOMS_INVOICE = Source(
+PN_CONNECTOR_PARCEL_CUSTOMS_INVOICE = Source(
     "S",
     _ref(
-        "PNS:28-31",
-        f"{PNS}; implemented on feat-postnord-customs-invoice at face88f37, merged into develop by 52d21fbfb",
+        "Customs declarations, At booking, L157, L160",
+        f"{PN_CONNECTOR_README_URL}; karrio/providers/postnord/units.py L431-L439 (customs_structure)",
     ),
-    "A parcel product booked with customs data containing commodities carries a customs invoice and no CN22 or CN23 declaration.",
+    "PostNord connector README: \"When a shipment carries `customs` with at least one commodity, the booking embeds one customs structure selected by the service.\" and \"every other service is a parcel product and sends a customs invoice (`customsInvoice`)\".",
 )
-PNS_INTERNATIONAL_PARCEL_CN22 = Source(
+PN_CONNECTOR_INTERNATIONAL_PARCEL_CN23 = Source(
     "S",
-    _ref("PNS:10, PNS:13-16", PNS),
-    "Letter services and International Parcel (postnord_postpaket_utrikes, code 91) keep sending CN22 declaration lines; no customs invoice is sent for them.",
+    _ref(
+        "Customs declarations, At booking, L160-L162, L209, L212",
+        f"{PN_CONNECTOR_README_URL}; karrio/providers/postnord/units.py L431-L439 (customs_structure), shipment/create.py L29-L32 and L518-L571 (_customs_declaration_cn23)",
+    ),
+    "PostNord connector README: \"International Parcel (91) sends a CN23 declaration (`customsDeclarationCN23`)\", \"International Parcel (91) books the CN23 unconditionally\", \"Duties after booking, such as printing the customs documents and attaching the invoice copies to the parcel, are the consumer's.\", \"a phase-2 sandbox capture of a CN23 booking decides whether PostNord composes a CN23 into the label and what its stamping needs, so until then 91 bookings' documents pass through unverified\", and \"For letter services and International Parcel (91), no standalone document is fetched unless the `postnord_standalone_customs_documents` opt-in is set\"; the CN23 carries no invoice number, date, or type.",
 )
 PN_SE_POSTPAKET_TERMS = Source(
     "W",
@@ -187,10 +189,10 @@ PN_DK_EXPORT_PAGE = Source(
 
 # DHL Freight Sweden
 
-DFS_CUSTOMS_SERVICES_OPT_IN = Source(
+DHL_CONNECTOR_CUSTOMS_SERVICES_OPT_IN = Source(
     "S",
-    _ref("DFS:75-83", DFS),
-    "The connector selects a customs service (standard handling, full-service handling, customer's own declaration, joint declaration) only when the caller sets its option, because each service carries a DHL fee.",
+    _ref("Customs services", DHL_CONNECTOR_README_URL),
+    "DHL Freight Sweden connector README: \"The manual offers four customs services, and the connector sends none unless an option selects it; each carries a DHL fee, and the manual allows only one per shipment.\"",
 )
 DHL_MAN_CUSTOMS_SELECTION = Source(
     "W",
@@ -252,10 +254,10 @@ DHL_OUTSIDE_COPIES_UNCONFIRMED = Source(
     _ref("FN:215, FN:268", FACTS_NOTE),
     "Whether Parcel Connect Plus (112) and road-freight products require copies attached to the outside of the package is unconfirmed.",
 )
-DFS_VOEC_SERVICE = Source(
+DHL_CONNECTOR_VOEC_SERVICE = Source(
     "S",
-    _ref("DFS:66-73", DFS),
-    "A customs.options.voec_number is sent as DHL's VOEC supply VAT service with that number as its VAT identifier.",
+    _ref("Customs services", DHL_CONNECTOR_README_URL),
+    "DHL Freight Sweden connector README: \"VOEC (VAT on e-commerce, NO) is sent from `customs.options.voec_number` and has not been booked in the sandbox.\"",
 )
 DHL_MAN_VOEC_MARKING = Source(
     "W",
@@ -305,25 +307,28 @@ DHL_CONNECTOR_TRANSPORT_DECLARATION_DEFAULTS = Source(
 
 # Invoice type
 
-PNS_COMMERCIAL_FLAG = Source(
+PN_CONNECTOR_COMMERCIAL_FLAG = Source(
     "S",
-    _ref("PNS:155-168", PNS),
-    "customs.commercial_invoice selects the customs invoice type literally: true declares COMMERCIAL, false or omitted declares PROFORMA regardless of content_type; mismatch detection is left to advisory tooling.",
+    _ref(
+        "Customs declarations, At booking, L187",
+        f"{PN_CONNECTOR_README_URL}; karrio/providers/postnord/shipment/create.py L706-L710",
+    ),
+    "PostNord connector README, customs invoice mapping: \"`customs.commercial_invoice` | `type`: `COMMERCIAL` when true, `PROFORMA` when false or omitted\".",
 )
-DFS_COMMERCIAL_FLAG = Source(
+DHL_CONNECTOR_COMMERCIAL_FLAG = Source(
     "S",
-    _ref("DFS:51-64", DFS),
-    "customs.commercial_invoice selects the customs document type literally: true declares CommercialInvoice, false or omitted declares ProformaInvoice regardless of content_type.",
+    _ref("Commercial or proforma invoice", DHL_CONNECTOR_README_URL),
+    "DHL Freight Sweden connector README: \"True sends a `CommercialInvoice` document, and false or unset sends a `ProformaInvoice`.\" and \"Outside the EU VAT area, content counts as a sale unless `customs.content_type` is `documents`, `gift`, `return_merchandise`, or `sample`, and a sale without `customs.commercial_invoice` true fails with `CommercialInvoiceRequiredError`.\"",
+)
+DHL_CONNECTOR_COMMERCIAL_INVOICE_REQUIRED = Source(
+    "S",
+    _ref("CommercialInvoiceRequiredError", DHL_CONNECTOR_COMMERCIAL_INVOICE_CHECK),
+    "Across the EU VAT area border the DHL Freight Sweden connector refuses a booking with customs data whose content is sale-like, a customs.content_type other than documents, gift, return_merchandise, or sample, or none, and whose customs.commercial_invoice is not true, with CommercialInvoiceRequiredError before sending it; inside the area it drops customs data with a warning instead.",
 )
 PROFORMA_FOR_GOODS_NOT_SOLD = Source(
     "W",
     _ref("FN:56", f"{BRING_URL}; {DHL_CIE_URL} p.5"),
     "The commercial invoice has no fixed format; a proforma invoice is used for goods not sold and states \"No charge. Value for customs purposes only\".",
-)
-CONNECTOR_FLAG_MAPPING = Source(
-    "S",
-    _ref("FN:30-36", "karrio modules/connectors/dhl_freight_sweden/karrio/providers/dhl_freight_sweden/shipment/create.py"),
-    "Connectors that read customs.commercial_invoice map it to a commercial versus proforma invoice type, never to producing a document.",
 )
 
 # Customs values

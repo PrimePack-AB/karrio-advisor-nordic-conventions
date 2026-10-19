@@ -16,15 +16,13 @@ GIFT_OR_SAMPLE: typing.FrozenSet[str] = frozenset(
 
 CARRIER_SOURCES: typing.Dict[str, typing.List[sources.Source]] = {
     lanes.POSTNORD: [
-        sources.PNS_COMMERCIAL_FLAG,
+        sources.PN_CONNECTOR_COMMERCIAL_FLAG,
         sources.PROFORMA_FOR_GOODS_NOT_SOLD,
         sources.PN_POSTPAKET_TERMS_PROFORMA,
-        sources.CONNECTOR_FLAG_MAPPING,
     ],
     lanes.DHL_FREIGHT_SWEDEN: [
-        sources.DFS_COMMERCIAL_FLAG,
+        sources.DHL_CONNECTOR_COMMERCIAL_FLAG,
         sources.PROFORMA_FOR_GOODS_NOT_SOLD,
-        sources.CONNECTOR_FLAG_MAPPING,
     ],
 }
 

@@ -92,7 +92,7 @@ def customs_mode_missing(request, context) -> typing.List[models.Message]:
             ),
             lane,
             [
-                sources.DFS_CUSTOMS_SERVICES_OPT_IN,
+                sources.DHL_CONNECTOR_CUSTOMS_SERVICES_OPT_IN,
                 sources.DHL_MAN_CUSTOMS_SELECTION,
                 sources.DHL_MAN_JOINT_DECLARATION,
                 sources.DHL_CONNECTOR_JOINT_DECLARATION_DESTINATIONS,
@@ -280,7 +280,7 @@ def voec_marking(request, context) -> typing.List[models.Message]:
             ),
             lane,
             [
-                sources.DFS_VOEC_SERVICE,
+                sources.DHL_CONNECTOR_VOEC_SERVICE,
                 sources.DHL_MAN_VOEC_MARKING,
                 sources.DHL_MAN_VOEC_PARCEL_CONNECT,
             ],
