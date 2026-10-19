@@ -64,3 +64,6 @@ The connector-sync skill now reports such an encoded difference as a known findi
 
 Task 6.2: `connectors/dhl-freight-sweden` is synced to c878941 in `chore(connectors): sync dhl-freight-sweden to c878941`, advancing the `units.py` reading comments in `lanes.py`, `exclusions.py`, and `rules/dhl_country_requirements.py`, whose mirrored constants are unchanged; `DHL_CONNECTOR_README_URL` and `DHL_CONNECTOR_DESTINATIONS_URL` stay at 7a2214d, because the cited README sections "Customs services" and "Commercial or proforma invoice" and the destinations sections "Åland" and "Excluded postal codes" changed while the claims still hold.
 `connectors/postnord` is synced from 3899da8 to b03ddd0 in `chore(connectors): sync postnord to b03ddd0`; no reading pin moves, because `PN_CONNECTOR_README_URL`, its footnote, the `sources.py` module docstring, and the `lanes.py` service-set comment already cite b03ddd0.
+
+Outside the numbered tasks: README L82 and `docs/concepts/scope.md` L28 stated as a non-goal that the plugin gives no advisories for what the connectors already enforce, which the reworded DHL invoice type warning and the existing Åland, joint declaration, and territory refusal warnings contradict; both now except warnings before a booking the connector will refuse, in `9d4d79e`.
+The main spec does not state this non-goal, so the change carries no delta for it.
