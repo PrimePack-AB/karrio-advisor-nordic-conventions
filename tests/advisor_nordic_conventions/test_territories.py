@@ -165,6 +165,28 @@ class TestNordicConventionsTerritories(unittest.TestCase):
                     units.EU_VAT_POSTAL_PREFIXES,
                 )
 
+    def test_matches_connector_postal_code_normalization_tables(self):
+        for carrier_name in ("postnord", "dhl_freight_sweden"):
+            with self.subTest(carrier_name=carrier_name):
+                units = fixture.connector_units(self, carrier_name)
+
+                self.assertDictEqual(
+                    territories.NUMERIC_POSTAL_TERRITORY_PARENTS,
+                    units.NUMERIC_POSTAL_TERRITORY_PARENTS,
+                )
+                self.assertTupleEqual(
+                    territories.NON_EU_VAT_POSTAL_TERRITORY_PREFIXES,
+                    units.NON_EU_VAT_POSTAL_TERRITORY_PREFIXES,
+                )
+                self.assertTupleEqual(
+                    territories.NON_EU_VAT_POSTAL_CODE_LENGTHS,
+                    units.NON_EU_VAT_POSTAL_CODE_LENGTHS,
+                )
+                self.assertSetEqual(
+                    set(territories.UK_POSTCODE_AREA_CODES),
+                    set(units.UK_POSTCODE_AREA_CODES),
+                )
+
 
 if __name__ == "__main__":
     unittest.main()
