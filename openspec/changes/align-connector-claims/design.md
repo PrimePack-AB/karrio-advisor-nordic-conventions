@@ -32,7 +32,7 @@ The connector sentence of `advisor_nordic_conventions_postnord_se_postpaket_comm
 
 The sentence keeps "currently", as every other connector claim in the plugin does, and the commit it rests on travels in `details` through the cited source, whose reference is the README permalink at b03ddd0.
 The specification states the claim "as of karrio-postnord b03ddd0", so a later connector commit that changes the behaviour is a stale claim the connector-sync audit reports against a named commit.
-Putting the sha into the user-facing message was considered and not chosen, because no other advisory message carries a commit and the message would change on every re-audit; open question 1 asks the user to confirm.
+Putting the sha into the user-facing message was considered and not chosen, because no other advisory message carries a commit and the message would change on every re-audit; decision 1 records the user's confirmation.
 
 The sentence describes a booking whose customs data carries at least one commodity; with customs data and no commodity the connector sends no customs structure at all.
 The advisory's trigger, `commercial`, does not look at commodities, and the current sentence has the same imprecision, so the trigger is left unchanged.
@@ -58,7 +58,7 @@ The README at the existing reading pin already states it: "Outside the EU VAT ar
 The warning's statement that the connector declares a proforma invoice therefore never holds on a DHL Freight Sweden booking the advisory covers.
 The advisory is kept and its DHL warning states the refusal, as the plugin already does for the Åland customs service, the joint declaration destination, and the territory postal code, which warn before the connector refuses.
 Removing the DHL warning, as `remove-parcel-connect-gb-agreement` removed an advisory the connector covered, was considered; that removal rested on false warnings to shippers holding an agreement, which does not apply here, because the plugin's and the connector's conditions coincide.
-Open question 2 asks the user to confirm.
+Decision 2 records the user's confirmation.
 
 The DHL warning message becomes:
 
@@ -96,7 +96,7 @@ New and changed document constants, each annotated with its read date as the oth
 | Comment at `lanes.py:25` | `POSTNORD_LETTER_SERVICES`, `POSTNORD_INTERNATIONAL_PARCEL` | karrio develop 7a56ffa5b, postnord `units.py:264-285` | karrio-postnord b03ddd0 `units.py` L157-L168 (service codes) and L318-L334 (`LETTER_SERVICES`, `INTERNATIONAL_PARCEL_SERVICE`), a reading pin the connector-sync skill advances; the twelve letter codes and 91 match. |
 | Specification Purpose, lines 7, 9-12 | main spec | PNS, DFS, the fork branch `feat-postnord-customs-invoice`, karrio `develop` 7a56ffa5b `units.py:269-284`, and the fork note `docs/notes/postnord/customs-declaration-live-verification.md:5` | The connector READMEs and code at the commits above; the live-verification note's ported copy, PN `docs/notes/sandbox/customs-declaration-live-verification.md#L13`, which names UX478114854SE "an SE→PL export letter booked as `postnord_export_letter` (`UX`)". Line 6 (FN) is unchanged. |
 
-The Purpose line 12 citation was found during the audit and is not in the brief; it is included because it is a fork citation with an equivalent, and open question 3 asks whether to keep it.
+The Purpose line 12 citation was found during the audit and is not in the brief; it is included because it is a fork citation with an equivalent, and decision 3 records the user's confirmation.
 Renaming the `PNS_*` and `DFS_*` sources is internal: `Source` names are not public API, only their `to_dict()` output in `details`, which changes anyway with the reference.
 
 ## Documentation
@@ -122,8 +122,11 @@ The DHL warning names an error a future connector commit could rename; the DHL c
 The connector-sync skill, run after the claims hold, moves `connectors/postnord` from 3899da8 to the audited karrio-postnord commit and `connectors/dhl-freight-sweden` from 62c1f46 to the audited karrio-dhl-freight-sweden commit, and advances the reading pins whose cited content is unchanged, including `DHL_CONNECTOR_README_URL`, `PN_CONNECTOR_README_URL`, and the `lanes.py` comment.
 If either connector's `origin/main` has moved past the commit this design cites, the skill audits the newer commit; a stale claim there stops the bump and returns to this change.
 
-## Open questions
+## Decisions
 
-1. Should the Postpaket Utrikes message itself name the connector commit (for example "As of karrio-postnord b03ddd0, …"), rather than carrying it only in `details` and the specification?
-2. Should the DHL half of the invoice type warning be kept, restated as the connector's refusal, or removed because the connector refuses on the same condition?
-3. Should the specification Purpose's fork note citation (line 12) be re-pointed here, although the brief did not list it?
+The user approved the following on 2026-10-19, each the design's default.
+
+1. The Postpaket Utrikes message keeps "currently" and names no commit; karrio-postnord b03ddd0c037a935f50b38727c8e15c479cda303f is carried in the advisory `details`, through the cited source's reference, and in the specification only.
+2. The DHL Freight Sweden half of the invoice type warning is kept, reworded as a heads-up that the connector refuses the booking with `CommercialInvoiceRequiredError`, consistent with the Åland customs service, joint declaration destination, and territory postal code refusal advisories.
+3. The specification Purpose's fork live-verification note citation is re-pointed to the ported PostNord note, PN `docs/notes/sandbox/customs-declaration-live-verification.md#L13`.
+4. Task 6.3, the connector-sync skill's out-of-scope list and fork pin entries, is applied on this change's branch after it is rebased onto `connector-sync-skill`, which carries the skill's final text.

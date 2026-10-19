@@ -2,7 +2,7 @@
 
 ## 1. Gates before apply
 
-- [ ] 1.1 Resolve design.md's three open questions with the user, and if an answer differs from the design's default, revise the artifacts with the openspec-update-change workflow before any code edit; verify `openspec validate align-connector-claims --strict` passes afterwards.
+- [x] 1.1 Resolve design.md's three open questions with the user, and if an answer differs from the design's default, revise the artifacts with the openspec-update-change workflow before any code edit; verify `openspec validate align-connector-claims --strict` passes afterwards.
 - [ ] 1.2 Re-run the PostNord claim audit of `.claude/skills/connector-sync/SKILL.md` immediately before apply, against karrio-postnord `origin/main`; if it has moved past b03ddd0c037a935f50b38727c8e15c479cda303f, diff `README.md`, `karrio/providers/postnord/units.py`, `karrio/providers/postnord/shipment/create.py`, and `karrio/mappers/postnord/proxy.py` from b03ddd0 to the new commit, and stop and update this change if `customs_structure`, `_customs_declaration_cn23`, the standalone customs document fetch, the `customsInvoice` type mapping, or README L157-L212 changed; record the audited commit in the apply notes.
 - [ ] 1.3 Run the DHL Freight Sweden claim audit the same way against karrio-dhl-freight-sweden `origin/main`, checking that `CommercialInvoiceRequiredError`, `_check_commercial_invoice`, `_customs_services`, and the `voecSupplyVAT` mapping still behave as design.md cites them at c87894125c9c1aebcd74095bd24a68c9eb098cdc and that the README sections "Customs services" and "Commercial or proforma invoice" still state them; stop and update this change on any difference.
 
@@ -28,13 +28,13 @@
 ## 5. Service-set comment and specification Purpose
 
 - [ ] 5.1 Replace the comment at `karrio/plugins/advisor_nordic_conventions/lanes.py:25` with the karrio-postnord commit and `units.py` L157-L168 and L318-L334 of design.md's table; verify `test_lanes.py` passes, including the connector cross-check, and that it does not skip.
-- [ ] 5.2 Edit `openspec/specs/plugins/advisor-nordic-conventions/spec.md` directly, because deltas ignore `## Purpose`: replace the PNS and DFS sentence, the `feat-postnord-customs-invoice` sentence, the "as defined by PNS lines 10-11" clause, the karrio `develop` 7a56ffa5b `units.py:269-284` citation, and, if open question 3 keeps it, the fork live-verification note citation with the connector permalinks of design.md's table, keeping the FN sentence; verify `rg -n 'PNS|DFS|7a56ffa5b|feat-postnord-customs-invoice' openspec/specs` prints nothing after archive.
+- [ ] 5.2 Edit `openspec/specs/plugins/advisor-nordic-conventions/spec.md` directly, because deltas ignore `## Purpose`: replace the PNS and DFS sentence, the `feat-postnord-customs-invoice` sentence, the "as defined by PNS lines 10-11" clause, the karrio `develop` 7a56ffa5b `units.py:269-284` citation, and, per decision 3, the fork live-verification note citation with the connector permalinks of design.md's table, keeping the FN sentence; verify `rg -n 'PNS|DFS|7a56ffa5b|feat-postnord-customs-invoice' openspec/specs` prints nothing after archive.
 
 ## 6. Connector sync
 
 - [ ] 6.1 Run `.venv/bin/python -m unittest discover -s tests` and the pytest run of the connector-sync skill with both connectors checked out at the audited commits; verify every test passes and no connector cross-check test skips.
 - [ ] 6.2 Run the connector-sync skill for PostNord, then for DHL Freight Sweden, so it bumps `connectors/postnord` and `connectors/dhl-freight-sweden` to the audited commits and advances the reading pins whose cited content is unchanged, `PN_CONNECTOR_README_URL`, `DHL_CONNECTOR_README_URL`, and the `lanes.py` comment among them, each with its footnote; verify each run ends in its `chore(connectors): sync <c> to <short-sha>` commit and reports no stale claim.
-- [ ] 6.3 Update the "Out of scope, reported only" list in `.claude/skills/connector-sync/SKILL.md` and the fork pin entries of its `reference.md` so it names only the fork pins left after this change (`FACTS_NOTE` and the FN locators), coordinating with any concurrent edit of that file on `connector-sync-skill`; verify `rg -n 'PNS|DFS|CONNECTOR_FLAG_MAPPING' .claude/skills/connector-sync` prints nothing.
+- [ ] 6.3 Update the "Out of scope, reported only" list in `.claude/skills/connector-sync/SKILL.md` and the fork pin entries of its `reference.md` so it names only the fork pins left after this change (`FACTS_NOTE` and the FN locators), on this branch after its rebase onto `connector-sync-skill`, per decision 4; verify `rg -n 'PNS|DFS|CONNECTOR_FLAG_MAPPING' .claude/skills/connector-sync` prints nothing.
 
 ## 7. Verification and archive
 
