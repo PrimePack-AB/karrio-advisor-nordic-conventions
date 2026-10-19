@@ -27,7 +27,7 @@ What the carriers ask for goods sent from Sweden, Denmark, or Finland to outside
 | Shipment | Norway | Other non-EU (incl. GB) |
 |---|---|---|
 | PostNord SE parcel | [Invoice sent digitally](docs/concepts/advisories.md#advisor_nordic_conventions_postnord_se_no_digital_invoice) (reminder with customs data) | [3× English invoice in pocket on parcel 1](docs/concepts/advisories.md#advisor_nordic_conventions_postnord_se_export_paper_invoice) |
-| PostNord SE 91, commercial | [CN23 + digital invoice](docs/concepts/advisories.md#advisor_nordic_conventions_postnord_se_postpaket_commercial_invoice) (supply yourself) | [CN23 + 3× invoice with parcel](docs/concepts/advisories.md#advisor_nordic_conventions_postnord_se_postpaket_commercial_invoice) (supply yourself) |
+| PostNord SE 91, commercial | [CN23 + digital invoice](docs/concepts/advisories.md#advisor_nordic_conventions_postnord_se_postpaket_commercial_invoice) (supply the invoice; check the printed CN23) | [CN23 + 3× invoice with parcel](docs/concepts/advisories.md#advisor_nordic_conventions_postnord_se_postpaket_commercial_invoice) (supply the invoice; check the printed CN23) |
 | PostNord SE 91, non-commercial | [Invoice sent digitally](docs/concepts/advisories.md#advisor_nordic_conventions_postnord_se_no_digital_invoice) | — |
 | PostNord SE letter | [Invoice sent digitally; export, REK letters + VOEC](docs/concepts/advisories.md#advisor_nordic_conventions_postnord_se_no_digital_invoice) | — |
 | PostNord FI parcel | [E-invoice before shipping](docs/concepts/advisories.md#advisor_nordic_conventions_postnord_fi_export_invoice) | [3× signed English invoice](docs/concepts/advisories.md#advisor_nordic_conventions_postnord_fi_export_invoice) |

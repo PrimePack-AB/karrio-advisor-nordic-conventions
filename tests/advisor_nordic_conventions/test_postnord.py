@@ -149,8 +149,10 @@ class TestNordicConventionsPostNordSENoDigitalInvoice(unittest.TestCase):
 
 
 POSTPAKET_CONNECTOR_NOTE = (
-    "The connector currently sends CN22 declaration data and no invoice for International Parcel, "
-    "so supply the CN23 and the invoice yourself."
+    "The connector currently sends CN23 declaration data and no invoice for International Parcel; "
+    "it returns the CN23 as a separate document only when postnord_standalone_customs_documents is set, "
+    "and whether PostNord prints the CN23 on the label is unverified, "
+    "so supply the invoice yourself and check that the printed CN23 travels with the parcel."
 )
 POSTPAKET_SOURCES = [
     sources.PN_SE_POSTPAKET_TERMS.to_dict(),
@@ -201,6 +203,11 @@ class TestNordicConventionsPostNordSEPostpaketCommercialInvoice(unittest.TestCas
         self.assertIn("i 2 exemplar", POSTPAKET_SOURCES[0]["statement"])
         self.assertIn("triplicate", POSTPAKET_SOURCES[1]["statement"])
         self.assertIn("tre exemplar", POSTPAKET_SOURCES[2]["statement"])
+        self.assertIn(
+            "karrio-postnord/blob/b03ddd0c037a935f50b38727c8e15c479cda303f/README.md",
+            POSTPAKET_CODE_SOURCES[0]["reference"],
+        )
+        self.assertIn("books the CN23 unconditionally", POSTPAKET_CODE_SOURCES[0]["statement"])
 
     def test_sale_like_content_triggers_the_advisory(self):
         request = fixture.shipment(
