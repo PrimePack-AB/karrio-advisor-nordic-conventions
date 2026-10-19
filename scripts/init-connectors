@@ -53,10 +53,12 @@ for entry in "${connectors[@]}"; do
     args+=(--reference "$reference_dir/$clone")
   fi
   git -c "submodule.$name.update=checkout" submodule update --init "${args[@]}" -- "$path"
-  # Older connector commits do not ignore the metadata an editable install writes.
+  # Older connector commits do not ignore what an editable install and imports write.
   exclude="$(git -C "$path" rev-parse --path-format=absolute --git-path info/exclude)"
   mkdir -p "$(dirname "$exclude")"
-  grep -qxF '*.egg-info/' "$exclude" 2>/dev/null || printf '%s\n' '*.egg-info/' >>"$exclude"
+  for pattern in '*.egg-info/' '__pycache__/'; do
+    grep -qxF "$pattern" "$exclude" 2>/dev/null || printf '%s\n' "$pattern" >>"$exclude"
+  done
 done
 
 if [[ "$install" == true ]]; then
