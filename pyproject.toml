@@ -39,5 +39,8 @@ include = ["karrio*"]
 exclude = ["tests.*", "tests"]
 namespaces = true
 
+[tool.primepack]
+karrio-ref = "snapshot-2026.10.19.1"
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
