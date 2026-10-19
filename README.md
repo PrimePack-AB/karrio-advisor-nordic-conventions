@@ -6,7 +6,7 @@ The plugin declares shipment advisors only: no carrier mapper, proxy, settings, 
 The reference pages behind this guide are published at <https://primepack-ab.github.io/karrio-advisor-nordic-conventions/>.
 
 > **Status: pending an unmerged karrio feature.**
-> The advisories need a karrio SDK with the shipment advisors hook, which only the [karrio fork](https://github.com/Joaqim/karrio) branch `feat-shipment-advisors` provides.
+> The advisories need a karrio SDK with the shipment advisors hook, which is proposed upstream in [karrioapi/karrio#1150](https://github.com/karrioapi/karrio/pull/1150) and, until that pull request merges, is available on its branch `feat-shipment-advisors` in the [karrio fork](https://github.com/Joaqim/karrio).
 > With released karrio the plugin installs and loads but registers no advisors, so it changes nothing.
 > Until the feature merges and ships in a karrio release, a working setup requires a local checkout of the fork; see [Development](#development).
 
