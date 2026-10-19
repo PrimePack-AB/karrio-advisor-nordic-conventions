@@ -1,7 +1,8 @@
-# karrio SDK with the shipment advisors hook (fork branch feat-shipment-advisors
-# at 92c5d1ec05c64147e871c755c9453ffdeb07f393, subdirectory modules/sdk).
+# karrio SDK from the karrio fork's develop branch at a7355a5c8 or later
+# (subdirectory modules/sdk), which carries both the shipment advisors hook and
+# karrio.lib.StampSeed (bb9b5b0c2) needed by the PostNord connector.
 # git+https cannot install the fork: pip recursively fetches the monorepo's
 # private karrioapi submodules (ee/insiders, ee/platform) and fails, although
 # modules/sdk needs neither. Install from a local checkout instead.
--e ../karrio/.worktrees/feat-shipment-advisors/modules/sdk
+-e ../karrio/modules/sdk
 pytest
