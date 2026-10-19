@@ -3,8 +3,8 @@
 ## 1. Gates before apply
 
 - [x] 1.1 Resolve design.md's three open questions with the user, and if an answer differs from the design's default, revise the artifacts with the openspec-update-change workflow before any code edit; verify `openspec validate align-connector-claims --strict` passes afterwards.
-- [ ] 1.2 Re-run the PostNord claim audit of `.claude/skills/connector-sync/SKILL.md` immediately before apply, against karrio-postnord `origin/main`; if it has moved past b03ddd0c037a935f50b38727c8e15c479cda303f, diff `README.md`, `karrio/providers/postnord/units.py`, `karrio/providers/postnord/shipment/create.py`, and `karrio/mappers/postnord/proxy.py` from b03ddd0 to the new commit, and stop and update this change if `customs_structure`, `_customs_declaration_cn23`, the standalone customs document fetch, the `customsInvoice` type mapping, or README L157-L212 changed; record the audited commit in the apply notes.
-- [ ] 1.3 Run the DHL Freight Sweden claim audit the same way against karrio-dhl-freight-sweden `origin/main`, checking that `CommercialInvoiceRequiredError`, `_check_commercial_invoice`, `_customs_services`, and the `voecSupplyVAT` mapping still behave as design.md cites them at c87894125c9c1aebcd74095bd24a68c9eb098cdc and that the README sections "Customs services" and "Commercial or proforma invoice" still state them; stop and update this change on any difference.
+- [x] 1.2 Re-run the PostNord claim audit of `.claude/skills/connector-sync/SKILL.md` immediately before apply, against karrio-postnord `origin/main`; if it has moved past b03ddd0c037a935f50b38727c8e15c479cda303f, diff `README.md`, `karrio/providers/postnord/units.py`, `karrio/providers/postnord/shipment/create.py`, and `karrio/mappers/postnord/proxy.py` from b03ddd0 to the new commit, and stop and update this change if `customs_structure`, `_customs_declaration_cn23`, the standalone customs document fetch, the `customsInvoice` type mapping, or README L157-L212 changed; record the audited commit in the apply notes.
+- [x] 1.3 Run the DHL Freight Sweden claim audit the same way against karrio-dhl-freight-sweden `origin/main`, checking that `CommercialInvoiceRequiredError`, `_check_commercial_invoice`, `_customs_services`, and the `voecSupplyVAT` mapping still behave as design.md cites them at c87894125c9c1aebcd74095bd24a68c9eb098cdc and that the README sections "Customs services" and "Commercial or proforma invoice" still state them; stop and update this change on any difference.
 
 ## 2. Sources
 
@@ -41,3 +41,9 @@
 - [ ] 7.1 Re-run the PostNord claim audit of task 1.2 immediately before archive against karrio-postnord `origin/main`; if it moved and a cited behaviour changed, stop and update this change instead of archiving.
 - [ ] 7.2 Run the four AGENTS.md verification commands, `.venv/bin/python -m unittest discover -s tests`, and `pyright`; verify all pass.
 - [ ] 7.3 Run `openspec validate align-connector-claims --strict`; verify it is valid, then archive the change.
+
+## Apply notes
+
+Tasks 1.2 and 1.3, 2026-10-19: `origin/main` of karrio-postnord is b03ddd0c037a935f50b38727c8e15c479cda303f and of karrio-dhl-freight-sweden is c87894125c9c1aebcd74095bd24a68c9eb098cdc, the commits this change cites, so the audited commits are these and no diff past them exists.
+At these commits `customs_structure`, `_customs_declaration_cn23`, the proxy's standalone customs document fetch, the `customsInvoice` type mapping, README L157-L212, `CommercialInvoiceRequiredError`, `_check_commercial_invoice`, `_customs_services` with its `voecSupplyVAT` mapping, and the README sections "Customs services" and "Commercial or proforma invoice" read as design.md cites them.
+The pytest run with both connectors checked out at these commits passes except `test_territories.py::...test_matches_connector_tables[postnord]`, the EU VAT area table mismatch this change leaves out of scope, and no connector cross-check test skips.
