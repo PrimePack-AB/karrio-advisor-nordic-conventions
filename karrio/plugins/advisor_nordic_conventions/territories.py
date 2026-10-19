@@ -1,8 +1,9 @@
 """EU VAT area membership for goods movements, following Tullverket.
 
-The table matches the definition applied by the PostNord and DHL Freight
-Sweden connectors: member states are inside, with Greece under its ISO code
-``GR`` as well as its VAT prefix ``EL``, and Monaco (``MC``) treated as EU;
+The table follows the definition applied by the PostNord and DHL Freight
+Sweden connectors, with the exception stated below: member states are
+inside, with Greece under its ISO code ``GR`` as well as its VAT prefix
+``EL``, and Monaco (``MC``) treated as EU;
 special fiscal territories are outside either by their own country code
 (``AX``, ``IC``, ``GP``, ``GF``, ``MQ``, ``RE``, ``YT``), which is absent
 from the member-state set, or by postal-code range within a member state,
@@ -15,6 +16,10 @@ three digits of the Faroese format, is also outside. Northern
 Ireland is inside the EU VAT area for goods and outside it for services;
 the plugin advises on goods shipments, so ``GB`` postal codes beginning
 ``BT`` are inside.
+
+The DHL Freight Sweden connector's tables match these in full. The PostNord
+connector's ``NON_EU_VAT_POSTAL_RANGES`` omits ``FR`` 97000-97999, ``DK``
+3800-3999, ``FR`` 98600-98899, and ``EL`` 63086; its other tables match.
 """
 
 import re
