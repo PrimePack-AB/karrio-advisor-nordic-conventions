@@ -38,9 +38,9 @@
 
 ## 7. Verification and archive
 
-- [ ] 7.1 Re-run the PostNord claim audit of task 1.2 immediately before archive against karrio-postnord `origin/main`; if it moved and a cited behaviour changed, stop and update this change instead of archiving.
-- [ ] 7.2 Run the four AGENTS.md verification commands, `.venv/bin/python -m unittest discover -s tests`, and `pyright`; verify all pass.
-- [ ] 7.3 Run `openspec validate align-connector-claims --strict`; verify it is valid, then archive the change.
+- [x] 7.1 Re-run the PostNord claim audit of task 1.2 immediately before archive against karrio-postnord `origin/main`; if it moved and a cited behaviour changed, stop and update this change instead of archiving.
+- [x] 7.2 Run the four AGENTS.md verification commands, `.venv/bin/python -m unittest discover -s tests`, and `pyright`; verify all pass (pyright: the identical error set to main at cc14721, 125 errors in this repo's tree, no new ones).
+- [x] 7.3 Run `openspec validate align-connector-claims --strict`; verify it is valid, then archive the change.
 
 ## Apply notes
 
