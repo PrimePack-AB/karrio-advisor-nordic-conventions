@@ -67,3 +67,6 @@ Task 6.2: `connectors/dhl-freight-sweden` is synced to c878941 in `chore(connect
 
 Outside the numbered tasks: README L82 and `docs/concepts/scope.md` L28 stated as a non-goal that the plugin gives no advisories for what the connectors already enforce, which the reworded DHL invoice type warning and the existing Åland, joint declaration, and territory refusal warnings contradict; both now except warnings before a booking the connector will refuse, in `9d4d79e`.
 The main spec does not state this non-goal, so the change carries no delta for it.
+
+Re-audit, 2026-10-19: karrio-postnord `origin/main` moved to 320f3ad4f118f406e7b68ff7d4adeaca35b1d893, and the connector-sync audit of b03ddd0..320f3ad found the "unverified" clause of the Postpaket Utrikes message stale, because 58450b5 and 87e7dd6 record a test-mode booking in which PostNord composed the CN23 onto the label and add a PDF label check.
+The International Parcel requirement, proposal, and design now state the test-mode composition, the PDF check, and that production composition and ZPL labels are unverified, citing 320f3ad; the sync to 320f3ad follows once the message and its source carry that wording.

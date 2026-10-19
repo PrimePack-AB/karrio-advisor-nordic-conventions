@@ -5,6 +5,7 @@
 The plugin runs against the standalone connectors karrio-postnord and karrio-dhl-freight-sweden, and its development-only submodules pin the connector commits last audited against its claims: `connectors/postnord` at 3899da8 and `connectors/dhl-freight-sweden` at 62c1f46.
 The audit targets are the connectors' `origin/main` commits read on 2026-10-19: karrio-postnord b03ddd0c037a935f50b38727c8e15c479cda303f (committed 2026-10-14) and karrio-dhl-freight-sweden c87894125c9c1aebcd74095bd24a68c9eb098cdc (committed 2026-10-19).
 Both pinned commits are ancestors of these targets.
+The PostNord audit was re-run on 2026-10-19 against karrio-postnord 320f3ad4f118f406e7b68ff7d4adeaca35b1d893, the `origin/main` that followed b03ddd0; "Re-audit at 320f3ad" below records what changed, and the PostNord citations of the International Parcel requirement now cite 320f3ad.
 All connector evidence below is tagged S and cited by permalink at those commits, abbreviated as follows.
 
 - PN: `https://github.com/PrimePack-AB/karrio-postnord/blob/b03ddd0c037a935f50b38727c8e15c479cda303f/`
@@ -28,7 +29,9 @@ The connector built a CN23 for 91 already at 3899da8, its first standalone commi
 
 The connector sentence of `advisor_nordic_conventions_postnord_se_postpaket_commercial_invoice` becomes, for both the Norway and the other destinations text:
 
-> The connector currently sends CN23 declaration data and no invoice for International Parcel; it returns the CN23 as a separate document only when postnord_standalone_customs_documents is set, and whether PostNord prints the CN23 on the label is unverified, so supply the invoice yourself and check that the printed CN23 travels with the parcel.
+> The connector currently sends CN23 declaration data and no invoice for International Parcel; it returns the CN23 as a separate document only when postnord_standalone_customs_documents is set. In a test-mode booking PostNord composed the CN23 onto the label, and the connector checks PDF labels for it; production composition and ZPL labels are unverified, so supply the invoice yourself and check that the printed CN23 travels with the parcel.
+
+The b03ddd0 wording ended "…, and whether PostNord prints the CN23 on the label is unverified, so supply the invoice yourself and check that the printed CN23 travels with the parcel."; the re-audit at 320f3ad replaced that clause.
 
 The sentence keeps "currently", as every other connector claim in the plugin does, and the commit it rests on travels in `details` through the cited source, whose reference is the README permalink at b03ddd0.
 The specification states the claim "as of karrio-postnord b03ddd0", so a later connector commit that changes the behaviour is a stale claim the connector-sync audit reports against a named commit.
@@ -41,7 +44,7 @@ The advisory's trigger, `commercial`, does not look at commodities, and the curr
 
 The gap in "PostNord Sweden commercial Postpaket Utrikes carries a commercial invoice" said the connector sends CN22 data for 91 although PostNord requires the CN23 at every value.
 The data half is closed: the connector books the CN23 for 91 at every value, commercial or not, whenever the booking carries customs commodities outside the EU VAT area.
-The gap that remains is the printed CN23 for non-commercial International Parcel: no advisory tells the consumer to make sure it travels with the parcel, while its composition into the label is unverified and the standalone CN23 is opt-in.
+The gap that remains is the printed CN23 for non-commercial International Parcel: no advisory tells the consumer to make sure it travels with the parcel, while its composition onto the label is verified only in a test-mode booking and not in production or for ZPL labels and the standalone CN23 is opt-in.
 
 The gap in "The invoice type matches the content type" said the connector drops `customs.commercial_invoice`, `customs.invoice`, and `customs.invoice_date` for International Parcel and letter services.
 It still holds at b03ddd0, with CN23 in place of CN22 for 91, and its citation moves from the fork's `feat-postnord-customs-invoice` at 1b40eeb7e to PN `karrio/providers/postnord/shipment/create.py#L518-L571` and `#L890-L903`.
@@ -109,13 +112,23 @@ The `sources.py` module docstring and `docs/concepts/advisories.md` line 6 keep 
 ## Risks
 
 The PostNord connector is under active development on the Print API and customs correctness, and its README warns of breaking changes (PN `README.md#L3-L4`).
-The CN23 claim may go stale again soon, for example when the phase-2 capture settles whether PostNord composes the CN23 into the label, which would change the "unverified" clause.
-Mitigation: the claim is pinned to b03ddd0 in the specification and the source reference, the PostNord connector-sync audit runs immediately before apply and again before archive, and a change in `customs_structure`, `_customs_declaration_cn23`, the proxy's standalone fetch, or README L160-L212 between b03ddd0 and the new `origin/main` stops the apply until this change is updated.
+The CN23 claim went stale once during this change: the phase-2 capture settled in a test-mode booking that PostNord composes the CN23 onto the label, which changed the "unverified" clause, and the claim may go stale again when production or ZPL composition is verified.
+Mitigation: the claim is pinned to 320f3ad in the specification and the source reference, the PostNord connector-sync audit runs immediately before apply and again before archive, and a change in `customs_structure`, `_customs_declaration_cn23`, the proxy's standalone fetch, or README L160-L212 between b03ddd0 and the new `origin/main` stops the apply until this change is updated.
 
-karrio-postnord's documents disagree with each other on 91: `README.md#L78` calls the opt-in's document "the standalone CN22 of letter and International Parcel (91) bookings", and `docs/notes/integration/customs-at-booking.md#L88` says declarations are composed into `docs.label` by default, while `shipment/create.py#L29-L32` and `README.md#L209` say the CN23 composition is unverified.
-The plugin cites `README.md#L209` and `#L212` and the code, which agree, and reports the disagreement to the PostNord work.
+At b03ddd0 karrio-postnord's documents disagreed with each other on 91: `README.md#L78` calls the opt-in's document "the standalone CN22 of letter and International Parcel (91) bookings", and `docs/notes/integration/customs-at-booking.md#L88` says declarations are composed into `docs.label` by default, while `shipment/create.py#L29-L32` and `README.md#L209` say the CN23 composition is unverified.
+At 320f3ad they agree: `README.md#L79` names the opt-in's document "the standalone customs declaration of letter (CN22) and International Parcel (91, CN23) bookings", and `README.md#L208`, `#L212`, and `shipment/create.py#L29-L38` state the test-mode composition and the PDF label check; the plugin cites `README.md#L162-L164`, `#L208`, `#L212`, and `#L219` and the code.
 
 The DHL warning names an error a future connector commit could rename; the DHL connector-sync audit covers it like the other refusal advisories.
+
+## Re-audit at 320f3ad
+
+The connector-sync audit of b03ddd0..320f3ad on 2026-10-19 found one stale claim, the "unverified" clause of the Postpaket Utrikes message.
+karrio-postnord 58450b5 ("feat: verify CN23 label composition from the sandbox capture") and 87e7dd6 ("docs: reconcile the README customs and label sections with the CN23 capture") replaced README L209's pending verification with the capture and a PDF label check.
+The README states: "For International Parcel (91), a test-mode sandbox booking carrying the mapper-built CN23 was accepted with `printoutComposition` `{cn23: 1, label: 1}` and one two-page A4 PDF — the parcel label on page 1, the CN23 on page 2 (`tests/postnord/fixtures/sandbox/p1-cn23-gateway.response.json`, `tests/postnord/fixtures/sandbox/p1-cn23-gateway.printout01.pdf`); test mode sends no EDI downstream, so production composition may differ." (PN-320f3ad `README.md#L208`).
+It continues: "International Parcel (91) labels are verified on PDF against the CN23 page-text markers seeded from that capture, read from the classifier's matched kinds because its composition vocabulary is closed to the CN22; a ZPL label skips the check, no ZPL CN23 printout having been captured." (PN-320f3ad `README.md#L212`).
+The code agrees: `_label_composition_message` skips a ZPL label and `_cn23_label_composition_message` warns with `postnord_unexpected_label_composition` when a PDF label lacks the CN23 or label kinds (PN-320f3ad `karrio/providers/postnord/shipment/create.py#L123-L148` and `#L194-L240`), where PN-320f3ad is `https://github.com/PrimePack-AB/karrio-postnord/blob/320f3ad4f118f406e7b68ff7d4adeaca35b1d893/`.
+The other International Parcel claims hold at 320f3ad: the CN23 structure (`units.py#L499-L507`), the CN23 without invoice fields (`shipment/create.py#L649-L702`), and the opt-in standalone fetch (`README.md#L219`).
+The same range adds `FR` 97000-97999, `DK` 3800-3999, `FR` 98600-98899, and `EL` 63086 to karrio-postnord's `NON_EU_VAT_POSTAL_RANGES` (518b9eb) and its postal-code normalization (3d3a848), so the EU VAT area mismatch the proposal recorded as a follow-up is fixed upstream and `test_territories.py` asserts full equality again.
 
 ## Gitlink bump
 
