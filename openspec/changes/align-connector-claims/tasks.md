@@ -27,8 +27,8 @@
 
 ## 5. Service-set comment and specification Purpose
 
-- [ ] 5.1 Replace the comment at `karrio/plugins/advisor_nordic_conventions/lanes.py:25` with the karrio-postnord commit and `units.py` L157-L168 and L318-L334 of design.md's table; verify `test_lanes.py` passes, including the connector cross-check, and that it does not skip.
-- [ ] 5.2 Edit `openspec/specs/plugins/advisor-nordic-conventions/spec.md` directly, because deltas ignore `## Purpose`: replace the PNS and DFS sentence, the `feat-postnord-customs-invoice` sentence, the "as defined by PNS lines 10-11" clause, the karrio `develop` 7a56ffa5b `units.py:269-284` citation, and, per decision 3, the fork live-verification note citation with the connector permalinks of design.md's table, keeping the FN sentence; verify `rg -n 'PNS|DFS|7a56ffa5b|feat-postnord-customs-invoice' openspec/specs` prints nothing after archive.
+- [x] 5.1 Replace the comment at `karrio/plugins/advisor_nordic_conventions/lanes.py:25` with the karrio-postnord commit and `units.py` L157-L168 and L318-L334 of design.md's table; verify `test_lanes.py` passes, including the connector cross-check, and that it does not skip.
+- [x] 5.2 Edit `openspec/specs/plugins/advisor-nordic-conventions/spec.md` directly, because deltas ignore `## Purpose`: replace the PNS and DFS sentence, the `feat-postnord-customs-invoice` sentence, the "as defined by PNS lines 10-11" clause, the karrio `develop` 7a56ffa5b `units.py:269-284` citation, and, per decision 3, the fork live-verification note citation with the connector permalinks of design.md's table, keeping the FN sentence; verify `rg -n 'PNS|DFS|7a56ffa5b|feat-postnord-customs-invoice' openspec/specs` prints nothing after archive.
 
 ## 6. Connector sync
 
@@ -54,3 +54,6 @@ The same request mapped with the recipient changed to US 10001 carries `customsD
 
 Task 4.3: in `connectors/dhl-freight-sweden` at c878941, `tests/dhl_freight_sweden/test_shipment.py::TestDHLFreightShipment::test_shipment_sale_without_commercial_invoice_surfaces_field_error` passes; its four cases book 202 from SE to NO with sale-like content and `customs.commercial_invoice` false or unset, and receive a `SHIPPING_SDK_FIELD_ERROR` on `customs.commercial_invoice` without a request being sent.
 Mapping its `ShipmentPayload202MerchandiseNoFlag` directly raises `CommercialInvoiceRequiredError`.
+
+Task 5.1: the `lanes.py` comment cites karrio-postnord b03ddd0 `units.py` L154-L168 and L318-L334 rather than design.md's L157-L168, because the code `91` that `POSTNORD_INTERNATIONAL_PARCEL` mirrors is at L154.
+Task 5.2: before archive, `rg -n 'PNS|DFS|7a56ffa5b|feat-postnord-customs-invoice' openspec/specs` still prints lines in the requirements this change's delta replaces; the Purpose section prints none.
