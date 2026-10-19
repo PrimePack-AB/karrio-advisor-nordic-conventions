@@ -1,14 +1,7 @@
-import importlib
 import unittest
 
 import karrio.plugins.advisor_nordic_conventions.territories as territories
-
-
-def _connector_units(carrier_name: str):
-    try:
-        return importlib.import_module(f"karrio.providers.{carrier_name}.units")
-    except ImportError:
-        return None
+from . import fixture
 
 
 class TestNordicConventionsTerritories(unittest.TestCase):
@@ -157,9 +150,7 @@ class TestNordicConventionsTerritories(unittest.TestCase):
     def test_matches_connector_tables(self):
         for carrier_name in ("postnord", "dhl_freight_sweden"):
             with self.subTest(carrier_name=carrier_name):
-                units = _connector_units(carrier_name)
-                if units is None:
-                    self.skipTest(f"{carrier_name} connector is not importable")
+                units = fixture.connector_units(self, carrier_name)
 
                 self.assertSetEqual(
                     set(territories.EU_VAT_AREA_COUNTRIES),

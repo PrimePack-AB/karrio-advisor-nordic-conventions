@@ -1,14 +1,7 @@
-import importlib
 import unittest
 
 import karrio.plugins.advisor_nordic_conventions.exclusions as exclusions
-
-
-def _connector_units():
-    try:
-        return importlib.import_module("karrio.providers.dhl_freight_sweden.units")
-    except ImportError:
-        return None
+from . import fixture
 
 
 def _excluded(product, country, postal_code, party="recipient"):
@@ -63,9 +56,7 @@ class TestNordicConventionsDHLPostalCodeExclusions(unittest.TestCase):
         self.assertEqual(_excluded("202", "UA", "95000", party="shipper")[0], "shipper")
 
     def test_exclusions_match_connector(self):
-        units = _connector_units()
-        if units is None:
-            self.skipTest("dhl_freight_sweden connector is not importable")
+        units = fixture.connector_units(self, "dhl_freight_sweden")
 
         self.assertDictEqual(
             {country: tuple(postal_format) for country, postal_format in exclusions.POSTAL_CODE_FORMATS.items()},

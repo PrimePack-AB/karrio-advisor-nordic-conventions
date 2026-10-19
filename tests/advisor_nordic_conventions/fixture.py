@@ -1,4 +1,8 @@
+import importlib
+import sys
+import types
 import typing
+import unittest
 
 import karrio.lib as lib
 import karrio.core.models as models
@@ -128,3 +132,26 @@ def context(
 
 def messages(advisor, request, context) -> typing.List[dict]:
     return lib.to_dict(list(advisor(request, context)))
+
+
+def _forget_package(package: str) -> None:
+    for name in [name for name in sys.modules if name == package or name.startswith(f"{package}.")]:
+        del sys.modules[name]
+
+
+def connector_units(test_case: unittest.TestCase, carrier_name: str) -> types.ModuleType:
+    """Import a connector's units module, or skip the test if any exception escapes the import.
+
+    A failed import, here or in ``karrio.references.import_extensions``, can leave
+    submodules in ``sys.modules`` without their package; those are dropped before
+    importing, and everything under the package is dropped after a failure, so a
+    partially initialized module is never returned.
+    """
+    package = f"karrio.providers.{carrier_name}"
+    if package not in sys.modules:
+        _forget_package(package)
+    try:
+        return importlib.import_module(f"{package}.units")
+    except Exception as error:
+        _forget_package(package)
+        test_case.skipTest(f"{carrier_name} connector is not importable: {type(error).__name__}: {error}")

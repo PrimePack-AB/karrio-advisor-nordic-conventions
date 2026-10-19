@@ -1,15 +1,7 @@
-import importlib
 import unittest
 
 import karrio.plugins.advisor_nordic_conventions.lanes as lanes
 from . import fixture
-
-
-def _connector_units(carrier_name: str):
-    try:
-        return importlib.import_module(f"karrio.providers.{carrier_name}.units")
-    except ImportError:
-        return None
 
 
 def _lane(shipper, recipient, service="postnord_parcel", carrier="postnord", **kwargs):
@@ -234,9 +226,7 @@ class TestNordicConventionsProductGroups(unittest.TestCase):
         )
 
     def test_postnord_services_match_connector(self):
-        units = _connector_units("postnord")
-        if units is None:
-            self.skipTest("postnord connector is not importable")
+        units = fixture.connector_units(self, "postnord")
 
         self.assertDictEqual(
             lanes.POSTNORD_LETTER_SERVICES,
@@ -251,9 +241,7 @@ class TestNordicConventionsProductGroups(unittest.TestCase):
         )
 
     def test_dhl_customs_options_match_connector(self):
-        units = _connector_units("dhl_freight_sweden")
-        if units is None:
-            self.skipTest("dhl_freight_sweden connector is not importable")
+        units = fixture.connector_units(self, "dhl_freight_sweden")
 
         self.assertDictEqual(
             {option.name: option.value.code for option in lanes.DHLCustomsOption},
@@ -298,9 +286,7 @@ class TestNordicConventionsDHLProductLanes(unittest.TestCase):
         self.assertEqual(set(lanes.DHL_PRODUCT_LANE_CITATIONS), set(lanes.DHL_PRODUCT_LANES))
 
     def test_dhl_product_lanes_match_connector(self):
-        units = _connector_units("dhl_freight_sweden")
-        if units is None:
-            self.skipTest("dhl_freight_sweden connector is not importable")
+        units = fixture.connector_units(self, "dhl_freight_sweden")
 
         self.assertDictEqual(
             {code: tuple(map(tuple, product_lanes)) for code, product_lanes in lanes.DHL_PRODUCT_LANES.items()},
@@ -351,9 +337,7 @@ class TestNordicConventionsDHLTerritoryParents(unittest.TestCase):
                 self.assertEqual(lanes.dhl_lane_served(product, origin, destination), served)
 
     def test_dhl_territory_parents_match_connector(self):
-        units = _connector_units("dhl_freight_sweden")
-        if units is None:
-            self.skipTest("dhl_freight_sweden connector is not importable")
+        units = fixture.connector_units(self, "dhl_freight_sweden")
 
         self.assertDictEqual(lanes.DHL_TERRITORY_PARENTS, dict(units.TERRITORY_PARENTS))
 

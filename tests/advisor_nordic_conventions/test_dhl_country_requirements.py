@@ -1,4 +1,3 @@
-import importlib
 import unittest
 
 import karrio.core.units as core_units
@@ -423,14 +422,8 @@ class TestNordicConventionsDHLCountryRequirementsSpainDGDocuments(unittest.TestC
 
 
 class TestNordicConventionsDHLCountryRequirementsConnectorParity(unittest.TestCase):
-    def _connector_units(self):
-        try:
-            return importlib.import_module("karrio.providers.dhl_freight_sweden.units")
-        except ImportError:
-            self.skipTest("dhl_freight_sweden connector is not importable")
-
     def test_greek_tax_id_products_match_connector(self):
-        units = self._connector_units()
+        units = fixture.connector_units(self, "dhl_freight_sweden")
 
         self.assertSetEqual(
             dhl_country_requirements.GREEK_TAX_ID_PRODUCTS,
@@ -438,7 +431,7 @@ class TestNordicConventionsDHLCountryRequirementsConnectorParity(unittest.TestCa
         )
 
     def test_transport_declaration_products_match_connector(self):
-        units = self._connector_units()
+        units = fixture.connector_units(self, "dhl_freight_sweden")
 
         self.assertSetEqual(
             dhl_country_requirements.TRANSPORT_DECLARATION_PRODUCTS,
@@ -446,7 +439,7 @@ class TestNordicConventionsDHLCountryRequirementsConnectorParity(unittest.TestCa
         )
 
     def test_transport_declaration_free_weight_limit_matches_connector(self):
-        units = self._connector_units()
+        units = fixture.connector_units(self, "dhl_freight_sweden")
 
         self.assertEqual(
             dhl_country_requirements.TRANSPORT_DECLARATION_FREE_WEIGHT_LIMIT_KG,

@@ -1,4 +1,3 @@
-import importlib
 import unittest
 
 import karrio.plugins.advisor_nordic_conventions.lanes as lanes
@@ -57,10 +56,7 @@ class TestNordicConventionsDHLFreightSwedenCustomsModeMissing(unittest.TestCase)
 
     def test_joint_declaration_countries_match_connector(self):
         self.assertTupleEqual(lanes.DHL_JOINT_DECLARATION_COUNTRIES, ("NO", "CH"))
-        try:
-            units = importlib.import_module("karrio.providers.dhl_freight_sweden.units")
-        except ImportError:
-            self.skipTest("dhl_freight_sweden connector is not importable")
+        units = fixture.connector_units(self, "dhl_freight_sweden")
 
         self.assertTupleEqual(lanes.DHL_JOINT_DECLARATION_COUNTRIES, tuple(units.JOINT_DECLARATION_COUNTRIES))
 
@@ -187,10 +183,7 @@ class TestNordicConventionsDHLFreightSwedenAlandCustomsMode(unittest.TestCase):
                 )
 
     def test_aland_postal_range_matches_connector(self):
-        try:
-            units = importlib.import_module("karrio.providers.dhl_freight_sweden.units")
-        except ImportError:
-            self.skipTest("dhl_freight_sweden connector is not importable")
+        units = fixture.connector_units(self, "dhl_freight_sweden")
 
         self.assertTupleEqual(lanes.DHL_ALAND_POSTAL_RANGE, units.ALAND_POSTAL_RANGE)
         self.assertSetEqual(
@@ -296,10 +289,7 @@ class TestNordicConventionsDHLFreightSwedenTerritoryPostalCode(unittest.TestCase
         )
 
     def test_territory_postal_codes_match_connector(self):
-        try:
-            units = importlib.import_module("karrio.providers.dhl_freight_sweden.units")
-        except ImportError:
-            self.skipTest("dhl_freight_sweden connector is not importable")
+        units = fixture.connector_units(self, "dhl_freight_sweden")
 
         self.assertDictEqual(
             {code: tuple(territory) for code, territory in lanes.DHL_TERRITORY_POSTAL_CODES.items()},
@@ -487,10 +477,7 @@ class TestNordicConventionsDHLFreightSwedenAttachedDocuments(unittest.TestCase):
                 )
 
     def test_parcel_connect_matches_connector(self):
-        try:
-            units = importlib.import_module("karrio.providers.dhl_freight_sweden.units")
-        except ImportError:
-            self.skipTest("dhl_freight_sweden connector is not importable")
+        units = fixture.connector_units(self, "dhl_freight_sweden")
 
         service = units.ShippingService.dhl_freight_sweden_parcel_connect_b2c
         self.assertSetEqual(
