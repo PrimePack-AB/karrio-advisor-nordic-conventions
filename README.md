@@ -79,7 +79,7 @@ The full stance is in [Scope](docs/concepts/scope.md#compliance).
 
 ## Non-goals
 
-No advice at rating time, no per-organisation overrides, no advisories for Norwegian shippers, no goods-value thresholds except VOEC's per-item NOK 3,000 when a VOEC number is set ([VOEC item over NOK 3,000](docs/concepts/advisories.md#advisor_nordic_conventions_voec_item_over_threshold)), no CN22 or CN23 selection guidance, nothing the connectors already enforce, and no network calls.
+No advice at rating time, no per-organisation overrides, no advisories for Norwegian shippers, no goods-value thresholds except VOEC's per-item NOK 3,000 when a VOEC number is set ([VOEC item over NOK 3,000](docs/concepts/advisories.md#advisor_nordic_conventions_voec_item_over_threshold)), no CN22 or CN23 selection guidance, nothing the connectors already enforce except warnings before a booking they will refuse, and no network calls.
 The complete list, with the reason for each gap, is in [Scope](docs/concepts/scope.md#non-goals).
 
 ## Development
