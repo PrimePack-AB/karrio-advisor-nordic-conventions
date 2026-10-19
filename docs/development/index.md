@@ -17,7 +17,7 @@ Create a virtual environment and install the forked SDK and the plugin with `pip
 `.gitmodules` sets `update = none` for both, so a plain `git submodule update --init` and pip's VCS installs leave them empty, and the built sdist and wheel do not include them.
 Each submodule's gitlink is the last connector commit audited against the advisor's claims about that connector.
 
-Check them out and install them once, borrowing objects from local clones under `~/projects` when they exist:
+Check them out and install them once, copying objects from local clones under `~/projects` when they exist; the script passes `--dissociate`, so the submodules do not depend on those clones afterwards:
 
 ```bash
 PYTHON=.venv/bin/python scripts/init-connectors --reference-dir ~/projects --install

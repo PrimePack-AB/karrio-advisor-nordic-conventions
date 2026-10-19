@@ -8,8 +8,9 @@ Usage: scripts/init-connectors [--reference-dir DIR] [--install]
 Check out the development-only connector submodules at their recorded
 commits, overriding their update = none setting for this run.
 
-  --reference-dir DIR  borrow objects from DIR/karrio-postnord and
-                       DIR/karrio-dhl-freight-sweden when they exist
+  --reference-dir DIR  copy objects from DIR/karrio-postnord and
+                       DIR/karrio-dhl-freight-sweden when they exist,
+                       dissociating so no alternates remain
   --install            pip install --no-deps -e both connectors with
                        ${PYTHON:-python}
 USAGE
@@ -50,7 +51,7 @@ for entry in "${connectors[@]}"; do
   read -r name path clone <<<"$entry"
   args=()
   if [[ -n "$reference_dir" && -d "$reference_dir/$clone/.git" ]]; then
-    args+=(--reference "$reference_dir/$clone")
+    args+=(--reference "$reference_dir/$clone" --dissociate)
   fi
   git -c "submodule.$name.update=checkout" submodule update --init "${args[@]}" -- "$path"
   # Older connector commits do not ignore what an editable install and imports write.
