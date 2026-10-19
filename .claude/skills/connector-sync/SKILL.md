@@ -33,7 +33,13 @@ If the range is empty there is nothing to sync.
 
 Check that the connector imports against the installed karrio SDK at both commits (`git -C connectors/<c> checkout <commit>` then `$PY -c "import karrio.providers.<pkg>"`).
 The cross-check tests skip only on `ImportError`; an `AttributeError` from a missing SDK symbol leaves part of the package in `sys.modules`, so later tests run against a half-imported connector and their outcome depends on test order.
-Report an import failure with the missing symbol, and check that the SDK checkout contains the minimum commit named in the `requirements-dev.txt` comment (`git -C ../karrio merge-base --is-ancestor <commit> HEAD`); report it if not, never change the pin.
+Report an import failure with the missing symbol, and check that the installed SDK provides the capabilities named in the `requirements-dev.txt` comment; `PluginMetadata` is an attrs class, so test its fields with `attr.fields_dict`:
+
+```bash
+$PY -c 'import attr, karrio.lib as lib; from karrio.core.metadata import PluginMetadata; assert "shipment_advisors" in attr.fields_dict(PluginMetadata); lib.StampSeed'
+```
+
+Report a failure of this check; never change the SDK checkout or `requirements-dev.txt`.
 
 ## Classify the range
 
@@ -101,4 +107,4 @@ If no claim is stale:
 
 Some citations point into the karrio fork rather than the standalone connectors, and this procedure does not sync them: `FACTS_NOTE`, `PNS`, `DFS`, the `CONNECTOR_FLAG_MAPPING` path, and comments citing `karrio develop <sha>`.
 List them in every report as orphaned fork pins, together with any change in the standalone connector that touches the behaviour they describe.
-Report an SDK checkout whose HEAD does not contain the minimum commit named in the `requirements-dev.txt` comment without changing either.
+Report an installed SDK that fails the capability check above without changing the checkout or `requirements-dev.txt`.
