@@ -22,8 +22,17 @@ CARRIER_SOURCES: typing.Dict[str, typing.List[sources.Source]] = {
     ],
     lanes.DHL_FREIGHT_SWEDEN: [
         sources.DHL_CONNECTOR_COMMERCIAL_FLAG,
+        sources.DHL_CONNECTOR_COMMERCIAL_INVOICE_REQUIRED,
         sources.PROFORMA_FOR_GOODS_NOT_SOLD,
     ],
+}
+
+CONNECTOR_PROFORMA_OUTCOME: typing.Dict[str, str] = {
+    lanes.POSTNORD: "The connector declares a proforma invoice because customs.commercial_invoice is not true,",
+    lanes.DHL_FREIGHT_SWEDEN: (
+        "The connector refuses this booking with CommercialInvoiceRequiredError"
+        " because customs.commercial_invoice is not true"
+    ),
 }
 
 
@@ -49,7 +58,7 @@ def invoice_type_content_mismatch(request, context) -> typing.List[models.Messag
             "warning",
             " ".join(
                 [
-                    "The connector declares a proforma invoice because customs.commercial_invoice is not true,",
+                    CONNECTOR_PROFORMA_OUTCOME[lane.carrier_name],
                     "but the content is described as goods for sale.",
                     "A proforma invoice is for gifts and samples for which the recipient makes no payment;",
                     "set commercial_invoice to true for goods sold.",

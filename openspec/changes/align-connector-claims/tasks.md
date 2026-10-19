@@ -21,9 +21,9 @@
 
 ## 4. Invoice type message
 
-- [ ] 4.1 Test-first: in `tests/advisor_nordic_conventions/test_invoice_type.py`, expect the DHL Freight Sweden warning to state the `CommercialInvoiceRequiredError` refusal with design.md's text, the PostNord warning to keep the proforma statement, and the per-carrier `details` sources of design.md's table; watch them fail, then split the warning text by carrier in `rules/invoice_type.py` and update `CARRIER_SOURCES`; verify `test_invoice_type.py` passes and the `info` branch is unchanged for both carriers.
-- [ ] 4.2 In the same commit, check the Invoice type mismatch row of `docs/concepts/advisories.md` and the Both carriers summary line of `README.md` against the new messages; the row's Level, Destinations, and Trigger cells stay unchanged; verify the four AGENTS.md verification commands print nothing.
-- [ ] 4.3 Verify against the audited karrio-dhl-freight-sweden commit that a sale-like booking from SE to NO without `customs.commercial_invoice` raises `CommercialInvoiceRequiredError`, by running the connector's own test for it in `connectors/dhl-freight-sweden`; record the test name and result in the apply notes.
+- [x] 4.1 Test-first: in `tests/advisor_nordic_conventions/test_invoice_type.py`, expect the DHL Freight Sweden warning to state the `CommercialInvoiceRequiredError` refusal with design.md's text, the PostNord warning to keep the proforma statement, and the per-carrier `details` sources of design.md's table; watch them fail, then split the warning text by carrier in `rules/invoice_type.py` and update `CARRIER_SOURCES`; verify `test_invoice_type.py` passes and the `info` branch is unchanged for both carriers.
+- [x] 4.2 In the same commit, check the Invoice type mismatch row of `docs/concepts/advisories.md` and the Both carriers summary line of `README.md` against the new messages; the row's Level, Destinations, and Trigger cells stay unchanged; verify the four AGENTS.md verification commands print nothing.
+- [x] 4.3 Verify against the audited karrio-dhl-freight-sweden commit that a sale-like booking from SE to NO without `customs.commercial_invoice` raises `CommercialInvoiceRequiredError`, by running the connector's own test for it in `connectors/dhl-freight-sweden`; record the test name and result in the apply notes.
 
 ## 5. Service-set comment and specification Purpose
 
@@ -51,3 +51,6 @@ The pytest run with both connectors checked out at these commits passes except `
 Task 3.3: in `connectors/postnord` at b03ddd0, the connector's tests selected by `-k 'cn23 or international_parcel'` in `tests/postnord/test_shipment.py`, among them `test_create_shipment_cn23_request`, which asserts `customsDeclarationCN23` and no `customsInvoice` or `customsDeclarationCN22` for a `postnord_postpaket_utrikes` booking from SE to NO, pass 13 of 16.
 The three failures, `test_international_parcel_labels_are_not_composition_verified` (two cases) and `test_international_parcel_label_without_cn22_format_is_not_verified`, assert an empty message list and receive this plugin's own `advisor_nordic_conventions_postnord_se_postpaket_commercial_invoice` advisory, because the development environment's karrio loads the installed advisor plugin during the connector's shipment parse; they do not bear on the CN23 claim.
 The same request mapped with the recipient changed to US 10001 carries `customsDeclarationCN23` and neither `customsInvoice` nor `customsDeclarationCN22`.
+
+Task 4.3: in `connectors/dhl-freight-sweden` at c878941, `tests/dhl_freight_sweden/test_shipment.py::TestDHLFreightShipment::test_shipment_sale_without_commercial_invoice_surfaces_field_error` passes; its four cases book 202 from SE to NO with sale-like content and `customs.commercial_invoice` false or unset, and receive a `SHIPPING_SDK_FIELD_ERROR` on `customs.commercial_invoice` without a request being sent.
+Mapping its `ShipmentPayload202MerchandiseNoFlag` directly raises `CommercialInvoiceRequiredError`.

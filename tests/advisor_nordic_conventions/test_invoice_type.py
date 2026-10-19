@@ -10,6 +10,12 @@ PROFORMA_FOR_GOODS_SOLD = (
     "A proforma invoice is for gifts and samples for which the recipient makes no payment; "
     "set commercial_invoice to true for goods sold."
 )
+REFUSED_WITHOUT_COMMERCIAL_INVOICE = (
+    "The connector refuses this booking with CommercialInvoiceRequiredError "
+    "because customs.commercial_invoice is not true but the content is described as goods for sale. "
+    "A proforma invoice is for gifts and samples for which the recipient makes no payment; "
+    "set commercial_invoice to true for goods sold."
+)
 COMMERCIAL_FOR_GIFT_OR_SAMPLE = (
     "A commercial invoice is declared for content described as a gift or sample, "
     "for which a proforma invoice is the usual document."
@@ -21,6 +27,7 @@ POSTNORD_SOURCES = [
 ]
 DHL_FREIGHT_SWEDEN_SOURCES = [
     sources.DHL_CONNECTOR_COMMERCIAL_FLAG.to_dict(),
+    sources.DHL_CONNECTOR_COMMERCIAL_INVOICE_REQUIRED.to_dict(),
     sources.PROFORMA_FOR_GOODS_NOT_SOLD.to_dict(),
 ]
 
@@ -53,7 +60,7 @@ class TestNordicConventionsInvoiceTypeContentMismatch(unittest.TestCase):
             [
                 _message(
                     "warning",
-                    PROFORMA_FOR_GOODS_SOLD,
+                    REFUSED_WITHOUT_COMMERCIAL_INVOICE,
                     "SE-NO",
                     DHL_FREIGHT_SWEDEN_SOURCES,
                 )
@@ -110,6 +117,19 @@ class TestNordicConventionsInvoiceTypeContentMismatch(unittest.TestCase):
                 )
             ],
         )
+
+    def test_gift_declared_as_commercial_on_postnord_is_informational(self):
+        self.assertListEqual(
+            _advise("postnord", "postnord_parcel", fixture.customs("gift", True)),
+            [_message("info", COMMERCIAL_FOR_GIFT_OR_SAMPLE, "SE-NO", POSTNORD_SOURCES)],
+        )
+
+    def test_dhl_freight_sweden_sources_cite_the_refusal_commit(self):
+        self.assertIn(
+            "karrio-dhl-freight-sweden/commit/ec180e61ca7ae4e763f58d9919ad9be0ae2ab56f",
+            DHL_FREIGHT_SWEDEN_SOURCES[1]["reference"],
+        )
+        self.assertIn("CommercialInvoiceRequiredError", DHL_FREIGHT_SWEDEN_SOURCES[0]["statement"])
 
     def test_letters_carry_no_invoice_type(self):
         self.assertListEqual(
