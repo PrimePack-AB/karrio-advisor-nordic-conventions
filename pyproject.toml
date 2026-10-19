@@ -38,3 +38,6 @@ include-package-data = true
 include = ["karrio*"]
 exclude = ["tests.*", "tests"]
 namespaces = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
