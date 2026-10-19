@@ -4,6 +4,8 @@
 # karrio.lib.StampSeed, needed by the PostNord connector.
 # The karrio fork's develop branch provides both (last verified at a7355a5c8
 # on 2026-10-19); develop is regenerated, so its commit shas are not durable.
+# Releases are tested against the fork snapshot tag named by karrio-ref under
+# [tool.primepack] in pyproject.toml.
 # git+https cannot install the fork: pip recursively fetches the monorepo's
 # private karrioapi submodules (ee/insiders, ee/platform) and fails, although
 # modules/sdk needs neither. Install from a local checkout instead.

@@ -13,6 +13,7 @@ Create a virtual environment and install the forked SDK and the plugin with `pip
 The checkout must provide `karrio.core.metadata.PluginMetadata.shipment_advisors`, the advisor hook proposed upstream in [karrioapi/karrio#1150](https://github.com/karrioapi/karrio/pull/1150), and `karrio.lib.StampSeed`, which the PostNord connector needs.
 The development setup uses `develop` rather than the branch of the upstream pull request because `develop` carries both, last verified at a7355a5c8 on 2026-10-19.
 `develop` is regenerated, so its commit shas are not durable and the requirement is stated by capability rather than by commit.
+Each release records the fork snapshot tag it was tested against, as described in [Releasing](#releasing).
 A `git+https` install cannot replace the local checkout, because pip recursively fetches the monorepo's private `karrioapi` submodules that `modules/sdk` does not need.
 
 ## Connector submodules
@@ -41,6 +42,21 @@ PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -v -f tests
 
 The suite includes `tests/advisor_nordic_conventions/test_examples.py`, which runs the shipment requests in `examples/` through the advisors, and `tests/advisor_nordic_conventions/test_doc_links.py`, which checks that every relative link in the README and the published `docs/` pages resolves.
 The connector cross-check tests run when the PostNord and DHL Freight Sweden connectors are importable, as after `scripts/init-connectors --install`, and are skipped otherwise.
+
+## Releasing
+
+Releases are in-development builds published as GitHub releases of this repository only; nothing is published to PyPI or another index.
+Versions are CalVer `YYYY.M.N`, where `N` counts releases within the month, and each is tagged `vYYYY.M.N`.
+`karrio-ref` under `[tool.primepack]` in `pyproject.toml` names the fork snapshot tag, of the form `snapshot-YYYY.MM.DD.N`, that the release is tested against; update it to a snapshot tag that provides the capabilities listed under [Setup](#setup) before releasing.
+
+Prepare a release from a clean `main` that is up to date with `origin/main`:
+
+```bash
+scripts/release.sh 2026.10.7
+```
+
+The script sets the `[project] version`, commits it as `chore(release): <version>`, creates the annotated tag `v<version>`, and prints the push command without running it.
+Pushing the tag runs `.github/workflows/release.yml`, which checks with `scripts/check-release-tag.sh` that the tag matches the version, installs the fork SDK from the `karrio-ref` snapshot, runs the test suite without the connector submodules, and creates the GitHub release with generated notes headed by the required snapshot.
 
 ## Known limitations
 
