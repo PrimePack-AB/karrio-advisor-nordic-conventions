@@ -80,7 +80,15 @@ Spec requirement to change: "<requirement heading>" at `openspec/specs/plugins/a
 
 ## Current claims
 
-<citation>: unchanged between <cited> and <new-short>; <reading pin that may advance, or historical event that stays>.
+<citation>: unchanged between <cited> and <new-short>; <reading pin that may advance, or historical event whose behaviour survives>.
+
+## Pins that stay
+
+<citation>: cited content changed between <cited> and <new-short>, claim still holds; the pin stays at <cited>.
+
+## New behaviour without an advisory
+
+<sha> "<subject>": <behaviour>, bearing on <advisory or lane>.
 
 ## Reported only
 

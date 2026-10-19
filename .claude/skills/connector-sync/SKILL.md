@@ -72,11 +72,14 @@ Inventory every place the advisor cites this connector with the commands in [ref
 
 For each citation, diff the cited file at the cited commit against the target, `git -C connectors/<c> diff <cited> "$new" -- <path>`, and decide whether the cited statement still holds.
 A citation that names a commit as the point a behaviour began ("from commit X the connector refuses …", a `/commit/<sha>` URL) records a historical event: it stays true as long as the behaviour still exists at the target, so check that the behaviour survives, and never rewrite the commit.
-A citation that reads a file at a commit (a `/blob/<sha>/` URL with a read date, or a comment naming a commit and `units.py`) is a reading pin: it is stale when the cited content changed.
+A citation that reads a file at a commit (a `/blob/<sha>/` URL with a read date, or a comment naming a commit and `units.py`) is a reading pin.
+A reading pin whose cited content is unchanged may advance; one whose cited content changed while the claim still holds stays at its commit and is listed in the report; one whose claim no longer holds is a stale claim.
 
+Audit every claim against the target commit, not only those the range touched: a claim can already be stale at the old gitlink, and the range classification only says where new drift is likely.
 Then read every advisory message in `rules/` that asserts connector behaviour, found with `rg -n -i 'connector' karrio/plugins/advisor_nordic_conventions/rules/`, together with each `Source` whose statement describes what the connector does.
 For each, find the code that implements the behaviour at the target commit and confirm the message still describes it.
 Messages state their claims in present tense ("currently sends", "refuses", "validates"); one counter-example in the target code makes the claim stale.
+List new connector behaviour that bears on an advisory's lane but contradicts no claim, such as a new refusal or a changed EU VAT area test, under its own heading; it does not block a sync.
 Claims backed by `PNS`, `DFS`, `FACTS_NOTE`, or a `karrio develop` or `karrio modules/connectors/...` path describe the karrio fork rather than the standalone connector, but the advisory still runs against the standalone connector, so audit the claim against the standalone code all the same.
 
 ## Outcome
