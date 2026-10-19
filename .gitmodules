@@ -1,0 +1,10 @@
+[submodule "postnord"]
+	path = connectors/postnord
+	url = https://github.com/PrimePack-AB/karrio-postnord.git
+	branch = main
+	update = none
+[submodule "dhl-freight-sweden"]
+	path = connectors/dhl-freight-sweden
+	url = https://github.com/PrimePack-AB/karrio-dhl-freight-sweden.git
+	branch = main
+	update = none
