@@ -46,6 +46,11 @@ comm -23 <(grep -r --exclude-dir=notes -ohE '#advisor_nordic_conventions_[a-z_]+
 Run the test suite before committing; `tests/advisor_nordic_conventions/test_doc_links.py` checks that every relative link in the README and the docs pages resolves.
 The [specification](openspec/specs/plugins/advisor-nordic-conventions/spec.md) is the normative source when the README, the docs pages, and the code disagree about intended behaviour; record the disagreement rather than resolving it silently.
 
+## Connector submodules
+
+The gitlinks of `connectors/postnord` and `connectors/dhl-freight-sweden` are the connector commits last audited against the advisor's claims about each connector; they are development-only and set up as described in [docs/development/index.md](docs/development/index.md).
+Move a gitlink only through the connector-sync skill in `.claude/skills/connector-sync/SKILL.md`, which reports stale claims instead of bumping when a connector's behaviour no longer matches an advisory.
+
 ## Documentation site
 
 The `docs/` tree is published by the external harness as described in [docs/development/architecture/docs-site.md](docs/development/architecture/docs-site.md).
