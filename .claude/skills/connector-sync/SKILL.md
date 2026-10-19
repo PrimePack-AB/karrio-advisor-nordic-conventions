@@ -86,7 +86,7 @@ Then read every advisory message in `rules/` that asserts connector behaviour, f
 For each, find the code that implements the behaviour at the target commit and confirm the message still describes it.
 Messages state their claims in present tense ("currently sends", "refuses", "validates"); one counter-example in the target code makes the claim stale.
 List new connector behaviour that bears on an advisory's lane but contradicts no claim, such as a new refusal or a changed EU VAT area test, under its own heading; it does not block a sync.
-Claims backed by `PNS`, `DFS`, `FACTS_NOTE`, or a `karrio develop` or `karrio modules/connectors/...` path describe the karrio fork rather than the standalone connector, but the advisory still runs against the standalone connector, so audit the claim against the standalone code all the same.
+Claims backed by `FACTS_NOTE` or by an FN locator naming a `karrio modules/connectors/...` path describe the karrio fork rather than the standalone connector, but the advisory still runs against the standalone connector, so audit the claim against the standalone code all the same.
 
 ## Outcome
 
@@ -105,6 +105,6 @@ If no claim is stale:
 
 ## Out of scope, reported only
 
-Some citations point into the karrio fork rather than the standalone connectors, and this procedure does not sync them: `FACTS_NOTE`, `PNS`, `DFS`, the `CONNECTOR_FLAG_MAPPING` path, and comments citing `karrio develop <sha>`.
+Some citations point into the karrio fork rather than the standalone connectors, and this procedure does not sync them: `FACTS_NOTE` and the FN locators in `sources.py` that name a `karrio modules/connectors/...` path.
 List them in every report as orphaned fork pins, together with any change in the standalone connector that touches the behaviour they describe.
 Report an installed SDK that fails the capability check above without changing the checkout or `requirements-dev.txt`.

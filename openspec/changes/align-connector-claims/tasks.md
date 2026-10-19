@@ -34,7 +34,7 @@
 
 - [ ] 6.1 Run `.venv/bin/python -m unittest discover -s tests` and the pytest run of the connector-sync skill with both connectors checked out at the audited commits; verify every test passes and no connector cross-check test skips.
 - [ ] 6.2 Run the connector-sync skill for PostNord, then for DHL Freight Sweden, so it bumps `connectors/postnord` and `connectors/dhl-freight-sweden` to the audited commits and advances the reading pins whose cited content is unchanged, `PN_CONNECTOR_README_URL`, `DHL_CONNECTOR_README_URL`, and the `lanes.py` comment among them, each with its footnote; verify each run ends in its `chore(connectors): sync <c> to <short-sha>` commit and reports no stale claim.
-- [ ] 6.3 Update the "Out of scope, reported only" list in `.claude/skills/connector-sync/SKILL.md` and the fork pin entries of its `reference.md` so it names only the fork pins left after this change (`FACTS_NOTE` and the FN locators), on this branch after its rebase onto `connector-sync-skill`, per decision 4; verify `rg -n 'PNS|DFS|CONNECTOR_FLAG_MAPPING' .claude/skills/connector-sync` prints nothing.
+- [x] 6.3 Update the "Out of scope, reported only" list in `.claude/skills/connector-sync/SKILL.md` and the fork pin entries of its `reference.md` so it names only the fork pins left after this change (`FACTS_NOTE` and the FN locators), on this branch after its rebase onto `connector-sync-skill`, per decision 4; verify `rg -n 'PNS|DFS|CONNECTOR_FLAG_MAPPING' .claude/skills/connector-sync` prints nothing.
 
 ## 7. Verification and archive
 

@@ -92,6 +92,6 @@ Spec requirement to change: "<requirement heading>" at `openspec/specs/plugins/a
 
 ## Reported only
 
-Orphaned fork pins: <FACTS_NOTE, PNS, DFS, CONNECTOR_FLAG_MAPPING, karrio develop comments>, with any range commit touching what they describe.
+Orphaned fork pins: <FACTS_NOTE, FN locators naming karrio modules/connectors paths>, with any range commit touching what they describe.
 SDK capabilities: the capability check <passes | fails with <error>>, the checkout is at <sha>.
 ```
