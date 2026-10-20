@@ -43,3 +43,9 @@ The development pages are for working on the plugin itself: setup and tests, the
 - [Development](development/index.md)
 - [Plugin layout](development/architecture/plugin-layout.md)
 - [Documentation site](development/architecture/docs-site.md)
+
+## Trademarks and affiliation
+
+PrimePack AB is not affiliated with, endorsed by, or sponsored by PostNord, DHL, or any of their subsidiaries, including DHL Freight Sweden.
+PrimePack AB does not own karrio and is not affiliated with Karrio Inc.
+PostNord, DHL, and karrio are names or trademarks of their respective owners and are used only to identify the carriers and the SDK this plugin works with.
