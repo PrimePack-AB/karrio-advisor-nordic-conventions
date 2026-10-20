@@ -91,3 +91,16 @@ PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -v -f tests
 ```
 
 Setup against the karrio fork, the connector cross-check tests, and the documentation-site preview are documented in [Development](docs/development/index.md).
+
+## Licence
+
+Copyright (c) 2026 PrimePack AB.
+This Karrio Advisory Plugin is distributed under the GNU Lesser General Public License v3.0; see [LICENSE](LICENSE).
+It uses the karrio SDK, which is distributed under the same licence, and includes no code from karrio's separately licensed `ee/` directory.
+
+## Trademarks and affiliation
+
+PrimePack AB is not affiliated with, endorsed by, or sponsored by PostNord, DHL, or any of their subsidiaries, including DHL Freight Sweden.
+PrimePack AB does not own karrio and is not affiliated with Karrio Inc.
+PostNord, DHL, and karrio are names or trademarks of their respective owners and are used only to identify the carriers and the SDK this plugin works with.
+The advisories cite carrier and authority documentation, which remains the authoritative statement of each requirement.
