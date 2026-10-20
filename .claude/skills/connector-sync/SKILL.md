@@ -47,7 +47,8 @@ List the changed paths with `git -C connectors/<c> diff --stat "$old" "$new"` an
 Provider constants in `karrio/providers/<pkg>/units.py` are mirrored as literals in `lanes.py`, `territories.py`, `exclusions.py`, and `rules/`.
 Booking behaviour in `karrio/providers/<pkg>/shipment/*.py` backs the advisory messages that state what the connector sends, refuses, or validates.
 `README.md` and `docs/concepts/*.md` are cited documents.
-For `vendor/` and `schemas/` compare tree ids, `git -C connectors/<c> rev-parse "$old:vendor" "$new:vendor"`, and read the diff only when they differ.
+For `schemas/` compare tree ids, `git -C connectors/<c> rev-parse "$old:schemas" "$new:schemas"`, and read the diff only when they differ.
+The connectors do not track the carrier specifications: each cites them by title, version, and sha256 in a table in `docs/development/index.md` and keeps local copies in a gitignored `vendor/`, so a changed row in that table marks a changed specification.
 A `pyproject.toml` version change is noted in the report and needs no action on its own.
 
 ## Mechanical checks

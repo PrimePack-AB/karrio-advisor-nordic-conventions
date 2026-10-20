@@ -8,9 +8,9 @@
 | `karrio/providers/<pkg>/shipment/*.py` | Advisory messages and `Source` statements about what the connector sends, refuses, or validates at booking |
 | `karrio/providers/<pkg>/*.py` (other) | Claims about document production, stamping, and option handling |
 | `README.md`, `docs/concepts/*.md` | `blob/<sha>` URL constants in `sources.py` and their footnotes |
-| `vendor/`, `schemas/` | Claims resting on the carrier specification the connector vendors; compare tree ids first |
+| `schemas/`, the specification table in `docs/development/index.md` | Claims resting on the carrier specification the connector cites; compare `schemas/` tree ids first |
 | `pyproject.toml` | Nothing by itself; note the version in the report |
-| `tests/`, `docs/notes/`, `docs/development/`, `.github/`, `CLAUDE.md` | Nothing the advisor cites, unless the inventory below finds a citation |
+| `tests/`, `docs/notes/`, `docs/development/` (other than the specification table), `.github/`, `CLAUDE.md` | Nothing the advisor cites, unless the inventory below finds a citation |
 
 ## Mirrored constants
 
