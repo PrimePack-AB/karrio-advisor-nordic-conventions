@@ -52,7 +52,7 @@ When each advisory fires, how territory codes are read, the compliance stance, a
 
 ## Advisory reference
 
-Each advisory is a message with level `warning` or `info`, a stable code (public contract; renaming one is breaking), English text, and `details` with the lane and its `sources`, each tagged `S` (repository code or vendored specification), `W` (public carrier or authority documentation), or `I` (inference); where sources disagree the message states the stricter requirement.
+Each advisory is a message with level `warning` or `info`, a stable code (public contract; renaming one is breaking), English text, and `details` with the lane and its `sources`, each tagged `S` (repository code or a vendored or cited carrier API specification), `W` (public carrier or authority documentation), or `I` (inference); where sources disagree the message states the stricter requirement.
 The full per-carrier reference, with every advisory's level, destinations, trigger, and cited sources, the stable codes, and the source footnotes, is published in the [advisory reference](docs/concepts/advisories.md):
 
 - [PostNord from Sweden](docs/concepts/advisories.md#postnord-from-sweden): digital invoice to Norway, Postpaket Utrikes invoice, paper invoice.

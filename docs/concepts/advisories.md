@@ -3,7 +3,7 @@ title: "Advisory reference"
 ---
 
 Each advisory is a message with level `warning` or `info`, a stable code (public contract; renaming one is breaking), English text, and `details` with the lane and its `sources`, each tagged `S`, `W`, or `I`.
-The tags follow the karrio fork's facts note: `S` is repository code or vendored specification, `W` is public carrier or authority documentation, and `I` is inference.
+The tags follow the karrio fork's facts note: `S` is repository code or a vendored or cited carrier API specification, `W` is public carrier or authority documentation, and `I` is inference.
 Where sources disagree the message states the stricter requirement.
 DHL Freight Sweden customs options count only under their unified names: `dhl_freight_sweden_customs_handling_standard`, `dhl_freight_sweden_customs_handling_full_service`, `dhl_freight_sweden_customs_own_declaration`, `dhl_freight_sweden_customs_joint_declaration`.
 Footnotes are named after their constants in `karrio/plugins/advisor_nordic_conventions/sources.py`; the [specification](../../openspec/specs/plugins/advisor-nordic-conventions/spec.md) has the section and line references.

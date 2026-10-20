@@ -3,8 +3,8 @@
 Each ``Source`` carries the evidence tag of the karrio fork's facts note
 ``docs/notes/customs/nordic-trade-documents-facts.md`` (branch
 ``docs-openspec``, commit baf8eb3dd), cited as FN with line numbers: S is
-repository code or vendored specification, W is public carrier or authority
-documentation, and I is inference. Connector behaviour is cited from the
+repository code or a vendored or cited carrier API specification, W is public
+carrier or authority documentation, and I is inference. Connector behaviour is cited from the
 standalone connectors: karrio-postnord's README and code at commit
 320f3ad4f118f406e7b68ff7d4adeaca35b1d893, and karrio-dhl-freight-sweden's
 README and docs pages at commit 7a2214d and the commits that introduced its
