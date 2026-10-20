@@ -29,6 +29,7 @@ PN_DK_PAGE_URL = "https://www.postnord.dk/erhverv/eksport/ (Wayback 2026-03-10)"
 DHL_MAN_URL = "https://dhlpaket.se/dashboard/specifications/products/ (product manual v5.26, updated 2026-10-01, valid from 2026-11-01, sha256 050660c37ba93d1ae9514c50dfa42c2010bc87763ccaff51a740b2526af11b73)"
 DHL_CIE_URL = "https://www.dhl.com/content/dam/dhl/local/se/dhl-freight/documents/pdf/se-freight-customs-information-export-en.pdf (2025-02-03)"
 DHL_PRL_URL = "https://www.dhl.com/content/dam/dhl/local/se/dhl-freight/documents/pdf/se-freight-price-list-additional-services-sv.pdf (valid 2026-05-01)"
+DHL_API_FARM_URL = "https://dhlpaket.se/dashboard/services/api-farm/ (registration required, read 2026-08-11)"
 DHL_CSR_URL = "https://www.dhl.com/se-en/home/freight/help-center-for-european-road-and-rail/useful-information-and-downloads.html (Country-specific shipping requirements (English), accessed 2026-10-09)"
 BRING_URL = "https://www.bring.se/tjanster/tull/tulldokument"
 BAZG_R_69_03_URL = "https://www.bazg.admin.ch/dam/de/sd-web/mIvoM5CF7ydH/steuerbemessungsgrundlage-de.pdf (valid 2025-01-01)"
@@ -241,7 +242,11 @@ DHL_CIE_REMINDER_FEES = Source(
 )
 DHL_API_NO_UPLOAD = Source(
     "S",
-    _ref("FN:179", "karrio modules/connectors/dhl_freight_sweden/vendor/se-api-farm/"),
+    _ref(
+        "FN:179",
+        f"{DHL_API_FARM_URL}; all 13 API Farm specifications, version 2.10.0; "
+        "TransportInstruction 2.10.0 and Print API 2.10.0 for the booking flow",
+    ),
     "The DHL Freight Sweden API has no attachment or upload endpoint.",
 )
 DHL_MAN_OUTSIDE_COPIES = Source(
