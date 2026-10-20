@@ -54,7 +54,7 @@ Country codes SHALL be compared after the territory mapping of "DHL Freight Swed
 On a lane the product serves, the plugin SHALL also return the code when the shipper's or the recipient's postal code is excluded for the product, as the connector's `POSTAL_CODE_EXCLUSIONS` (the manual's numeric "Excluded regions/areas") and `POSTAL_CODE_PATTERN_EXCLUSIONS` (the manual's areas without ranges, such as `JE*`, `GY*`, and `BT*` under `GB` for 109 and 112, and the Product API catalog's `postalCodeExcludes` for 202, 233, and 601) decide it after the territory mapping: a numeric range compared in the country's postal code format, a Danish range also excluding a code led by `FO` or `GL` or of three digits where the connector marks it so, and a pattern matched against the whole normalised code.
 These tables SHALL be copied into the plugin and checked against the connector by a test that runs when the connector is importable.
 A postal code that is missing or does not match the country's format SHALL NOT be advised as excluded.
-The message for an excluded postal code SHALL name the product, its code, the country, the excluded codes, and the region, and `details` SHALL cite the manual's excluded areas (W, §5.3 p.18, §5.4 p.23, §5.9 p.43, §5.11 p.52, §5.14 p.63, §5.15 p.66) and the connector's destinations page for the catalog patterns (S, 7a2214d).
+The message for an excluded postal code SHALL name the product, its code, the country, the excluded codes, and the region, and `details` SHALL cite the manual's excluded areas (W, §5.3 p.18, §5.4 p.23, §5.9 p.43, §5.11 p.52, §5.14 p.63, §5.15 p.66) and the connector's destinations page for the catalog patterns (S, a598a41).
 A service that names no DHL Freight Sweden product SHALL return no message.
 The message SHALL name the product and its code and state that it does not ship from the shipper's country to the recipient's country.
 For Parcel Return Connect (107) the message SHALL add that it only returns a parcel from abroad to its original sender in Sweden.
@@ -129,7 +129,7 @@ For a recipient in Switzerland the message SHALL add products that serve it: Hom
 ### Requirement: DHL Freight Sweden territory codes are read as their parent country
 
 For a `dhl_freight_sweden` advisor context, the plugin SHALL read the shipper's and the recipient's country codes as the DHL Freight Sweden connector books them, replacing a territory code by its parent country: `AX` by `FI`, `FO` and `GL` by `DK`, `IC` and `EA` by `ES`, and `JE`, `GG`, `IM`, and `XI` by `GB`, before the scope and EU VAT area checks of "Advice is limited to Nordic shippers at shipment creation" and in every DHL Freight Sweden advisory that reads a country.
-The mapping SHALL be the connector's `TERRITORY_PARENTS` table, copied into the plugin and checked against the connector by a test that runs when the connector is importable (S, karrio-dhl-freight-sweden `units.py` and `docs/concepts/destinations.md` "Special territories" at 7a2214d).
+The mapping SHALL be the connector's `TERRITORY_PARENTS` table, copied into the plugin and checked against the connector by a test that runs when the connector is importable (S, karrio-dhl-freight-sweden `units.py` and `docs/concepts/destinations.md` "Special territories" at a598a41).
 The postal code SHALL be used as given, and the EU VAT area table SHALL be unchanged; only the country code it is asked about changes.
 For other carriers the plugin SHALL read the country codes as given.
 

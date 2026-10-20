@@ -177,7 +177,7 @@ For Great Britain the message SHALL state that Parcel Return Connect (107) does 
 
 For a DHL Freight Sweden shipment from Sweden to Great Britain booked, by unified name or carrier code, as Parcel Connect (`dhl_freight_sweden_parcel_connect_b2c`, `109`) or Parcel Connect Plus (`dhl_freight_sweden_parcel_connect_plus`, `112`), the plugin SHALL return code `nordic_conventions_dhl_freight_sweden_parcel_connect_gb_agreement` at level `warning`.
 The message SHALL state that these products serve Great Britain only by separate agreement with DHL.
-`details` SHALL cite the DHL Freight Sweden product manual v5.26 (W, §5.3 p.18, §5.14 p.63) and the DHL Freight Sweden connector's committed sandbox evidence that a 112 booking from Sweden to Great Britain without the agreement was rejected with 22005 and 22026 (S, `tests/dhl_freight_sweden/fixtures/sandbox/rejection-22005-112-se-gb.json` at 28c1ccb).
+`details` SHALL cite the DHL Freight Sweden product manual v5.26 (W, §5.3 p.18, §5.14 p.63) and the DHL Freight Sweden connector's committed sandbox evidence that a 112 booking from Sweden to Great Britain without the agreement was rejected with 22005 and 22026 (S, `tests/dhl_freight_sweden/fixtures/sandbox/rejection-22005-112-se-gb.json` at 5535d15).
 
 #### Scenario: Parcel Connect to Great Britain
 

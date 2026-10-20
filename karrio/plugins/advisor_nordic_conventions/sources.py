@@ -6,8 +6,8 @@ Each ``Source`` carries the evidence tag of the karrio fork's facts note
 repository code or a vendored or cited carrier API specification, W is public
 carrier or authority documentation, and I is inference. Connector behaviour is cited from the
 standalone connectors: karrio-postnord's README and code at commit
-320f3ad4f118f406e7b68ff7d4adeaca35b1d893, and karrio-dhl-freight-sweden's
-README and docs pages at commit 7a2214d and the commits that introduced its
+f9e1807314a46a3a02ea3d9e538e3913b6e42d2f, and karrio-dhl-freight-sweden's
+README and docs pages at commit a598a41 and the commits that introduced its
 refusals.
 """
 
@@ -36,12 +36,12 @@ BAZG_R_69_03_URL = "https://www.bazg.admin.ch/dam/de/sd-web/mIvoM5CF7ydH/steuerb
 PN_SE_NO_PAGE_URL = "https://www.postnord.se/privat/skicka/skicka-brev-och-paket-utomlands/skicka-paket-till-norge/ (read 2026-10-02)"
 TV_EXPORT_DOCUMENTS_URL = "https://www.tullverket.se/sv/foretag/exporteravaror/deklareravarorvidexport/styrkandehandlingarvidexport.4.78aa922815794d801e25e3.html (updated 2026-06-12, read 2026-10-02)"
 DHL_EXPRESS_CUSTOMS_URL = "https://mydhl.express.dhl/content/dam/downloads/global/en/customs-guide/express_global_customs_customer_guidelines.pdf.coredownload.pdf"
-DHL_CONNECTOR_README_URL = "https://github.com/PrimePack-AB/karrio-dhl-freight-sweden/blob/7a2214d/README.md (read 2026-10-08)"
-DHL_CONNECTOR_DESTINATIONS_URL = "https://github.com/PrimePack-AB/karrio-dhl-freight-sweden/blob/7a2214d/docs/concepts/destinations.md (read 2026-10-08)"
-DHL_CONNECTOR_TERRITORY_CHECK = "https://github.com/PrimePack-AB/karrio-dhl-freight-sweden/commit/142b62d5d48a1ba40cbddd8a46be7ec2c0442b0a (committed 2026-10-08)"
-DHL_CONNECTOR_JOINT_DECLARATION_CHECK = "https://github.com/PrimePack-AB/karrio-dhl-freight-sweden/commit/f86c8ac11fd9b017d4eb2a77bbf06fa88a1fa3fb (committed 2026-10-08)"
-DHL_CONNECTOR_COMMERCIAL_INVOICE_CHECK = "https://github.com/PrimePack-AB/karrio-dhl-freight-sweden/commit/ec180e61ca7ae4e763f58d9919ad9be0ae2ab56f (committed 2026-10-06)"
-PN_CONNECTOR_README_URL = "https://github.com/PrimePack-AB/karrio-postnord/blob/320f3ad4f118f406e7b68ff7d4adeaca35b1d893/README.md (read 2026-10-19)"
+DHL_CONNECTOR_README_URL = "https://github.com/PrimePack-AB/karrio-dhl-freight-sweden/blob/a598a41/README.md (read 2026-10-08)"
+DHL_CONNECTOR_DESTINATIONS_URL = "https://github.com/PrimePack-AB/karrio-dhl-freight-sweden/blob/a598a41/docs/concepts/destinations.md (read 2026-10-08)"
+DHL_CONNECTOR_TERRITORY_CHECK = "https://github.com/PrimePack-AB/karrio-dhl-freight-sweden/commit/c03bdd1f2505448eda3fca97d965b3c40026b1cb (committed 2026-10-08)"
+DHL_CONNECTOR_JOINT_DECLARATION_CHECK = "https://github.com/PrimePack-AB/karrio-dhl-freight-sweden/commit/20d3116c7138f145b8ac2a83e1a43567de160468 (committed 2026-10-08)"
+DHL_CONNECTOR_COMMERCIAL_INVOICE_CHECK = "https://github.com/PrimePack-AB/karrio-dhl-freight-sweden/commit/3f4179f9609cdfbe52f044da3a19d870048b023c (committed 2026-10-06)"
+PN_CONNECTOR_README_URL = "https://github.com/PrimePack-AB/karrio-postnord/blob/f9e1807314a46a3a02ea3d9e538e3913b6e42d2f/README.md (read 2026-10-19)"
 SKE_VOEC_GUIDELINES_URL = "https://www.skatteetaten.no/globalassets/bedrift-og-organisasjon/voec/sell-charge-and-ship-goods-to-norway.pdf (PDF modified 2025-03-28, read 2026-10-16)"
 SKE_VOEC_B2B_URL = "https://www.skatteetaten.no/globalassets/bedrift-og-organisasjon/voec/how-to-treat-b2b-sales-2026.pdf (PDF created 2026-02-04, read 2026-10-16)"
 TOLL_VOEC_PAGE_URL = "https://www.toll.no/no/bedrift/import/voec/om-voec-ordningen (oppdatert 2025-11-27, read 2026-10-16)"
@@ -208,7 +208,7 @@ DHL_MAN_JOINT_DECLARATION = Source(
 DHL_CONNECTOR_JOINT_DECLARATION_DESTINATIONS = Source(
     "S",
     _ref("Customs services", DHL_CONNECTOR_README_URL),
-    "The DHL Freight Sweden connector's customs table names NO and CH for the joint declaration (dhl_freight_sweden_customs_joint_declaration), the manual naming NO only, because product matches on its sandbox account list customsJointDeclaration to NO and CH; from karrio-dhl-freight-sweden commit https://github.com/PrimePack-AB/karrio-dhl-freight-sweden/commit/f86c8ac11fd9b017d4eb2a77bbf06fa88a1fa3fb the connector refuses the joint declaration to other recipient countries across the EU VAT area border (JOINT_DECLARATION_COUNTRIES).",
+    "The DHL Freight Sweden connector's customs table names NO and CH for the joint declaration (dhl_freight_sweden_customs_joint_declaration), the manual naming NO only, because product matches on its sandbox account list customsJointDeclaration to NO and CH; from karrio-dhl-freight-sweden commit https://github.com/PrimePack-AB/karrio-dhl-freight-sweden/commit/20d3116c7138f145b8ac2a83e1a43567de160468 the connector refuses the joint declaration to other recipient countries across the EU VAT area border (JOINT_DECLARATION_COUNTRIES).",
 )
 DHL_CONNECTOR_ALAND_CUSTOMS = Source(
     "S",

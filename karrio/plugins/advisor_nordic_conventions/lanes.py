@@ -22,7 +22,7 @@ INTERNATIONAL_PARCEL = "international_parcel"
 PARCEL = "parcel"
 
 # The PostNord connector's LETTER_SERVICES and INTERNATIONAL_PARCEL_SERVICE
-# (karrio-postnord 320f3ad, units.py:155-169 and 319-335), as unified name and
+# (karrio-postnord f9e1807, units.py:155-169 and 319-335), as unified name and
 # carrier code pairs.
 POSTNORD_LETTER_SERVICES: typing.Dict[str, str] = {
     "postnord_tracked": "04",
@@ -69,7 +69,7 @@ class DHLCustomsOption(lib.Enum):
 
 
 # The DHL Freight Sweden connector's PRODUCT_LANES, PRODUCT_LANE_CITATIONS,
-# and ShippingService (karrio-dhl-freight-sweden c878941, units.py), from the
+# and ShippingService (karrio-dhl-freight-sweden fd6f6b5, units.py), from the
 # "Valid countries" tables of product manual v5.26 section 5. 202, 205, 233,
 # SPI, and 601 "can be used to and from Sweden" (§5.4 p22, §5.9 p41, §5.10
 # p46, §5.11 p51, §5.19 p81), and 107 returns a 109 shipment to its original
@@ -184,7 +184,7 @@ DHL_PRODUCT_LANE_CITATIONS: typing.Dict[str, str] = {
 
 
 # The DHL Freight Sweden connector's TERRITORY_PARENTS (karrio-dhl-freight-sweden
-# c878941, units.py): the country DHL serves a territory code under, which the
+# fd6f6b5, units.py): the country DHL serves a territory code under, which the
 # connector sends instead of the territory code before its customs-area, lane,
 # and excluded postal code checks.
 DHL_TERRITORY_PARENTS: typing.Dict[str, str] = {
@@ -202,7 +202,7 @@ def dhl_parent_country(country_code: str) -> str:
 
 
 # The DHL Freight Sweden connector's ALAND_POSTAL_RANGE (karrio-dhl-freight-sweden
-# c878941, units.py): to or from these postal codes DHL rejected customs
+# fd6f6b5, units.py): to or from these postal codes DHL rejected customs
 # handling standard and full service with 24003, and the connector refuses both.
 DHL_ALAND_POSTAL_RANGE: typing.Tuple[str, int, int] = ("FI", 22000, 22999)
 
@@ -236,7 +236,7 @@ class DHLTerritoryPostalCodes(typing.NamedTuple):
 DIGIT_WORDS = {3: "three"}
 
 # The DHL Freight Sweden connector's TERRITORY_POSTAL_CODES (karrio-dhl-freight-sweden
-# c878941, units.py): the connector refuses a territory code whose postal code
+# fd6f6b5, units.py): the connector refuses a territory code whose postal code
 # is missing or lies outside these codes with TerritoryPostalCodeError, before
 # mapping it to the parent. JE, GG, IM, and XI have no numeric range.
 DHL_TERRITORY_POSTAL_CODES: typing.Dict[str, DHLTerritoryPostalCodes] = {
@@ -249,7 +249,7 @@ DHL_TERRITORY_POSTAL_CODES: typing.Dict[str, DHLTerritoryPostalCodes] = {
 
 
 # The DHL Freight Sweden connector's JOINT_DECLARATION_COUNTRIES (karrio-dhl-freight-sweden
-# c878941, units.py): across the EU VAT area border the connector refuses the
+# fd6f6b5, units.py): across the EU VAT area border the connector refuses the
 # customs joint declaration to other recipient countries.
 DHL_JOINT_DECLARATION_COUNTRIES: typing.Tuple[str, ...] = ("NO", "CH")
 

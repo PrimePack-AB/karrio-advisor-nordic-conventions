@@ -8,7 +8,7 @@ For a DHL Freight Sweden shipment from Sweden to a recipient in Åland, `FI` wit
 The message SHALL name the selected services, state that DHL rejects them to Åland with 24003 and that the connector refuses them before booking, and name the own declaration or customs data sent without a customs service as the bookings the connector accepts, adding that DHL's acceptance of customs data without a customs service does not show how it clears customs.
 The joint declaration SHALL NOT be named, because the connector refuses it to destinations other than Norway and Switzerland.
 The Åland range and the refused services SHALL be the connector's `ALAND_POSTAL_RANGE` and `ALAND_REJECTED_CUSTOMS_SERVICES`, checked against the connector by a test that runs when the connector is importable.
-`details` SHALL cite the connector's Åland evidence (S, connector `docs/concepts/destinations.md` "Åland" at 7a2214d: rejections 24003 for 112 with full service and with Standard, and booking 2906762592 of 109 with customs data and no customs service) and the manual's customs selection (W, MAN v5.26 §7.6.1 p.163, §6.7 p.96).
+`details` SHALL cite the connector's Åland evidence (S, connector `docs/concepts/destinations.md` "Åland" at a598a41: rejections 24003 for 112 with full service and with Standard, and booking 2906762592 of 109 with customs data and no customs service) and the manual's customs selection (W, MAN v5.26 §7.6.1 p.163, §6.7 p.96).
 The answering set of the code SHALL be empty, because its remedy lies in the booking's customs service options.
 
 #### Scenario: Standard customs handling to Åland
@@ -32,7 +32,7 @@ For a DHL Freight Sweden shipment from Sweden whose recipient carries the countr
 This requirement qualifies "Advice is limited to Nordic shippers at shipment creation": the advisory SHALL be returned whether or not the recipient, read under its parent country, lies outside the EU VAT area, because such a code is otherwise booked as the parent's mainland.
 The message SHALL name the territory code, the territory, the parent country, the postal codes the connector requires, and the recipient's postal code or its absence, state that the connector refuses the booking, and advise the parent country code for an address outside the territory.
 The territories and their postal codes SHALL be the connector's `TERRITORY_POSTAL_CODES`, copied into the plugin and checked against the connector by a test that runs when the connector is importable; `JE`, `GG`, `IM`, and `XI` have no range and SHALL NOT be checked.
-`details` SHALL cite the connector's `TerritoryPostalCodeError` (S, karrio-dhl-freight-sweden branch `products-manual-country-lists` at 142b62d).
+`details` SHALL cite the connector's `TerritoryPostalCodeError` (S, karrio-dhl-freight-sweden branch `products-manual-country-lists` at c03bdd1).
 The answering set of the code SHALL be empty, because its remedy lies in the booking's address.
 
 #### Scenario: Åland code with a mainland postal code
@@ -53,7 +53,7 @@ The answering set of the code SHALL be empty, because its remedy lies in the boo
 ### Requirement: DHL Freight Sweden joint declaration is selected only to Norway or Switzerland
 
 For a DHL Freight Sweden shipment from Sweden to a destination outside the EU VAT area on which `dhl_freight_sweden_customs_joint_declaration` is set, read as the plugin reads every DHL Freight Sweden customs service option, and whose recipient country after the territory mapping is not in the connector's `JOINT_DECLARATION_COUNTRIES` (`NO`, `CH`), the plugin SHALL return code `advisor_nordic_conventions_dhl_freight_sweden_joint_declaration_destination` at level `warning`.
-The scope matches the connector's `JointDeclarationDestinationError` (S, karrio-dhl-freight-sweden branch `products-manual-country-lists` at f86c8ac), applied only across the EU VAT area border; inside the area the connector drops customs services with a warning instead, and the plugin, which advises only recipients outside the area, SHALL return no message there.
+The scope matches the connector's `JointDeclarationDestinationError` (S, karrio-dhl-freight-sweden branch `products-manual-country-lists` at 20d3116), applied only across the EU VAT area border; inside the area the connector drops customs services with a warning instead, and the plugin, which advises only recipients outside the area, SHALL return no message there.
 The message SHALL name the option, state that the joint declaration is valid only to Norway or Switzerland and that the connector refuses it to the recipient country, and name customs handling (standard or full service) or an own declaration as alternatives, or, for a recipient in Åland as "DHL Freight Sweden customs handling is not selected to Åland" defines it, an own declaration or customs data with no customs service.
 `details` SHALL cite the manual's joint declaration (W, MAN v5.26 §6.8 p.98) and the connector's refusal.
 The answering set of the code SHALL be empty, because its remedy lies in the booking's customs service options.
@@ -81,7 +81,7 @@ The answering set of the code SHALL be empty, because its remedy lies in the boo
 ### Requirement: DHL Freight Sweden territory codes are read as their parent country
 
 For a `dhl_freight_sweden` advisor context, the plugin SHALL read the shipper's and the recipient's country codes as the DHL Freight Sweden connector books them, replacing a territory code by its parent country: `AX` by `FI`, `FO` and `GL` by `DK`, `IC` and `EA` by `ES`, and `JE`, `GG`, `IM`, and `XI` by `GB`, before the scope and EU VAT area checks of "Advice is limited to Nordic shippers at shipment creation" and in every DHL Freight Sweden advisory that reads a country.
-The mapping SHALL be the connector's `TERRITORY_PARENTS` table, copied into the plugin and checked against the connector by a test that runs when the connector is importable (S, karrio-dhl-freight-sweden `units.py` and `docs/concepts/destinations.md` "Special territories" at 7a2214d).
+The mapping SHALL be the connector's `TERRITORY_PARENTS` table, copied into the plugin and checked against the connector by a test that runs when the connector is importable (S, karrio-dhl-freight-sweden `units.py` and `docs/concepts/destinations.md` "Special territories" at a598a41).
 The postal code SHALL be used as given, and the EU VAT area table SHALL be unchanged; only the country code it is asked about changes.
 For other carriers the plugin SHALL read the country codes as given.
 
@@ -120,9 +120,9 @@ For other carriers the plugin SHALL read the country codes as given.
 ### Requirement: DHL Freight Sweden needs a customs handling mode
 
 For a DHL Freight Sweden shipment from Sweden to a destination outside the EU VAT area on which none of the connector's customs service options (standard handling, full-service handling, customer's own declaration, joint declaration) is set, the plugin SHALL return code `advisor_nordic_conventions_dhl_freight_sweden_customs_mode_missing` at level `warning`, stating that DHL requires customs handling (standard or full service), an own declaration, or a joint declaration to Norway or Switzerland to be selected for such destinations and naming the connector options that select them.
-The joint declaration's destinations SHALL be the connector's `JOINT_DECLARATION_COUNTRIES`, Norway and Switzerland, outside which the connector refuses the joint declaration across the EU VAT area border (karrio-dhl-freight-sweden f86c8ac), copied into the plugin and checked against the connector by a test that runs when the connector is importable; the manual names Norway only (W, MAN v5.26 §6.8 p.98; S, connector README at 7a2214d, citing product matches to NO and CH).
+The joint declaration's destinations SHALL be the connector's `JOINT_DECLARATION_COUNTRIES`, Norway and Switzerland, outside which the connector refuses the joint declaration across the EU VAT area border (karrio-dhl-freight-sweden 20d3116), copied into the plugin and checked against the connector by a test that runs when the connector is importable; the manual names Norway only (W, MAN v5.26 §6.8 p.98; S, connector README at a598a41, citing product matches to NO and CH).
 The connector selects no customs service implicitly because each carries a fee (DFS lines 75-83, S); DHL's product manual requires the selection for Switzerland, Great Britain, Norway, Åland, and other non-EU destinations (FN:196, W, MAN v5.26 §7.6.1 p.163 and §6.7 p.96), and no fee-free mode exists for non-EU destinations (FN:208, W and I), which the details SHALL state.
-For a recipient in Åland, as "DHL Freight Sweden customs handling is not selected to Åland" defines it, the plugin SHALL NOT return this code, because the connector accepts an Åland booking without a customs service, and DHL booked 109 to FI 22100 with customs data and no customs service (S, connector `docs/concepts/destinations.md` "Åland" at 7a2214d).
+For a recipient in Åland, as "DHL Freight Sweden customs handling is not selected to Åland" defines it, the plugin SHALL NOT return this code, because the connector accepts an Åland booking without a customs service, and DHL booked 109 to FI 22100 with customs data and no customs service (S, connector `docs/concepts/destinations.md` "Åland" at a598a41).
 
 #### Scenario: No customs option to Norway
 
@@ -173,7 +173,7 @@ The answering sets SHALL be lane-aware as follows.
 
 For a DHL Freight Sweden shipment from Sweden to Great Britain booked, by unified name or carrier code, as Parcel Connect (`dhl_freight_sweden_parcel_connect_b2c`, `109`) or Parcel Connect Plus (`dhl_freight_sweden_parcel_connect_plus`, `112`), the plugin SHALL return code `advisor_nordic_conventions_dhl_freight_sweden_parcel_connect_gb_agreement` at level `warning`, unless the recipient's postal code is excluded for the product as "DHL Freight Sweden products are not booked on lanes they do not serve" defines it, in which case that requirement's code is returned instead.
 The message SHALL state that these products serve Great Britain only by separate agreement with DHL.
-`details` SHALL cite the DHL Freight Sweden product manual v5.26 (W, §5.3 p.18, §5.14 p.63) and the DHL Freight Sweden connector's committed sandbox evidence that a 112 booking from Sweden to Great Britain without the agreement was rejected with 22005 and 22026 (S, `tests/dhl_freight_sweden/fixtures/sandbox/rejection-22005-112-se-gb.json` at 28c1ccb).
+`details` SHALL cite the DHL Freight Sweden product manual v5.26 (W, §5.3 p.18, §5.14 p.63) and the DHL Freight Sweden connector's committed sandbox evidence that a 112 booking from Sweden to Great Britain without the agreement was rejected with 22005 and 22026 (S, `tests/dhl_freight_sweden/fixtures/sandbox/rejection-22005-112-se-gb.json` at 5535d15).
 
 #### Scenario: Parcel Connect to Great Britain
 
@@ -198,7 +198,7 @@ Country codes SHALL be compared after the territory mapping of "DHL Freight Swed
 On a lane the product serves, the plugin SHALL also return the code when the shipper's or the recipient's postal code is excluded for the product, as the connector's `POSTAL_CODE_EXCLUSIONS` (the manual's numeric "Excluded regions/areas") and `POSTAL_CODE_PATTERN_EXCLUSIONS` (the manual's areas without ranges, such as `JE*`, `GY*`, and `BT*` under `GB` for 109 and 112, and the Product API catalog's `postalCodeExcludes` for 202, 233, and 601) decide it after the territory mapping: a numeric range compared in the country's postal code format, a Danish range also excluding a code led by `FO` or `GL` or of three digits where the connector marks it so, and a pattern matched against the whole normalised code.
 These tables SHALL be copied into the plugin and checked against the connector by a test that runs when the connector is importable.
 A postal code that is missing or does not match the country's format SHALL NOT be advised as excluded.
-The message for an excluded postal code SHALL name the product, its code, the country, the excluded codes, and the region, and `details` SHALL cite the manual's excluded areas (W, §5.3 p.18, §5.4 p.23, §5.9 p.43, §5.11 p.52, §5.14 p.63, §5.15 p.66) and the connector's destinations page for the catalog patterns (S, 7a2214d).
+The message for an excluded postal code SHALL name the product, its code, the country, the excluded codes, and the region, and `details` SHALL cite the manual's excluded areas (W, §5.3 p.18, §5.4 p.23, §5.9 p.43, §5.11 p.52, §5.14 p.63, §5.15 p.66) and the connector's destinations page for the catalog patterns (S, a598a41).
 A service that names no DHL Freight Sweden product SHALL return no message.
 The message SHALL name the product and its code and state that it does not ship from the shipper's country to the recipient's country.
 For Parcel Return Connect (107) the message SHALL add that it only returns a parcel from abroad to its original sender in Sweden.

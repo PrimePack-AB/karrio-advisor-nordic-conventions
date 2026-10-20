@@ -126,7 +126,7 @@ class TestNordicConventionsInvoiceTypeContentMismatch(unittest.TestCase):
 
     def test_dhl_freight_sweden_sources_cite_the_refusal_commit(self):
         self.assertIn(
-            "karrio-dhl-freight-sweden/commit/ec180e61ca7ae4e763f58d9919ad9be0ae2ab56f",
+            "karrio-dhl-freight-sweden/commit/3f4179f9609cdfbe52f044da3a19d870048b023c",
             DHL_FREIGHT_SWEDEN_SOURCES[1]["reference"],
         )
         self.assertIn("CommercialInvoiceRequiredError", DHL_FREIGHT_SWEDEN_SOURCES[0]["statement"])

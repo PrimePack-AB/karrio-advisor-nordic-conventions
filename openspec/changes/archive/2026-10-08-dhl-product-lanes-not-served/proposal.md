@@ -2,7 +2,7 @@
 
 ## Why
 
-The DHL Freight Sweden connector now rates and books each product only on the lanes its "Valid countries" table in product manual v5.26 allows, refusing other bookings with `ProductLaneError` before the booking request (karrio-dhl-freight-sweden branch `products-manual-country-lists`, commit b54fcdb).
+The DHL Freight Sweden connector now rates and books each product only on the lanes its "Valid countries" table in product manual v5.26 allows, refusing other bookings with `ProductLaneError` before the booking request (karrio-dhl-freight-sweden branch `products-manual-country-lists`, commit 0aa6c85).
 This plugin warns about only part of those lanes: Parcel Connect (109), Parcel Connect Plus (112), and Parcel Return Connect (107) to Switzerland, and 107 to Great Britain.
 For a Swedish shipper outside the EU VAT area it says nothing about 107 to Norway, although 107 only returns a parcel from abroad to the original sender in Sweden (§5.15 p.65), nor about 109, 112, and the road-freight products to countries their tables leave out, nor about the domestic products, whose only valid country is Sweden.
 

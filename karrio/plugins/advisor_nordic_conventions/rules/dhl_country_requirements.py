@@ -13,7 +13,7 @@ from karrio.plugins.advisor_nordic_conventions.rules import advisory
 
 # The DHL Freight Sweden connector's PARTY_TAX_ID_PRODUCTS,
 # TRANSPORT_DECLARATION_PRODUCTS, and TRANSPORT_DECLARATION_FREE_WEIGHT_LIMIT_KG
-# (karrio-dhl-freight-sweden c878941, units.py), copied as literals because the
+# (karrio-dhl-freight-sweden fd6f6b5, units.py), copied as literals because the
 # plugin installs and runs standalone; parity tests compare the copies against
 # the connector and skip when it is not importable.
 GREEK_TAX_ID_PRODUCTS: typing.FrozenSet[str] = frozenset({"202", "SPI", "601"})

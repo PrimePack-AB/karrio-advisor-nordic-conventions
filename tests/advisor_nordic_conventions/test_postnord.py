@@ -205,7 +205,7 @@ class TestNordicConventionsPostNordSEPostpaketCommercialInvoice(unittest.TestCas
         self.assertIn("triplicate", POSTPAKET_SOURCES[1]["statement"])
         self.assertIn("tre exemplar", POSTPAKET_SOURCES[2]["statement"])
         self.assertIn(
-            "karrio-postnord/blob/320f3ad4f118f406e7b68ff7d4adeaca35b1d893/README.md",
+            "karrio-postnord/blob/f9e1807314a46a3a02ea3d9e538e3913b6e42d2f/README.md",
             POSTPAKET_CODE_SOURCES[0]["reference"],
         )
         self.assertIn("books the CN23 unconditionally", POSTPAKET_CODE_SOURCES[0]["statement"])

@@ -4,8 +4,8 @@
 
 `advisor_nordic_conventions_dhl_freight_sweden_parcel_connect_gb_agreement` warns, at shipment creation, on every DHL Freight Sweden Parcel Connect (109) or Parcel Connect Plus (112) shipment from Sweden to Great Britain that these products serve Great Britain only by separate agreement with DHL (product manual v5.26 §5.3 p.18, §5.14 p.63).
 The DHL Freight Sweden connector now covers the same lane at the same stage.
-Its booking guard runs DHL's Product API product matches before every booking by default (connection setting `product_matches`, default `enforce`) and refuses 109 or 112 when DHL does not offer the product on the lane, with a message naming the separate agreement (karrio-dhl-freight-sweden c5d0e2b).
-When the guard is off or cannot verify the product, DHL's own 22005 and 22026 rejections of 109 or 112 to Great Britain carry a `separate_agreement_lane` warning naming the agreement (karrio-dhl-freight-sweden 0c5e471).
+Its booking guard runs DHL's Product API product matches before every booking by default (connection setting `product_matches`, default `enforce`) and refuses 109 or 112 when DHL does not offer the product on the lane, with a message naming the separate agreement (karrio-dhl-freight-sweden 0a1556b).
+When the guard is off or cannot verify the product, DHL's own 22005 and 22026 rejections of 109 or 112 to Great Britain carry a `separate_agreement_lane` warning naming the agreement (karrio-dhl-freight-sweden 7a6dd9e).
 The advisory adds nothing to either path, and it warns on every booking of a shipper that holds the agreement, where the connector stays silent.
 
 ## What Changes
