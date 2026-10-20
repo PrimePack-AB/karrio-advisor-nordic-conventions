@@ -143,7 +143,7 @@ PN_SE_SV_PAGE_POSTPAKET = Source(
 )
 PN_POSTPAKET_CODE_91 = Source(
     "S",
-    _ref("FN:165", "karrio modules/connectors/postnord/karrio/providers/postnord/units.py:146; modules/connectors/postnord/vendor/docs/general-descriptions.pdf"),
+    _ref("FN:165", "karrio modules/connectors/postnord/karrio/providers/postnord/units.py:146; PostNord General Descriptions (EDI shipping instructions message, 32 pages, PDF created 2020-06-12, sha256 719c525397c3b7a39515750891f9da68d19958d27c7217b6c67f87bef32e9443, download source not recorded)"),
     "Code 91 is the contract and EDI product: postnord_postpaket_utrikes = \"91\" matches \"91 Z91 Postpaket Utrikes\" and \"International Parcel(91)\".",
 )
 PN_POSTPAKET_CODE_95 = Source(
