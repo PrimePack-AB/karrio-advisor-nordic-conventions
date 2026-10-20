@@ -13,7 +13,7 @@ Research on 2026-10-02 verified carrier and authority sources on declared values
 - Adds `nordic_conventions_dhl_freight_sweden_parcel_connect_gb_agreement` at level `warning`: Parcel Connect (109) or Parcel Connect Plus (112) booked to Great Britain, which they serve only by separate agreement with DHL.
 - Maps the four codes to the empty answering set, since their remedy lies in the invoice content, the declared values, or the booked product.
 - Records in the README that splitting goods sold as one unit into separately packed consignments to Norway under VOEC is prohibited, and why the plugin cannot advise it.
-- Corrects the citation of the PostNord customs invoice behaviour: PNS at 60312fe2e is the specification text, and the connector code entered the karrio fork's develop as face88f37 through merge 52d21fbfb.
+- Corrects the citation of the PostNord customs invoice behaviour: PNS at 60312fe2e is the specification text, and the connector code is in karrio-postnord from its root commit 9749134, imported from the karrio fork's develop.
 
 Out of scope: goods-value thresholds (a recorded non-goal), attestations answering the new advisories, and connector changes.
 

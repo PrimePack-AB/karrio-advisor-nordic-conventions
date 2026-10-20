@@ -56,7 +56,7 @@ Chapter 23 "Reststoffer og avfall fra næringsmiddelindustrien; tilberedt dyref�
 
 ## Value threshold and exchange rates
 
-karrio's `Commodity.value_amount` is the value of one unit: the SDK's `units.Products.value_amount` property sums `item.value_amount * item.quantity` over the items (karrio `modules/sdk/karrio/core/units.py:673-681`, branch `develop` at 71936ac88, file last changed in b350db6ae, S), and both connectors in scope declare `value_amount * (quantity or 1)` per line (karrio-postnord `karrio/providers/postnord/shipment/create.py:373`, karrio-dhl-freight-sweden `karrio/providers/dhl_freight_sweden/shipment/create.py:662`, S).
+karrio's `Commodity.value_amount` is the value of one unit: the SDK's `units.Products.value_amount` property sums `item.value_amount * item.quantity` over the items (karrio `modules/sdk/karrio/core/units.py:673-681`, tag `snapshot-2026.10.19.1` at a7355a5c8, file last changed in b350db6ae, S), and both connectors in scope declare `value_amount * (quantity or 1)` per line (karrio-postnord `karrio/providers/postnord/shipment/create.py:373`, karrio-dhl-freight-sweden `karrio/providers/dhl_freight_sweden/shipment/create.py:662`, S).
 The rule therefore compares `value_amount` itself with the limit, not `value_amount / quantity`; the user confirmed this reading on 2026-10-16, replacing the division in the first brief.
 The guidelines §4 make the value "at point of sale" decisive and §10.5 and mvaf § 1-3-8 (2)-(3) let the seller use any Norges Bank, Tolletaten, or market rate published within 30 days before payment, so the plugin cannot know the rate the seller used.
 

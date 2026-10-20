@@ -9,7 +9,8 @@ It covers what landed, what is in flight, and the decisions awaiting the user.
 
 The fork Joaqim/karrio tags each deployed `develop` with a transient annotated tag `snapshot-YYYY.MM.DD.N`, created by `docs/notes/workflow/snapshot-tag.sh` and called from `rebuild-develop.sh` on `docs-openspec` (commit `057ea5fa5`).
 Snapshot tags are not releases, have no GitHub Release object, and may be deleted once no jqpkgs pin, plugin `karrio-ref`, or consumer npins pin refers to them; the policy is in `develop-assembly.md` under "Snapshot tags".
-Existing tags: `snapshot-2026.07.07.1` (`e2960b597`), `snapshot-2026.10.13.1` (`62f4d4764`), `snapshot-2026.10.15.1` (`71936ac88`), `snapshot-2026.10.19.1` (`a7355a5c8`), and `snapshot-2026.10.19.2` (`7aacaa2e4`, the deployed `develop`).
+Existing tags: `snapshot-2026.10.19.1` (`a7355a5c8`) and `snapshot-2026.10.19.2` (`7aacaa2e4`, the deployed `develop`).
+The earlier tags `snapshot-2026.07.07.1`, `snapshot-2026.10.13.1`, and `snapshot-2026.10.15.1` were removed on 2026-10-20 to redact unlicensed carrier documents.
 
 PrimePack-AB/karrio-postnord `v2026.10.1`, karrio-dhl-freight-sweden `v2026.10.1`, and karrio-advisor-nordic-conventions `v2026.10.7` are published GitHub Releases.
 Each repository has `[tool.primepack] karrio-ref` in `pyproject.toml`, `scripts/check-release-tag.sh`, `scripts/release.sh <YYYY.M.N>`, `.github/workflows/release.yml` on `v*` tags, and a "Releasing" section in its development docs.
